@@ -1,0 +1,89 @@
+#menuContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 2rem;
+    column-gap: normal;
+  }
+  
+  #menuTitle {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  #menuItemGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  #menuItemAbout,
+  #menuItemProjects,
+  #menuItemSkills,
+  #menuItemContact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    background-color: rgb(0, 0, 0);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  #menuItemAbout:hover,
+  #menuItemProjects:hover,
+  #menuItemSkills:hover,
+  #menuItemContact:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  #menuItemIconWrapperAbout,
+  #menuItemIconWrapperProjects,
+  #menuItemIconWrapperSkills,
+  #menuItemIconWrapperContact {
+    perspective: 1000px;
+    margin-bottom: 0.5rem;
+  }
+  
+  #menuItemIconAbout,
+  #menuItemIconProjects,
+  #menuItemIconSkills,
+  #menuItemIconContact {
+    font-size: 2rem;
+    color: paleturquoise; 
+    animation: rotate 5s infinite linear;
+    transform-style: preserve-3d;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotateY(0deg) rotateX(0deg);
+    }
+    100% {
+      transform: rotateY(360deg) rotateX(360deg);
+    }
+  }
+  
+  #menuItemAbout span,
+  #menuItemProjects span,
+  #menuItemSkills span,
+  #menuItemContact span {
+    color: #696958; /* retro yellow */
+    font-weight: bold;
+  }
+  
+  #menuItemAbout:hover .icon,
+  #menuItemProjects:hover .icon,
+  #menuItemSkills:hover .icon,
+  #menuItemContact:hover .icon {
+    animation-play-state: paused;
+  }
+  
+  #menuItemAbout:hover span,
+  #menuItemProjects:hover span,
+  #menuItemSkills:hover span,
+  #menuItemContact:hover span {
+    color: darkorchid;
+  }

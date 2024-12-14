@@ -1,0 +1,83 @@
+.speaker-banner {
+    background-color: #000;
+    color: #FFC72C; /* McDonald's yellow */
+    overflow: hidden;
+    width: 100%;
+    height: 40px;
+    position: relative;
+    border-top: 2px solid #DA291C; /* McDonald's red */
+    border-bottom: 2px solid #DA291C;
+  }
+  
+  .speaker-content {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: scroll 30s linear infinite;
+  }
+  
+  .speaker-message {
+    display: inline-block;
+    padding-right: 50px; /* Space between messages */
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Add a retro TV screen effect */
+  .speaker-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.1) 0%,
+      rgba(255,255,255,0.1) 50%,
+      rgba(0,0,0,0.1) 51%,
+      rgba(0,0,0,0.1) 100%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+  
+  /* Add a flicker effect */
+  @keyframes flicker {
+    0% { opacity: 0.97; }
+    5% { opacity: 0.95; }
+    10% { opacity: 0.9; }
+    15% { opacity: 0.95; }
+    20% { opacity: 0.98; }
+    25% { opacity: 0.95; }
+    30% { opacity: 0.9; }
+    35% { opacity: 0.95; }
+    40% { opacity: 0.98; }
+    45% { opacity: 0.95; }
+    50% { opacity: 0.9; }
+    55% { opacity: 0.95; }
+    60% { opacity: 0.98; }
+    65% { opacity: 0.95; }
+    70% { opacity: 0.9; }
+    75% { opacity: 0.95; }
+    80% { opacity: 0.98; }
+    85% { opacity: 0.95; }
+    90% { opacity: 0.9; }
+    95% { opacity: 0.95; }
+    100% { opacity: 0.98; }
+  }
+  
+  .speaker-banner {
+    animation: flicker 5s linear infinite;
+  }

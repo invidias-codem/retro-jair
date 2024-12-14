@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions for validations
+    function isValidEmail(email) {
+      return email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$');
+    }
+
+    function isValidString(text, minLength, maxLength) {
+      return text is string && 
+             text.size() >= minLength && 
+             text.size() <= maxLength;
+    }
+
+    function isValidDate(submitTime) {
+      return submitTime is timestamp;
+    }
+
+    // Contact form collection rules
+    match /contacts/{contactId} {
+      // Allow creating new contact submissions with basic validation
+      allow create: if
+        // Validate required fields exist
+        request.resource.data.name is string &&
+        request.resource.data.email is string &&
+        request.resource.data.subject is string &&
+        request.resource.data.message is string &&
+        request.resource.data.timestamp is timestamp &&
+        
+        // Validate field contents
+        isValidEmail(request.resource.data.email) &&
+        isValidString(request.resource.data.name, 2, 100) &&
+        isValidString(request.resource.data.subject, 2, 200) &&
+        isValidString(request.resource.data.message, 10, 1000);
+
+      // Prevent reading of contact submissions by clients
+      allow read: if false;
+      
+      // Prevent updating or deleting contact submissions
+      allow update, delete: if false;
+    }
+  }
+}

@@ -1,0 +1,179 @@
+:root {
+  --menu-yellow: #FFC72C;
+  --menu-red: #DA291C;
+  --menu-black: #27251F;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--menu-black);
+  font-family: 'Arial', sans-serif;
+  color: var(--menu-yellow);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#appContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--menu-red);
+  border: 10px solid var(--menu-yellow);
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255, 199, 44, 0.5);
+  overflow: hidden;
+}
+
+#appHeader {
+  background-color: var(--menu-yellow);
+  padding: 20px;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+}
+
+#appHeaderLink {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: var(--menu-red);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 var(--menu-black);
+  animation: flicker 2s infinite;
+}
+
+#appMain {
+  display: flex;
+  background-color: var(--menu-black);
+  border-radius: 0 0 10px 10px;
+}
+
+#appSidebar {
+  width: 30%;
+  height: auto;
+  padding: 20px;
+  background-color: var(--menu-yellow);
+  border-right: 5px solid var(--menu-red);
+  touch-action: manipulation;
+}
+
+#appContent {
+  width: 70%;
+  padding: 20px;
+  background-color: var(--menu-black);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a:focus, button:focus {
+  outline: 2px solid var(--menu-yellow);
+}
+
+/* Add some retro-style effects */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+#appContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  #appContainer {
+    padding: 10px;
+    border-width: 5px;
+  }
+
+  #appHeader {
+    padding: 10px;
+  }
+
+  #appHeaderLink {
+    font-size: 1.8em;
+  }
+
+  #appMain {
+    flex-direction: column;
+  }
+
+  #appSidebar, #appContent {
+    width: 100%;
+    padding: 10px;
+  }
+
+  #appSidebar {
+    border-right: none;
+    border-bottom: 5px solid var(--menu-red);
+    display: none;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  #appSidebar.show {
+    display: block;
+    transform: translateY(0);
+  }
+
+  #menuToggle {
+    display: block;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: var(--menu-yellow);
+    color: var(--menu-red);
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 24px;
+    text-align: center;
+    line-height: 1;
+    z-index: 1000;
+    touch-action: manipulation;
+  }
+}
+
+/* Additional breakpoints */
+@media (max-width: 480px) {
+  #appHeaderLink {
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  #appContainer {
+    max-width: 90%;
+  }
+}
+
+/* Page transition effect */
+.page-transition {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.page-transition.hide {
+  opacity: 0;
+}
+
