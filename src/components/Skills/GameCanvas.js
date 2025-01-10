@@ -14,7 +14,6 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
             if (animationFrameRef.current) {
                 cancelAnimationFrame(animationFrameRef.current);
             }
-            
             lastTimeRef.current = 0;
             
             if (canvasRef.current) {
@@ -23,18 +22,14 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
             }
         },
         handleResize: () => {
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-
-            const container = canvas.parentElement;
+            if (!canvasRef.current) return;
+            const container = canvasRef.current.parentElement;
             if (container) {
-                canvas.width = container.clientWidth;
-                canvas.height = container.clientHeight;
+                canvasRef.current.width = container.clientWidth;
+                canvasRef.current.height = container.clientHeight;
             }
-
-            // Reinitialize game state with new dimensions if needed
-            if (gameStateRef.current) {
-                gameStateRef.current.handleCanvasResize(canvas);
+            if (gameStateRef.current?.handleCanvasResize) {
+                gameStateRef.current.handleCanvasResize(canvasRef.current);
             }
         }
     }));
@@ -45,28 +40,22 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
                 lastTimeRef.current = timestamp;
             }
 
-            const deltaTime = (timestamp - lastTimeRef.current) / 1000; // Convert to seconds
+            const deltaTime = (timestamp - lastTimeRef.current) / 1000;
             lastTimeRef.current = timestamp;
 
-            const gameState = gameStateRef.current;
-            if (!gameState) return;
+            if (!gameStateRef.current) return;
 
-            // Update game state
-            const { gameOver, won } = gameState.update(deltaTime);
-            
-            // Draw frame
-            gameState.draw();
+            const { gameOver, won } = gameStateRef.current.update(deltaTime);
+            gameStateRef.current.draw();
 
-            // Notify parent of state changes
             if (onStateChange) {
                 onStateChange({
                     gameOver,
                     won,
-                    score: gameState.score
+                    score: gameStateRef.current.score
                 });
             }
 
-            // Continue game loop if game is still active
             if (!gameOver && !won) {
                 animationFrameRef.current = requestAnimationFrame(gameLoop);
             }
@@ -74,7 +63,8 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
 
         animationFrameRef.current = requestAnimationFrame(gameLoop);
     }, [onStateChange]);
-    
+
+    // Setup touch event handlers with proper options
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -82,14 +72,33 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
         // Initialize game state
         gameStateRef.current = new GameState(canvas);
 
+        const handleTouch = (event) => {
+            if (!gameStateRef.current) return;
+            
+            switch (event.type) {
+                case 'touchstart':
+                    gameStateRef.current.handleTouchStart(event);
+                    break;
+                case 'touchmove':
+                    gameStateRef.current.handleTouchMove(event);
+                    break;
+                case 'touchend':
+                case 'touchcancel':
+                    gameStateRef.current.handleTouchEnd(event);
+                    break;
+                default:
+                    console.error(`Unexpected event type: ${event.type}`);
+            }
+        };
+
         const handleKeyDown = (e) => {
-            if (gameStateRef.current) {
+            if (gameStateRef.current?.handleKeyDown) {
                 gameStateRef.current.handleKeyDown(e.key);
             }
         };
 
         const handleKeyUp = (e) => {
-            if (gameStateRef.current) {
+            if (gameStateRef.current?.handleKeyUp) {
                 gameStateRef.current.handleKeyUp(e.key);
             }
         };
@@ -103,14 +112,23 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
         // Start game loop
         startGameLoop();
 
-        // Add event listeners
+        // Add event listeners with passive: false
+        canvas.addEventListener('touchstart', handleTouch, { passive: false });
+        canvas.addEventListener('touchmove', handleTouch, { passive: false });
+        canvas.addEventListener('touchend', handleTouch, { passive: false });
+        canvas.addEventListener('touchcancel', handleTouch, { passive: false });
+        
         window.addEventListener('keydown', preventScroll, false);
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
 
         // Cleanup
         return () => {
-            window.removeEventListener('keydown', preventScroll, false);
+            canvas.removeEventListener('touchstart', handleTouch);
+            canvas.removeEventListener('touchmove', handleTouch);
+            canvas.removeEventListener('touchend', handleTouch);
+            canvas.removeEventListener('touchcancel', handleTouch);
+            window.removeEventListener('keydown', preventScroll);
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('keyup', handleKeyUp);
             if (animationFrameRef.current) {
@@ -122,10 +140,20 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
     return (
         <canvas
             ref={canvasRef}
-            className="game-canvas"
+            className="game-canvas touch-none"
             tabIndex="0"
+            style={{
+                touchAction: 'none',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                width: '100%',
+                height: '100%',
+                display: 'block'
+            }}
         />
     );
 });
+
+GameCanvas.displayName = 'GameCanvas';
 
 export default GameCanvas;
