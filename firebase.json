@@ -16,6 +16,7 @@
     ]
   },
   "hosting": {
+    "site": "retro-jair",
     "public": "build",
     "ignore": [
       "firebase.json",
