@@ -241,4 +241,37 @@ export class GameState {
             item.radius = canvas.width / 30; // Recalculate radius based on new dimensions
         });
     }
+
+    handleTouchStart(event) {
+        const touch = event.touches[0];
+        this.updateDirectionFromTouch(touch);
+    }
+    
+    handleTouchMove(event) {
+        const touch = event.touches[0];
+        this.updateDirectionFromTouch(touch);
+    }
+    
+    handleTouchEnd(event) {
+        this.player.direction = { x: 0, y: 0 }; // Stop movement
+    }
+    
+    updateDirectionFromTouch(touch) {
+        const rect = this.canvas.getBoundingClientRect();
+        const touchX = touch.clientX - rect.left - this.player.width / 2;
+        const touchY = touch.clientY - rect.top - this.player.height / 2;
+    
+        const deadZone = 50; // Adjust as needed
+    
+        let xDirection = 0;
+        let yDirection = 0;
+    
+        if (touchX < this.player.x - deadZone) xDirection = -1;
+        else if (touchX > this.player.x + deadZone) xDirection = 1;
+    
+        if (touchY < this.player.y - deadZone) yDirection = -1;
+        else if (touchY > this.player.y + deadZone) yDirection = 1;
+    
+        this.player.direction = { x: xDirection, y: yDirection };
+    }
 }
