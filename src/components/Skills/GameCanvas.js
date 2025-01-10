@@ -156,4 +156,5 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState }, ref) => {
 
 GameCanvas.displayName = 'GameCanvas';
 
+
 export default GameCanvas;
