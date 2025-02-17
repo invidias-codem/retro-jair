@@ -1,0 +1,52 @@
+/* src/routes/Terminal/Terminal.css */
+.terminal-container {
+    min-height: 100vh;
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  
+  .boot-sequence {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .terminal-line {
+    margin-bottom: 1rem;
+    animation: typingEffect 0.1s steps(1) infinite;
+  }
+  
+  .terminal-header {
+    margin-bottom: 2rem;
+  }
+  
+  .terminal-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .terminal-version {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+  
+  .journal-section {
+    margin-top: 2rem;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes typingEffect {
+    50% {
+      border-right: 0.15em solid #00ff00;
+    }
+  }
