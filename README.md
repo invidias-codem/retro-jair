@@ -1,40 +1,32 @@
-# retro-jair
-
-# Retro Portfolio Website
-
-A retro-themed portfolio website built with React and Firebase, featuring a dynamic contact form, interactive UI elements, and a unique skill showcase game.
+# Cruise-Thru Portfolio
+A retro-themed portfolio website built with React, featuring interactive UI elements, dynamic content, and a unique skill showcase game.
 
 ## 🌟 Features
-
 - **Retro Design**: Unique aesthetics with CRT screen effects and retro animations
-- **Interactive Menu**: Dynamic navigation with animated icons
+- **Interactive Menu**: Dynamic navigation with animated FontAwesome icons
 - **Project Showcase**: Expandable project cards with detailed information
 - **Skill Game**: Interactive game interface showcasing technical skills
-- **Contact Form**: Firebase-powered contact system with email notifications
-- **Mobile Responsive**: Fully responsive design with mobile-specific interactions
+- **Responsive Design**: Mobile-first approach with touch-friendly interactions
+- **Scrolling Banner**: Dynamic message display with retro TV effects
 
 ## 🚀 Technologies
-
-- React 
-- Firebase (Firestore, Functions, Hosting)
+- React
 - React Router DOM
 - FontAwesome Icons
 - CSS3 Animations
-- Nodemailer (for email notifications)
+- Tailwind CSS
+- React Spring (for animations)
 
 ## 📋 Prerequisites
-
 - Node.js 18 or higher
 - npm
-- Firebase CLI
 - Git
 
 ## ⚙️ Installation
-
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/retro-portfolio.git
-cd retro-portfolio
+git clone https://github.com/invidias-codem/retro-jair.git
+cd retro-jair
 ```
 
 2. Install dependencies:
@@ -42,134 +34,98 @@ cd retro-portfolio
 npm install
 ```
 
-3. Set up Firebase:
-   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com)
-   - Enable Firestore, Functions, and Storage
-   - Install Firebase CLI: `npm install -g firebase-tools`
-   - Login to Firebase: `firebase login`
-   - Initialize Firebase: `firebase init`
-
-4. Create a `.env` file in the root directory:
-```
-REACT_APP_FIREBASE_API_KEY=your_api_key
-REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
-REACT_APP_FIREBASE_PROJECT_ID=your_project_id
-REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-REACT_APP_FIREBASE_APP_ID=your_app_id
-```
-
-5. Install Functions dependencies:
-```bash
-cd functions
-npm install
-cd ..
-```
-
-## 🎮 Development
-
-Start the development server:
+3. Start the development server:
 ```bash
 npm start
 ```
 
-Run Firebase emulators:
-```bash
-firebase emulators:start
-```
-
-## 🏗️ Building and Deployment
-
-1. Build the project:
-```bash
-npm run build
-```
-
-2. Deploy to Firebase:
-```bash
-firebase deploy
-```
-
 ## 📁 Project Structure
-
 ```
-retro-portfolio/
+retro-jair/
 ├── src/
 │   ├── components/
 │   │   ├── AboutMe/
 │   │   ├── ContactMe/
 │   │   ├── Main/
+│   │   │   ├── Menu.js
+│   │   │   └── Speaker.js
 │   │   ├── Projects/
 │   │   └── Skills/
-│   ├── firebase.js
-│   └── App.js
-├── functions/
+│   ├── App.js
+│   └── index.js
 ├── public/
-├── firebase.json
-├── firestore.rules
-├── storage.rules
 └── package.json
 ```
 
 ## 🎯 Features Explanation
 
-### Contact Form
-- Firebase Firestore integration
-- Email notifications via Cloud Functions
-- Rate limiting and spam protection
-- Form validation
+### Interactive Menu
+- Animated FontAwesome icons
+- Responsive navigation
+- Mobile-friendly dropdown menu
+- Smooth page transitions
 
 ### Skills Game
-- Interactive skill demonstration
+- Interactive skill collection game
 - Real-time scoring system
-- Mobile-friendly controls
+- Mobile touch controls
 - Retro gaming aesthetics
+- Skill vs. Anti-skill mechanics
 
 ### Project Showcase
 - Expandable project cards
-- GitHub integration
-- Dynamic content loading
+- GitHub repository links
+- Timeline and technology details
 - Animated transitions
+- Resume download option
 
-## 🔒 Security
+### About Me Section
+- Retro CRT screen effect
+- Animated borders
+- Icon integration
+- Professional background information
 
-- Firebase Security Rules implementation
-- Rate limiting on contact form
-- Protected API endpoints
-- Secure file upload restrictions
+### Scrolling Banner
+- Auto-scrolling announcements
+- Retro TV screen effect
+- Flicker animation
+- Custom messaging system
 
 ## 📱 Responsive Design
-
 - Mobile-first approach
 - Touch-friendly interactions
 - Responsive navigation menu
 - Adaptive layouts
+- Breakpoint-specific styling
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/AmazingFeature`
-3. Commit your changes: `git commit -m 'Add some AmazingFeature'`
-4. Push to the branch: `git push origin feature/AmazingFeature`
-5. Open a pull request
+## 🎨 Styling Features
+- Custom CSS variables for consistent theming
+- Retro-inspired color scheme
+- CRT screen effects
+- Animated borders
+- Flicker animations
+- Grid-based layouts
+- Responsive typography
 
 ## ✍️ Author
-
 **Joshua Mohammed**
 - GitHub: [@invidias-codem](https://github.com/invidias-codem)
 - LinkedIn: [joshua-mohammed14](https://www.linkedin.com/in/joshua-mohammed14/)
+- Instagram: [@invidious.voidrem](https://www.instagram.com/invidious.voidrem/)
 
 ## 🙏 Acknowledgments
-
 - Inspiration from retro gaming and vintage computer interfaces
-- Firebase documentation and community
 - React community and contributors
+- FontAwesome for icons
 - All open-source libraries used in this project
 
-## 🐛 Known Issues
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🐛 Known Issues & Future Improvements
+- Contact form implementation pending
+- Additional project details to be added
+- Performance optimizations for animations
+- Enhanced mobile touch controls for skill game
 
 Please report any bugs or issues in the GitHub Issues section.
