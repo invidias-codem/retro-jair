@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useCallback, useEffect, memo } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser,
   faCode,
@@ -8,8 +8,8 @@ import {
   faEnvelope,
   faTerminal,
   faRobot
-} from "@fortawesome/free-solid-svg-icons";
-import "./Menu.css";
+} from '@fortawesome/free-solid-svg-icons';
+import './Menu.css';
 
 const SHADOW_COLORS = {
   red: '0 0 25px 5px rgba(204, 76, 61, 0.7)',
@@ -20,186 +20,233 @@ const SHADOW_COLORS = {
 
 const MENU_ITEMS = [
   {
-    id: "menuItemAbout",
-    iconId: "menuItemIconAbout",
-    wrapperID: "menuItemIconWrapperAbout",
+    id: 'about',
     icon: faUser,
-    label: "About Me",
-    path: "/about",
-    color: "red"
+    label: 'About Me',
+    path: '/about',
+    color: 'red'
   },
   {
-    id: "menuItemProjects",
-    iconId: "menuItemIconProjects",
-    wrapperID: "menuItemIconWrapperProjects",
+    id: 'projects',
     icon: faCode,
-    label: "Projects",
-    path: "/projects",
-    color: "green"
+    label: 'Projects',
+    path: '/projects',
+    color: 'green'
   },
   {
-    id: "menuItemSkills",
-    iconId: "menuItemIconSkills",
-    wrapperID: "menuItemIconWrapperSkills",
+    id: 'skills',
     icon: faCogs,
-    label: "Skills",
-    path: "/skills",
-    color: "blue"
+    label: 'Skills',
+    path: '/skills',
+    color: 'blue'
   },
   {
-    id: "menuItemContact",
-    iconId: "menuItemIconContact",
-    wrapperID: "menuItemIconWrapperContact",
+    id: 'contact',
     icon: faEnvelope,
-    label: "Contact",
-    path: "/contact",
-    color: "orange"
+    label: 'Contact',
+    path: '/contact',
+    color: 'yellow'
   }
 ];
 
-export default function Menu({ onItemClick }) {
-  const [pattern, setPattern] = useState([]);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [countdown, setCountdown] = useState(null);
-  const [activeButton, setActiveButton] = useState(null);
-  const [canAcceptInput, setCanAcceptInput] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+// Memoized menu item component for better performance
+const MenuItem = memo(({ item, isActive, onClick }) => (
+  <Link
+    to={item.path}
+    className="menu-item"
+    style={isActive ? { boxShadow: SHADOW_COLORS[item.color] } : {}}
+    onClick={onClick}
+    aria-label={item.label}
+  >
+    <div className="menu-icon-wrapper">
+      <FontAwesomeIcon icon={item.icon} className="menu-icon" />
+    </div>
+    <span className="menu-text">{item.label}</span>
+  </Link>
+));
 
-  const generatePattern = () => {
-    const newPattern = Array(4)
-      .fill(null)
-      .map(() => MENU_ITEMS[Math.floor(Math.random() * MENU_ITEMS.length)].color);
-    return newPattern;
-  };
+// Memoized chat button component
+const ChatButton = memo(() => (
+  <Link to="/chat" className="chat-button-wrapper" aria-label="Open TechGenie Chat">
+    <div className="genie-container">
+      <div className="genie-icon-container">
+        <FontAwesomeIcon icon={faRobot} className="genie-icon" />
+        <div className="energy-ring" />
+      </div>
+      <div className="power-core">
+        <div className="core-inner" />
+        <div className="core-outer" />
+        <div className="core-glow" />
+      </div>
+    </div>
+    <span>TechGenie</span>
+  </Link>
+));
 
-  const showPattern = async (patternToShow) => {
-    setCanAcceptInput(false);
+// Memoized terminal component
+const Terminal = memo(({ isUnlocked }) => (
+  <Link to="/terminal" className="terminal-item" aria-label="Open Terminal">
+    <div className="terminal-icon-container">
+      <FontAwesomeIcon icon={faTerminal} className="terminal-icon" />
+    </div>
+    <div className="cube">
+      {['front', 'back', 'right', 'left', 'top', 'bottom'].map(face => (
+        <div key={face} className={`cube__face cube__face--${face}`} />
+      ))}
+    </div>
+    <span>Terminal</span>
+  </Link>
+));
+
+const Menu = ({ onItemClick }) => {
+  const [gameState, setGameState] = useState({
+    pattern: [],
+    currentStep: 0,
+    isPlaying: false,
+    isUnlocked: false,
+    countdown: null,
+    activeButton: null,
+    canAcceptInput: false,
+    showSuccess: false
+  });
+
+  const generatePattern = useCallback(() => (
+    Array(4).fill(null).map(() => 
+      MENU_ITEMS[Math.floor(Math.random() * MENU_ITEMS.length)].color
+    )
+  ), []);
+
+  const showPattern = useCallback(async (patternToShow) => {
+    setGameState(prev => ({ ...prev, canAcceptInput: false }));
     
     for (const color of patternToShow) {
-      setActiveButton(color);
+      setGameState(prev => ({ ...prev, activeButton: color }));
       await new Promise(resolve => setTimeout(resolve, 800));
-      setActiveButton(null);
+      setGameState(prev => ({ ...prev, activeButton: null }));
       await new Promise(resolve => setTimeout(resolve, 200));
     }
 
-    setCanAcceptInput(true);
-  };
+    setGameState(prev => ({ ...prev, canAcceptInput: true }));
+  }, []);
 
-  const startGame = async () => {
-    setIsPlaying(true);
-    setCurrentStep(0);
-    setIsUnlocked(false);
-    setShowSuccessMessage(false);
+  const startGame = useCallback(async () => {
+    setGameState(prev => ({
+      ...prev,
+      isPlaying: true,
+      currentStep: 0,
+      isUnlocked: false,
+      showSuccess: false
+    }));
 
     for (let i = 3; i > 0; i--) {
-      setCountdown(i);
+      setGameState(prev => ({ ...prev, countdown: i }));
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    setCountdown(null);
 
     const newPattern = generatePattern();
-    setPattern(newPattern);
+    setGameState(prev => ({
+      ...prev,
+      pattern: newPattern,
+      countdown: null
+    }));
+    
     await showPattern(newPattern);
-  };
+  }, [generatePattern, showPattern]);
 
-  const handleGameClick = async (e, color) => {
+  const handleGameClick = useCallback((e, color) => {
     e.preventDefault();
+    const { isPlaying, canAcceptInput, pattern, currentStep } = gameState;
 
     if (!isPlaying || !canAcceptInput) return;
 
-    setActiveButton(color);
-    setTimeout(() => setActiveButton(null), 300);
+    setGameState(prev => ({ ...prev, activeButton: color }));
+    setTimeout(() => 
+      setGameState(prev => ({ ...prev, activeButton: null })), 300
+    );
 
     if (color === pattern[currentStep]) {
       const newStep = currentStep + 1;
-      setCurrentStep(newStep);
-
       if (newStep === pattern.length) {
-        setIsPlaying(false);
-        setCanAcceptInput(false);
-        setIsUnlocked(true);
-        setShowSuccessMessage(true);
+        setGameState(prev => ({
+          ...prev,
+          isPlaying: false,
+          canAcceptInput: false,
+          isUnlocked: true,
+          showSuccess: true
+        }));
+      } else {
+        setGameState(prev => ({ ...prev, currentStep: newStep }));
       }
     } else {
-      setIsPlaying(false);
-      setCanAcceptInput(false);
-      setCurrentStep(0);
+      setGameState(prev => ({
+        ...prev,
+        isPlaying: false,
+        canAcceptInput: false,
+        currentStep: 0
+      }));
     }
-  };
+  }, [gameState]);
 
-  const renderMenuItem = ({ id, iconId, wrapperID, icon, label, path, color }) => (
-    <Link
-      key={id}
-      to={path}
-      id={id}
-      style={activeButton === color ? { boxShadow: SHADOW_COLORS[color] } : {}}
-      onClick={(e) => isPlaying ? handleGameClick(e, color) : onItemClick?.()}
-    >
-      <div id={wrapperID}>
-        <FontAwesomeIcon icon={icon} id={iconId} />
-      </div>
-      <span>{label}</span>
-    </Link>
-  );
-
-  const renderChatButton = () => (
-    <Link to="/chat" id="menuItemChat" className="chat-button-wrapper">
-      <div id="menuItemIconWrapperChat">
-        <div className="genie-icon-container">
-          <FontAwesomeIcon icon={faRobot} className="genie-icon" />
-          <div className="energy-ring" />
-        </div>
-        <div className="power-core">
-          <div className="core-inner" />
-          <div className="core-outer" />
-          <div className="core-glow" />
-        </div>
-      </div>
-      <span>TechGenie</span>
-    </Link>
-  );
-
-  const renderTerminalSection = () => (
-    isUnlocked ? (
-      <Link to="/terminal" id="menuItemTerminal">
-        <div id="menuItemIconWrapperTerminal">
-          <div className="static-icon-container">
-            <FontAwesomeIcon icon={faTerminal} className="terminal-icon" />
-          </div>
-          <div className="cube">
-            {['front', 'back', 'right', 'left', 'top', 'bottom'].map(face => (
-              <div key={face} className={`face ${face}`} />
-            ))}
-          </div>
-        </div>
-        <span>Terminal</span>
-      </Link>
-    ) : (
-      !isPlaying && (
-        <button id="startGameButton" onClick={startGame}>
-          Start Memory Game
-        </button>
-      )
-    )
-  );
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      // Clear any pending timeouts when component unmounts
+      const cleanup = () => {
+        setGameState(prev => ({
+          ...prev,
+          isPlaying: false,
+          canAcceptInput: false
+        }));
+      };
+      cleanup();
+    };
+  }, []);
 
   return (
-    <div id="menuContainer">
-      {countdown && <div id="gameCountdown">{countdown}</div>}
+    <div className="menu-container">
+      {gameState.countdown && (
+        <div className="game-countdown" role="timer">
+          {gameState.countdown}
+        </div>
+      )}
       
-      {showSuccessMessage && (
-        <div className="success-message">
+      {gameState.showSuccess && (
+        <div className="success-message" role="alert">
           Sequence complete! Terminal unlocked.
         </div>
       )}
 
-      <div id="menuItemGrid">
-        {MENU_ITEMS.map(renderMenuItem)}
-        {renderChatButton()}
-        {renderTerminalSection()}
+      <div className="menu-grid">
+        {MENU_ITEMS.map(item => (
+          <MenuItem
+            key={item.id}
+            item={item}
+            isActive={gameState.activeButton === item.color}
+            onClick={(e) => gameState.isPlaying 
+              ? handleGameClick(e, item.color)
+              : onItemClick?.()
+            }
+          />
+        ))}
+        
+        <ChatButton />
+        
+        {gameState.isUnlocked ? (
+          <Terminal isUnlocked={gameState.isUnlocked} />
+        ) : (
+          !gameState.isPlaying && (
+            <button 
+              className="start-game-button"
+              onClick={startGame}
+              aria-label="Start Memory Game"
+            >
+              Start Memory Game
+            </button>
+          )
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default Menu;
