@@ -7,6 +7,7 @@ import AboutMe from './components/AboutMe/AboutMe';
 import Projects from './components/Projects/Projects';
 import Skills from './components/Skills/Skills';
 import Contact from './components/ContactMe/Contact';
+import Chat from './components/AI/chat'
 import Terminal from './routes/Terminal/Terminal'
 import Footer from './components/Footer/Footer';
 import './App.css';
@@ -27,6 +28,7 @@ function AnimatedRoutes() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/skills" element={<Skills />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/chat" element={<Chat />} />
         <Route path="/terminal" element={<Terminal />} />
        
       </Routes>

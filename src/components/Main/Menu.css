@@ -272,3 +272,144 @@
 #startGameButton:hover {
   background-color: #6D28D9;
 }
+
+.chat-button-wrapper {
+  grid-column: span 2;
+  position: relative;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #1E1E3F, #2D2B55);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 
+    0 0 20px rgba(89, 86, 213, 0.2),
+    inset 0 0 15px rgba(147, 143, 238, 0.1);
+}
+
+.chat-button-wrapper:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 0 30px rgba(89, 86, 213, 0.4),
+    inset 0 0 20px rgba(147, 143, 238, 0.2);
+}
+
+.genie-icon-container {
+  position: relative;
+  z-index: 2;
+}
+
+.genie-icon {
+  color: #8BE9FD;
+  font-size: 2rem;
+  filter: drop-shadow(0 0 8px rgba(139, 233, 253, 0.6));
+  transition: color 0.3s ease;
+}
+
+.energy-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200%;
+  height: 200%;
+  border: 2px solid #BD93F9;
+  border-radius: 50%;
+  opacity: 0;
+  animation: energyPulse 3s infinite;
+}
+
+.power-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.core-inner {
+  width: 20px;
+  height: 20px;
+  background: #FF79C6;
+  border-radius: 50%;
+  animation: corePulse 2s infinite;
+}
+
+.core-outer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 2px solid #50FA7B;
+  border-radius: 50%;
+  animation: coreRotate 4s infinite linear;
+}
+
+.core-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(
+    circle,
+    rgba(189, 147, 249, 0.3) 0%,
+    rgba(189, 147, 249, 0) 70%
+  );
+  border-radius: 50%;
+  animation: glowPulse 3s infinite;
+}
+
+.chat-button-wrapper span {
+  display: block;
+  margin-right: 1rem;
+  color: #F8F8F2;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(248, 248, 242, 0.3);
+  transition: color 0.3s ease;
+}
+
+@keyframes energyPulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+@keyframes corePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes coreRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
