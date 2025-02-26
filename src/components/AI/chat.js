@@ -40,7 +40,7 @@ const Chat = () => {
             if (!genAI) return;
 
             try {
-                const model = await genAI.getGenerativeModel({ model: "gemini-pro" });
+                const model = await genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
                 const initialHistory = [
                     { role: "user", parts: [{ text: "You are TechGenie, an expert computer technology consultant. Assist users with their tech-related questions." }] },
                     { role: "model", parts: [{ text: "Hello! I'm TechGenie, your expert tech consultant. I can help you with hardware recommendations, software troubleshooting, coding questions, and any other tech-related inquiries. What can I assist you with today?" }] },
