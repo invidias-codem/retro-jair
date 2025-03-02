@@ -1,0 +1,192 @@
+/* Optimized Button Styles */
+.tech-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    border: none;
+    background: var(--tech-primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tech-button:hover {
+    background: var(--tech-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  .tech-button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tech-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .tech-button--icon {
+    padding: 0.75rem;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    justify-content: center;
+  }
+  
+  .tech-button--settings {
+    background: transparent;
+    border: 1px solid var(--tech-primary);
+    color: var(--tech-primary);
+  }
+  
+  .tech-button--settings:hover {
+    background: rgba(37, 99, 235, 0.1);
+  }
+  
+  .dark .tech-button--settings {
+    border-color: var(--tech-accent);
+    color: var(--tech-accent);
+  }
+  
+  .dark .tech-button--settings:hover {
+    background: rgba(34, 197, 94, 0.1);
+  }
+  
+  .tech-button--theme {
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
+  }
+  
+  .dark .tech-button--theme {
+    background: linear-gradient(135deg, var(--tech-accent), var(--tech-primary));
+  }
+  
+  /* Repositioned Questions Counter */
+  .tech-input-container {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--light-surface);
+    border-radius: var(--border-radius);
+    margin-top: auto;
+  }
+  
+  .dark .tech-input-container {
+    background: var(--dark-surface);
+  }
+  
+  .tech-input-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .questions-counter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--light-text);
+    opacity: 0.8;
+  }
+  
+  .dark .questions-counter {
+    color: var(--dark-text);
+  }
+  
+  .counter-number {
+    font-weight: bold;
+    color: var(--tech-accent);
+  }
+  
+  .send-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Modal Improvements */
+  .tech-modal-content {
+    background-color: var(--light-bg);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dark .tech-modal-content {
+    background-color: var(--dark-bg);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+  
+  .tech-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    max-height: calc(90vh - 220px);
+  }
+  
+  .tech-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: var(--light-text);
+    opacity: 0.6;
+    transition: opacity var(--transition-speed);
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .tech-close-button:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  .dark .tech-close-button {
+    color: var(--dark-text);
+  }
+  
+  .dark .tech-close-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .tech-input-container {
+      flex-direction: column;
+    }
+    
+    .send-button-wrapper {
+      width: 100%;
+    }
+    
+    .questions-counter {
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+  }

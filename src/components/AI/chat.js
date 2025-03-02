@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot, faSun, faMoon, faCog, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './chat.css';
+import './oci.css'; 
 
 const Chat = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,6 +15,7 @@ const Chat = () => {
     const [error, setError] = useState(null);
     const [subscription, setSubscription] = useState("free");
     const [questionsLeft, setQuestionsLeft] = useState(5);
+    const [isUserScrolled, setIsUserScrolled] = useState(false);
     const inputRef = useRef(null);
     const messagesEndRef = useRef(null);
     const messagesContainerRef = useRef(null);
@@ -122,9 +124,6 @@ const Chat = () => {
         scrollToBottom();
     }, [messages]);
 
-    // Optional: Track if user has scrolled up
-    const [isUserScrolled, setIsUserScrolled] = useState(false);
-
     // Handle scroll events
     const handleScroll = () => {
         if (messagesContainerRef.current) {
@@ -134,27 +133,26 @@ const Chat = () => {
         }
     };
 
-
-    const SubscriptionBadge = ({ subscription, questionsLeft }) => (
-        <div className={`tech-subscription-badge ${subscription}`}>
-            {subscription.charAt(0).toUpperCase() + subscription.slice(1)} Tier
-            {subscription === "free" && ` (${questionsLeft} questions left)`}
-        </div>
-    );
-
     const ChatHeader = ({ theme, setTheme }) => (
         <header className="tech-header">
             <div className="tech-logo">
                 <div className="tech-logo-icon"><FontAwesomeIcon icon={faRobot} /></div>
                 <span className="tech-logo-text">TechGenie</span>
-                <SubscriptionBadge subscription={subscription} questionsLeft={questionsLeft} />
+                <div className={`tech-subscription-badge ${subscription}`}>
+                    {subscription.charAt(0).toUpperCase() + subscription.slice(1)} Tier
+                </div>
             </div>
             <div className="tech-controls">
-                <button className="tech-button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                <button 
+                    className="tech-button tech-button--icon tech-button--theme"
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                >
                     <FontAwesomeIcon icon={theme === "dark" ? faSun : faMoon} />
                 </button>
-                <button className="tech-button">
-                    <FontAwesomeIcon icon={faCog} /> Settings
+                <button className="tech-button tech-button--settings" aria-label="Settings">
+                    <FontAwesomeIcon icon={faCog} /> 
+                    <span>Settings</span>
                 </button>
             </div>
         </header>
@@ -177,6 +175,18 @@ const Chat = () => {
         setIsModalOpen(false);
     };
 
+    // Copy Response to Clipboard
+    const copyResponseToClipboard = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                // Show toast or notification
+                console.log('Text copied to clipboard');
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+    };
+
     return (
         <div className={`tech-chat-container ${theme}`}>
             <button onClick={openModal} className="tech-chat-button"> 
@@ -186,7 +196,7 @@ const Chat = () => {
             {isModalOpen && ( 
                 <div className="tech-modal">
                     <div className="tech-modal-content">
-                        <button onClick={closeModal} className="tech-close-button">
+                        <button onClick={closeModal} className="tech-close-button" aria-label="Close">
                             <FontAwesomeIcon icon={faTimes} /> 
                         </button>
 
@@ -195,7 +205,8 @@ const Chat = () => {
 
                         <main 
                             className="tech-messages" 
-                            ref={messagesContainerRef} 
+                            ref={messagesContainerRef}
+                            onScroll={handleScroll}
                         >
                             {messages?.map((msg, index) => (
                                 <div key={index} className={`tech-message ${msg.role}`}>
@@ -211,8 +222,20 @@ const Chat = () => {
                                         )}
                                     </div>
                                     <div className="tech-message-meta">
-                                        {msg.role === "model"? "TechGenie": "You"} • 
-                                        {new Date(msg.timestamp).toLocaleTimeString()}
+                                        {msg.role === "model" ? (
+                                            <>
+                                                <span>TechGenie • {new Date(msg.timestamp).toLocaleTimeString()}</span>
+                                                <button 
+                                                    className="tech-message-copy" 
+                                                    onClick={() => copyResponseToClipboard(msg.text)}
+                                                    aria-label="Copy message"
+                                                >
+                                                    <FontAwesomeIcon icon="copy" />
+                                                </button>
+                                            </>
+                                        ) : (
+                                            `You • ${new Date(msg.timestamp).toLocaleTimeString()}`
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -229,26 +252,38 @@ const Chat = () => {
                         </main>
 
                         <footer className="tech-input-container">
-                            <textarea
-                                className="tech-input"
-                                ref={inputRef}
-                                placeholder={subscription === "free" && questionsLeft <= 0
-                                  ? "Upgrade to continue asking questions!"
-                                  : "Ask me anything about technology..."}
-                                value={userInput}
-                                onChange={(e) => setUserInput(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                disabled={subscription === "free" && questionsLeft <= 0}
-                                rows={3}
-                                aria-label="Chat input"
-                            />
-                            <button
-                                className="tech-button"
-                                onClick={handleSendMessage}
-                                disabled={!userInput.trim() || (subscription === "free" && questionsLeft <= 0)}
-                            >
-                                Send
-                            </button>
+                            <div className="tech-input-wrapper">
+                                <textarea
+                                    className="tech-input"
+                                    ref={inputRef}
+                                    placeholder={subscription === "free" && questionsLeft <= 0
+                                    ? "Upgrade to continue asking questions!"
+                                    : "Ask me anything about technology..."}
+                                    value={userInput}
+                                    onChange={(e) => setUserInput(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    disabled={subscription === "free" && questionsLeft <= 0}
+                                    rows={3}
+                                    aria-label="Chat input"
+                                />
+                            </div>
+                            
+                            <div className="send-button-wrapper">
+                                <button
+                                    className="tech-button"
+                                    onClick={handleSendMessage}
+                                    disabled={!userInput.trim() || (subscription === "free" && questionsLeft <= 0)}
+                                >
+                                    Send
+                                </button>
+                                
+                                {subscription === "free" && (
+                                    <div className="questions-counter">
+                                        <span>Questions remaining:</span>
+                                        <span className="counter-number">{questionsLeft}</span>
+                                    </div>
+                                )}
+                            </div>
                         </footer>
                     </div>
                 </div>
