@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "autoprefixer": "^10.4.20",
+    "caniuse-lite": "^1.0.30001702",
     "dotenv": "^16.4.7",
     "firebase": "^11.1.0",
     "lucide-react": "^0.475.0",

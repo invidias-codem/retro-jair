@@ -57,17 +57,19 @@ body {
 }
 
 #appSidebar {
-  width: 30%;
+  width: auto;
   height: auto;
-  padding: 20px;
+  padding: 35px;
   background-color: var(--menu-yellow);
   border-right: 5px solid var(--menu-red);
   touch-action: manipulation;
+  margin: 0rem;
+  padding-left: 0rem;
 }
 
 #appContent {
-  width: 70%;
-  padding: 20px;
+  width: 135%;
+  padding: 24px;
   background-color: var(--menu-black);
 }
 
@@ -122,8 +124,9 @@ a:focus, button:focus {
   }
 
   #appSidebar, #appContent {
-    width: 96%;
+    width: 94%;
     padding: 10px;
+    margin-left: 0rem;
   }
 
   #appSidebar {
