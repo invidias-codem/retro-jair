@@ -1,0 +1,499 @@
+/* base.css - Shared structural elements */
+:root {
+    /* Shared UI Variables */
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+    
+    /* Theme Colors - Will be imported from theme files */
+    --primary: var(--tech-primary, #2563eb);
+    --secondary: var(--tech-secondary, #1e40af);
+    --accent: var(--tech-accent, #22c55e);
+    --warning: var(--tech-warning, #eab308);
+    --error: var(--tech-error, #dc2626);
+    
+    /* Background/Text Colors - Will be set by theme */
+    --bg: var(--light-bg, #ffffff);
+    --surface: var(--light-surface, #f8fafc);
+    --text: var(--light-text, #1e293b);
+    
+    /* Subscription Tier Colors - Shared across themes */
+    --free-tier-bg: #e5e7eb;
+    --free-tier-text: #374151;
+    --basic-tier-bg: var(--primary);
+    --basic-tier-text: white;
+    --pro-tier-bg: var(--accent);
+    --pro-tier-text: white;
+    --premium-tier-bg: linear-gradient(135deg, var(--primary), var(--accent));
+    --premium-tier-text: white;
+  }
+  
+  /* Chat Container */
+  .chat-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+  }
+  
+  /* Logo */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    padding: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  /* Messages Container */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    max-height: calc(90vh - 220px);
+    scrollbar-width: thin;
+  }
+  
+  .messages::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .messages::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+  }
+  
+  /* Message Styles */
+  .message {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: var(--border-radius);
+    max-width: 80%;
+    transition: all 0.2s ease;
+  }
+  
+  .message.user {
+    margin-left: auto;
+    background: var(--primary);
+    color: white;
+  }
+  
+  .message.model, .message.bot {
+    margin-right: auto;
+    background: var(--surface);
+    border: 1px solid var(--primary);
+    color: var(--text);
+  }
+  
+  .message-content {
+    word-wrap: break-word;
+  }
+  
+  .message-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    opacity: 0.8;
+  }
+  
+  /* Code Block */
+  .code-block {
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    font-family: 'Fira Code', monospace;
+    overflow-x: auto;
+  }
+  
+  .code-block pre {
+    margin: 0;
+  }
+  
+  /* Input Area */
+  .input-container {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    margin-top: auto;
+    position: relative;
+  }
+  
+  .input-wrapper {
+    flex: 1;
+    position: relative;
+  }
+  
+  .input {
+    width: 100%;
+    min-height: 60px;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 2px solid transparent;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1rem;
+    transition: all var(--transition-speed);
+    resize: none;
+    font-family: inherit;
+  }
+  
+  .input:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
+  
+  /* Send Button Wrapper */
+  .send-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Button */
+  .button {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button:hover:not(:disabled) {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  .button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .button--icon {
+    padding: 0.75rem;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    justify-content: center;
+  }
+  
+  /* Loading */
+  .loading {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  .loading-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  .loading-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .loading-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+  }
+  
+  /* Subscription Badge */
+  .subscription-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .subscription-badge.free {
+    background: var(--free-tier-bg);
+    color: var(--free-tier-text);
+  }
+  
+  .subscription-badge.basic {
+    background: var(--basic-tier-bg);
+    color: var(--basic-tier-text);
+  }
+  
+  .subscription-badge.pro {
+    background: var(--pro-tier-bg);
+    color: var(--pro-tier-text);
+  }
+  
+  /* New Premium Tier */
+  .subscription-badge.premium {
+    background: var(--premium-tier-bg);
+    color: var(--premium-tier-text);
+  }
+  
+  /* Remaining Interactions Counter */
+  .counter-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .counter-number {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--accent);
+  }
+  
+  .counter-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+  
+  /* Modal */
+  .modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .modal-content {
+    background-color: var(--bg);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: var(--text);
+    opacity: 0.6;
+    transition: opacity var(--transition-speed);
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .close-button:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Main Chat Button */
+  .chat-button {
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    margin-bottom: 1rem;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+  }
+  
+  .chat-button:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+  }
+  
+  /* Monetization-specific styles */
+  .upgrade-banner {
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .upgrade-button {
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform var(--transition-speed);
+  }
+  
+  .upgrade-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .feature-locked {
+    opacity: 0.5;
+    position: relative;
+  }
+  
+  .feature-locked::after {
+    content: "🔒 Premium Feature";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+  }
+  
+  .api-key-container {
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-top: 1rem;
+    border: 1px dashed var(--primary);
+  }
+  
+  .api-key-display {
+    font-family: monospace;
+    padding: 0.5rem;
+    background: var(--bg);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .api-key-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .message {
+      max-width: 90%;
+    }
+    
+    .input-container {
+      flex-direction: column;
+    }
+    
+    .send-button-wrapper {
+      width: 100%;
+    }
+    
+    .button {
+      width: 100%;
+    }
+    
+    .counter-wrapper {
+      flex-direction: row;
+      justify-content: center;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    
+    .modal-content {
+      width: 95%;
+      margin: 2% auto;
+    }
+  }

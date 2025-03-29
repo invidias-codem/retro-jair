@@ -2,6 +2,42 @@
   --menu-yellow: #FFC72C;
   --menu-red: #DA291C;
   --menu-black: #27251F;
+  
+  /* TechGenie Theme Colors */
+  --tech-primary: #2563eb;     /* Royal Blue */
+  --tech-secondary: #1e40af;   /* Darker Blue */
+  --tech-accent: #22c55e;      /* Success Green */
+  --tech-warning: #eab308;     /* Warning Yellow */
+  --tech-error: #dc2626;       /* Error Red */
+  
+  /* TechGenie Light/Dark Variables */
+  --tech-light-bg: #ffffff;
+  --tech-light-surface: #f8fafc;
+  --tech-light-text: #1e293b;
+  
+  --tech-dark-bg: #0f172a;
+  --tech-dark-surface: #1e293b;
+  --tech-dark-text: #f8fafc;
+  
+  /* MindfulMate Theme Colors */
+  --mindful-primary: #5B9AA0;     /* Teal Blue */
+  --mindful-secondary: #457B9D;   /* Darker Blue */
+  --mindful-accent: #A8DADC;      /* Light Teal */
+  --mindful-warning: #F8961E;     /* Warm Orange */
+  --mindful-error: #E63946;       /* Soft Red */
+  
+  /* MindfulMate Bright/Calm Variables */
+  --mindful-bright-bg: #ffffff;
+  --mindful-bright-surface: #F8F9FA;
+  --mindful-bright-text: #1D3557;
+  
+  --mindful-calm-bg: #1D3557;
+  --mindful-calm-surface: #2A4A73;
+  --mindful-calm-text: #F1FAEE;
+  
+  /* Shared Variables */
+  --border-radius: 12px;
+  --transition-speed: 0.3s;
 }
 
 * {
@@ -69,7 +105,7 @@ body {
 
 #appContent {
   width: 135%;
-  padding: 24px;
+  padding: 45px;
   background-color: var(--menu-black);
 }
 
@@ -221,3 +257,826 @@ a:focus, button:focus {
   color: darkorchid;
 }
 
+/* =========================================
+   BASE VARIABLES & SETUP
+   ========================================= */
+   :root {
+    /* Define common variables */
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+  
+    /* Default Theme (Fallback) - Tech Light */
+    --primary: var(--tech-primary, #2563eb);
+    --secondary: var(--tech-secondary, #1e40af);
+    --accent: var(--tech-accent, #22c55e);
+    --warning: var(--tech-warning, #eab308);
+    --error: var(--tech-error, #dc2626);
+    --bg: var(--tech-light-bg, #ffffff);
+    --surface: var(--tech-light-surface, #f8fafc);
+    --text: var(--tech-light-text, #1e293b);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  
+    /* Specific colors if needed */
+    --menu-black: #000; /* Assuming from original context */
+    --menu-yellow: #ffc72c; /* Assuming from original context */
+    --menu-red: #da291c; /* Assuming from original context */
+  
+    /* Tech Theme Variables */
+    --tech-primary: #2563eb;
+    --tech-secondary: #1e40af;
+    --tech-accent: #22c55e;
+    --tech-warning: #eab308;
+    --tech-error: #dc2626;
+    --tech-light-bg: #ffffff;
+    --tech-light-surface: #f8fafc;
+    --tech-light-text: #1e293b;
+    --tech-dark-bg: #0f172a;
+    --tech-dark-surface: #1e293b;
+    --tech-dark-text: #f8fafc;
+  
+    /* Mindful Theme Variables */
+    --mindful-primary: #5B9AA0;
+    --mindful-secondary: #457B9D;
+    --mindful-accent: #A8DADC;
+    --mindful-warning: #F8961E;
+    --mindful-error: #E63946;
+    --mindful-bright-bg: #ffffff;
+    --mindful-bright-surface: #F8F9FA;
+    --mindful-bright-text: #1D3557;
+    --mindful-calm-bg: #1D3557;
+    --mindful-calm-surface: #2A4A73;
+    --mindful-calm-text: #F1FAEE;
+  
+    /* Subscription Badge Colors */
+    --free-tier-bg: #e5e7eb;
+    --free-tier-text: #374151;
+    --basic-tier-bg: var(--tech-primary); /* Example */
+    --basic-tier-text: white;
+    --pro-tier-bg: var(--tech-accent); /* Example */
+    --pro-tier-text: white;
+    --premium-tier-bg: linear-gradient(135deg, var(--tech-primary), var(--tech-accent)); /* Example */
+    --premium-tier-text: white;
+  }
+  
+  /* Theme application classes */
+  .tech-theme.light {
+    --primary: var(--tech-primary);
+    --secondary: var(--tech-secondary);
+    --accent: var(--tech-accent);
+    --warning: var(--tech-warning);
+    --error: var(--tech-error);
+    --bg: var(--tech-light-bg);
+    --surface: var(--tech-light-surface);
+    --text: var(--tech-light-text);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  }
+  
+  .tech-theme.dark {
+    --primary: var(--tech-primary);
+    --secondary: var(--tech-secondary);
+    --accent: var(--tech-accent);
+    --warning: var(--tech-warning);
+    --error: var(--tech-error);
+    --bg: var(--tech-dark-bg);
+    --surface: var(--tech-dark-surface);
+    --text: var(--tech-dark-text);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  }
+  
+  .mindful-theme.bright {
+    --primary: var(--mindful-primary);
+    --secondary: var(--mindful-secondary);
+    --accent: var(--mindful-accent);
+    --warning: var(--mindful-warning);
+    --error: var(--mindful-error);
+    --bg: var(--mindful-bright-bg);
+    --surface: var(--mindful-bright-surface);
+    --text: var(--mindful-bright-text);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  }
+  
+  .mindful-theme.calm {
+    --primary: var(--mindful-primary);
+    --secondary: var(--mindful-secondary);
+    --accent: var(--mindful-accent);
+    --warning: var(--mindful-warning);
+    --error: var(--mindful-error);
+    --bg: var(--mindful-calm-bg);
+    --surface: var(--mindful-calm-surface);
+    --text: var(--mindful-calm-text);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* =========================================
+     AI AGENT SECTION
+     ========================================= */
+  .ai-agents-container {
+    margin: 1rem 0; /* Adjusted margin */
+    padding: 1.5rem; /* Slightly larger padding */
+    background-color: var(--menu-black, #1a1a1a); /* Use variable with fallback */
+    border: 3px solid var(--menu-yellow, #ffc72c);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(255, 199, 44, 0.3);
+    animation: fadeUp 0.6s ease-out; /* Added from original */
+  }
+  
+  .ai-agents-container h2 {
+    color: var(--menu-yellow, #ffc72c);
+    text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive font size */
+    margin-bottom: 1.5rem; /* Increased margin */
+    text-shadow: 1px 1px 2px rgba(218, 41, 28, 0.7); /* Use variable */
+  }
+  
+  .ai-agents-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  
+  /* =========================================
+     CHAT BUTTONS (Agent Selection)
+     ========================================= */
+  .chat-button {
+    padding: 1rem 1.5rem; /* Adjusted padding */
+    border-radius: var(--border-radius);
+    font-size: clamp(1rem, 3vw, 1.2rem); /* Responsive font size */
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease; /* Simplified transition */
+    border: none;
+    min-width: 180px; /* Slightly smaller min-width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    animation: pulse 2s infinite; /* Added from original */
+  }
+  
+  /* Shimmer Effect */
+  .chat-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.7s ease; /* Adjusted timing */
+  }
+  
+  .chat-button:hover::before {
+    left: 100%;
+  }
+  
+  .chat-button:hover {
+    transform: translateY(-4px); /* Slightly less lift */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .chat-button:active {
+    transform: translateY(-1px); /* Slightly less press */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* TechGenie Button Theme */
+  .chat-button.tech-theme {
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
+    color: white;
+    border: 2px solid transparent; /* Default transparent border */
+  }
+  .tech-theme .chat-button:hover,
+  .tech-theme .chat-button:focus {
+    border-color: var(--tech-accent); /* Add border on hover/focus */
+  }
+  .tech-theme.dark .chat-button { /* Use combined class for theme+mode */
+    background: linear-gradient(135deg, var(--tech-secondary), var(--tech-dark-bg));
+  }
+  .tech-theme.dark .chat-button:hover,
+  .tech-theme.dark .chat-button:focus {
+    border-color: var(--tech-primary);
+  }
+  
+  /* MindfulMate Button Theme */
+  .chat-button.mindful-theme {
+    background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary));
+    color: white;
+    border: 2px solid transparent;
+  }
+  .mindful-theme .chat-button:hover,
+  .mindful-theme .chat-button:focus {
+    border-color: var(--mindful-accent);
+  }
+  .mindful-theme.calm .chat-button {
+    background: linear-gradient(135deg, var(--mindful-secondary), var(--mindful-calm-bg));
+  }
+  .mindful-theme.calm .chat-button:hover,
+  .mindful-theme.calm .chat-button:focus {
+     border-color: var(--mindful-primary);
+  }
+  
+  
+  /* =========================================
+     MODAL STYLES
+     ========================================= */
+  .modal {
+    /* display: block; */ /* Handled by React state */
+    position: fixed;
+    z-index: 1000;
+    inset: 0; /* Replaces top, left, right, bottom */
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent body scroll when modal is open */
+    background-color: rgba(0, 0, 0, 0.7); /* Slightly darker overlay */
+    backdrop-filter: blur(5px);
+    display: flex; /* Use flex to center content */
+    align-items: center;
+    justify-content: center;
+    padding: 1rem; /* Add padding for small screens */
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .modal-content {
+    /* margin: 5% auto; */ /* Removed, centering handled by flex on .modal */
+    width: 100%; /* Start with full width */
+    max-width: 1000px; /* Max width for larger screens */
+    height: 90vh; /* Use viewport height */
+    max-height: 700px; /* Max height */
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden; /* Content scrolling handled by .messages */
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.4s ease-out;
+    background-color: var(--bg); /* Base background */
+    color: var(--text); /* Base text color */
+    border: 2px solid var(--primary); /* Base border color */
+  }
+  
+  /* Modal Themes (Applied to modal-content) */
+  .tech-genie-modal .modal-content.dark {
+    background-color: var(--tech-dark-bg);
+    color: var(--tech-dark-text);
+    border: 2px solid var(--tech-primary);
+  }
+  .tech-genie-modal .modal-content.light {
+    background-color: var(--tech-light-bg);
+    color: var(--tech-light-text);
+    border: 2px solid var(--tech-primary);
+  }
+  .mindful-mate-modal .modal-content.calm {
+    background-color: var(--mindful-calm-bg);
+    color: var(--mindful-calm-text);
+    border: 2px solid var(--mindful-primary);
+  }
+  .mindful-mate-modal .modal-content.bright {
+    background-color: var(--mindful-bright-bg);
+    color: var(--mindful-bright-text);
+    border: 2px solid var(--mindful-primary);
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px; /* Closer to edge */
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: inherit; /* Inherit color from modal content */
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    width: 40px; /* Larger touch target */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color var(--transition-speed) ease; /* Smooth transition */
+  }
+  
+  .close-button:hover,
+  .close-button:focus {
+    background-color: rgba(128, 128, 128, 0.2); /* Subtle hover/focus */
+    outline: none;
+  }
+  
+  
+  /* =========================================
+     MODAL HEADER
+     ========================================= */
+  .header { /* Renamed from original to avoid conflict if used elsewhere */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2); /* Subtle border */
+    flex-shrink: 0; /* Prevent header from shrinking */
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .logo-icon {
+    width: 36px; /* Slightly smaller icon */
+    height: 36px;
+    border-radius: 8px; /* Consistent border radius */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem; /* Adjusted size */
+    color: white; /* Icon color */
+  }
+  .tech-theme .logo-icon { background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary)); }
+  .mindful-theme .logo-icon { background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary)); }
+  
+  .logo-text {
+    font-size: clamp(1.2rem, 4vw, 1.5rem); /* Responsive font size */
+    font-weight: bold;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  .tech-theme .logo-text { background-image: linear-gradient(135deg, var(--tech-primary), var(--tech-accent)); }
+  .mindful-theme .logo-text { background-image: linear-gradient(135deg, var(--mindful-primary), var(--mindful-accent)); }
+  
+  .controls {
+    display: flex;
+    gap: 0.5rem; /* Reduced gap */
+  }
+  
+  /* Subscription Badge */
+  .subscription-badge {
+    margin-left: 0.75rem;
+    padding: 0.25rem 0.6rem; /* Adjusted padding */
+    border-radius: 999px;
+    font-size: 0.7rem; /* Smaller font */
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1.2; /* Ensure text fits */
+  }
+  /* Badge Theme Colors */
+  .subscription-badge.free { background-color: var(--free-tier-bg); color: var(--free-tier-text); }
+  .subscription-badge.basic { background-color: var(--basic-tier-bg); color: var(--basic-tier-text); }
+  .subscription-badge.pro { background-color: var(--pro-tier-bg); color: var(--pro-tier-text); }
+  .subscription-badge.premium { background: var(--premium-tier-bg); color: var(--premium-tier-text); }
+  
+  /* Header Buttons */
+  .button { /* General button style within header/modal */
+    padding: 0.5rem 0.8rem; /* Adjusted padding */
+    border-radius: var(--border-radius);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    display: inline-flex; /* Use inline-flex */
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem; /* Slightly smaller font */
+  }
+  .button:hover:not(:disabled) { transform: translateY(-2px); }
+  .button:active:not(:disabled) { transform: translateY(0); }
+  .button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  
+  .button--icon {
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 32px; /* Smaller icon buttons */
+    height: 32px;
+    justify-content: center;
+    font-size: 1rem; /* Adjust icon size if needed */
+  }
+  
+  /* Button Themes */
+  .tech-theme .button { background-color: var(--tech-primary); color: white; }
+  .tech-theme .button:hover:not(:disabled) { background-color: var(--tech-secondary); }
+  .tech-theme .button--settings { background-color: transparent; border: 1px solid var(--tech-primary); color: var(--tech-primary); }
+  .tech-theme.dark .button--settings { border-color: var(--tech-accent); color: var(--tech-accent); }
+  .tech-theme .button--theme { background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary)); }
+  
+  .mindful-theme .button { background-color: var(--mindful-primary); color: white; }
+  .mindful-theme .button:hover:not(:disabled) { background-color: var(--mindful-secondary); }
+  .mindful-theme .button--settings { background-color: transparent; border: 1px solid var(--mindful-primary); color: var(--mindful-primary); }
+  .mindful-theme.calm .button--settings { border-color: var(--mindful-accent); color: var(--mindful-accent); }
+  .mindful-theme .button--theme { background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary)); }
+  
+  /* =========================================
+     MESSAGES AREA
+     ========================================= */
+  .messages {
+    flex: 1 1 auto; /* Allow messages to grow and shrink, base size auto */
+    overflow-y: auto;
+    padding: 1rem 1.5rem; /* Consistent padding */
+    scroll-behavior: smooth;
+    /* max-height calculation removed - height managed by modal-content and flexbox */
+  }
+  
+  /* Custom Scrollbar */
+  .messages::-webkit-scrollbar { width: 6px; }
+  .messages::-webkit-scrollbar-track { background: transparent; }
+  .messages::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; }
+  
+  /* Message Bubbles */
+  .message {
+    padding: 0.75rem 1rem; /* Adjusted padding */
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
+    max-width: 85%; /* Slightly wider max width */
+    position: relative;
+    animation: messageAppear 0.3s ease-out;
+    line-height: 1.5; /* Improve readability */
+    word-wrap: break-word; /* Ensure long words break */
+  }
+  
+  .message.user {
+    margin-left: auto;
+    border-bottom-right-radius: 4px; /* Subtle point */
+  }
+  .message.model, .message.bot {
+    margin-right: auto;
+    border-bottom-left-radius: 4px; /* Subtle point */
+  }
+  
+  /* Message Themes */
+  .tech-theme .message.user { background-color: var(--tech-primary); color: white; }
+  .tech-theme .message.model, .tech-theme .message.bot { background-color: var(--surface); border: 1px solid rgba(128, 128, 128, 0.1); color: var(--text); }
+  
+  .mindful-theme .message.user { background-color: var(--mindful-primary); color: white; }
+  .mindful-theme .message.model, .mindful-theme .message.bot { background-color: var(--surface); border: 1px solid rgba(128, 128, 128, 0.1); color: var(--text); }
+  
+  /* Mood Update Specific Style */
+  .mindful-theme .message.mood-update {
+    background: rgba(91, 154, 160, 0.1) !important;
+    border: 1px dashed var(--mindful-primary) !important;
+    font-style: italic;
+    color: var(--text); /* Ensure text color is readable */
+  }
+  
+  .message-content p { /* Add margin between paragraphs within a message */
+      margin-bottom: 0.5em;
+  }
+  .message-content p:last-child {
+      margin-bottom: 0;
+  }
+  
+  .message-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem; /* Smaller meta text */
+    margin-top: 0.5rem; /* Reduced margin */
+    opacity: 0.7; /* Slightly less opacity */
+  }
+  
+  .message-copy {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity var(--transition-speed) ease;
+    padding: 0.25rem; /* Add some padding */
+  }
+  .message-copy:hover { opacity: 1; }
+  
+  /* Code Block Styling */
+  .code-block {
+    background-color: #282c34; /* Standard dark code bg */
+    border-radius: 8px;
+    margin: 0.75rem 0;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .code-block pre {
+    padding: 1rem;
+    margin: 0;
+    color: #abb2bf; /* Common light text color for dark code */
+    font-family: "Fira Code", "Consolas", monospace;
+    font-size: 0.875rem; /* Slightly smaller code font */
+    line-height: 1.6;
+    white-space: pre-wrap; /* Allow wrapping */
+    word-wrap: break-word;
+  }
+  
+  /* =========================================
+     INPUT AREA
+     ========================================= */
+  .input-container {
+    padding: 1rem;
+    border-top: 1px solid rgba(128, 128, 128, 0.2); /* Subtle separator */
+    display: flex;
+    gap: 0.75rem; /* Reduced gap */
+    align-items: flex-end; /* Align items to bottom */
+    flex-shrink: 0; /* Prevent input area from shrinking */
+  }
+  
+  .input-wrapper {
+    flex: 1; /* Take remaining space */
+    position: relative;
+  }
+  
+  .input { /* Textarea */
+    width: 100%;
+    min-height: 50px; /* Adjusted min-height */
+    max-height: 150px; /* Limit growth */
+    padding: 0.75rem 1rem; /* Adjusted padding */
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    resize: none; /* Disable manual resize */
+    transition: border-color var(--transition-speed) ease;
+    font-family: inherit;
+    line-height: 1.5;
+    border: 1px solid rgba(128, 128, 128, 0.2); /* Default border */
+    background-color: var(--surface); /* Use surface color */
+    color: var(--text);
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: var(--primary); /* Use theme primary color */
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 37, 99, 235), 0.2); /* Add focus ring */
+  }
+  /* Helper for focus ring RGB */
+  .tech-theme { --primary-rgb: 37, 99, 235; }
+  .mindful-theme { --primary-rgb: 91, 154, 160; }
+  
+  .send-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem; /* Reduced gap */
+    align-items: center;
+  }
+  
+  .send-button-wrapper .button { /* Style the send button specifically */
+      padding: 0.75rem 1.25rem; /* Make send button slightly larger */
+  }
+  
+  /* =========================================
+     LOADING & COUNTER
+     ========================================= */
+  .loading {
+    display: flex;
+    justify-content: flex-start; /* Align to start like messages */
+    gap: 6px;
+    padding: 1rem;
+    margin-left: 1rem; /* Indent slightly */
+  }
+  
+  .loading-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: dot-pulse 1.5s infinite ease-in-out;
+    background-color: var(--primary); /* Use theme primary */
+  }
+  .loading-dot:nth-child(1) { animation-delay: 0s; }
+  .loading-dot:nth-child(2) { animation-delay: 0.15s; } /* Adjusted delay */
+  .loading-dot:nth-child(3) { animation-delay: 0.3s; }
+  
+  @keyframes dot-pulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+  
+  /* Interaction Counter */
+  .counter-wrapper {
+    font-size: 0.7rem; /* Smaller counter text */
+    text-align: center;
+    color: var(--text);
+    opacity: 0.8;
+  }
+  .counter-number {
+    font-weight: bold;
+    font-size: 0.9rem; /* Smaller number */
+    color: var(--accent); /* Use theme accent */
+    margin-left: 0.25rem; /* Space between label and number */
+  }
+  
+  
+  /* =========================================
+     MINDFUL MATE SPECIFIC
+     ========================================= */
+  .mood-selector {
+    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.05); /* Use theme color */
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin: 0 1.5rem 1rem;
+    text-align: center;
+  }
+  .mindful-theme { --primary-rgb: 91, 154, 160; } /* Define RGB for mindful theme */
+  
+  .mood-selector p { /* Added style for the prompt text */
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+  }
+  
+  .mood-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem; /* Space between buttons */
+    flex-wrap: wrap;
+  }
+  
+  .mood-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.75rem; /* Adjust padding */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--accent); /* Use theme accent */
+    background-color: transparent;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    color: var(--text); /* Use theme text color */
+    font-size: 0.8rem;
+  }
+  
+  .mood-button span[role="img"] {
+    font-size: 1.3rem; /* Adjust emoji size */
+    margin-bottom: 0.2rem;
+  }
+  
+  .mood-button:hover {
+    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .mood-button.active {
+    background-color: var(--primary); /* Use theme primary */
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  .wellness-resources {
+    margin: 1rem 1.5rem; /* Match messages padding */
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px dashed var(--primary); /* Dashed border */
+    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.05);
+    font-size: 0.85rem; /* Adjust font size */
+  }
+  .wellness-resources h3 {
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 0.75rem; /* Add space below header */
+    font-size: 1rem; /* Adjust header size */
+  }
+  .wellness-resources ul {
+    padding-left: 1.25rem; /* Adjust list indent */
+    margin: 0; /* Remove default list margin */
+  }
+  .wellness-resources li {
+    margin-bottom: 0.4rem; /* Adjust spacing */
+    line-height: 1.4;
+  }
+  
+  /* =========================================
+     ACCESSIBILITY & ANIMATIONS
+     ========================================= */
+  /* Screen Reader Only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  /* Focus Visible Styling */
+  .keyboard-user *:focus-visible { /* Use :focus-visible */
+    outline: 3px solid var(--primary) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important; /* Remove other focus shadows if needed */
+  }
+  
+  /* High Contrast (Example - Needs specific implementation) */
+  .high-contrast {
+    /* Define high contrast overrides */
+    --primary: #0078d7;
+    --accent: #00cc66;
+    --bg: #000;
+    --text: #fff;
+    --surface: #111;
+    border-width: 2px !important;
+  }
+  
+  /* Skip Link */
+  .skip-to-content {
+    position: absolute;
+    top: -50px; /* Hide offscreen */
+    left: 10px;
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    z-index: 1100; /* Ensure it's above modal overlay */
+    transition: top 0.3s ease;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+  }
+  .skip-to-content:focus {
+    top: 0;
+  }
+  
+  /* Keyframe Animations */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } } /* Subtle pulse */
+  
+  /* Removed glitch/wave animations for general optimization unless specifically desired */
+  
+  
+  /* =========================================
+     RESPONSIVE ADJUSTMENTS (Mobile First Approach)
+     ========================================= */
+  
+  /* Base styles are mobile-first, this query is for larger screens */
+  @media (min-width: 768px) {
+    .ai-agents-wrapper {
+        gap: 2rem; /* Increase gap on larger screens */
+    }
+  
+    .chat-button {
+        padding: 1.25rem 2rem; /* Larger padding */
+        min-width: 200px;
+    }
+  
+    .modal-content {
+        width: 85%; /* Use % for flexibility */
+        height: 85vh; /* Adjust height */
+    }
+  
+    .header {
+        flex-direction: row; /* Switch back to row layout */
+        padding: 1rem 1.5rem;
+    }
+  
+    .controls {
+        width: auto; /* Reset width */
+    }
+  
+    .messages {
+        padding: 1.5rem 2rem; /* Increase padding */
+    }
+  
+    .message {
+        max-width: 80%;
+    }
+  
+    .input-container {
+        flex-direction: row; /* Switch back to row */
+        align-items: flex-end;
+        padding: 1rem 1.5rem;
+    }
+  
+    .send-button-wrapper {
+        flex-direction: column; /* Stack button and counter */
+        width: auto;
+    }
+     .send-button-wrapper .button {
+        padding: 0.75rem 1.5rem; /* Larger send button */
+     }
+  
+  
+    .mood-buttons {
+        gap: 0.75rem;
+    }
+    .mood-button {
+        padding: 0.6rem 1rem;
+    }
+  
+    .wellness-resources {
+        margin: 1rem 1.5rem;
+        font-size: 0.9rem;
+    }
+  }
+  
+  /* Optional: Adjustments for very large screens */
+  @media (min-width: 1200px) {
+      .modal-content {
+          max-width: 1100px; /* Slightly larger max-width */
+          height: 80vh;
+      }
+      .messages {
+          padding: 2rem 2.5rem;
+      }
+       .input-container {
+          padding: 1.5rem 2rem;
+       }
+  }

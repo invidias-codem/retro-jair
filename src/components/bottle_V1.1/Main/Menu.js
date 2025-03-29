@@ -79,8 +79,9 @@ const ChatButton = memo(() => (
         <div className="core-glow" />
       </div>
     </div>
-    <span>TechGenie</span>
+    <span>GenAIe</span>
   </Link>
+
 ));
 
 // Memoized terminal component

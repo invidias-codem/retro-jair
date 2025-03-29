@@ -1,16 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useLocation,
+  useParams,
+  useNavigate
+} from 'react-router-dom';
 import { useTransition, animated } from '@react-spring/web';
-import Menu from './components/Main/Menu';
-import Speaker from './components/Main/Speaker';
-import AboutMe from './components/AboutMe/AboutMe';
-import Projects from './components/Projects/Projects';
-import Skills from './components/Skills/Skills';
-import Contact from './components/ContactMe/Contact';
-import Chat from './components/AI/chat'
-import Terminal from './routes/Terminal/Terminal'
-import Footer from './components/Footer/Footer';
+
+// Component imports
+import Menu from './components/bottle_V1.1/Main/Menu';
+import AboutMe from './components/bottle_V1.1/AboutMe/AboutMe';
+import Projects from './components/bottle_V1.1/Projects/Projects';
+import Skills from './components/bottle_V1.1/Skills/Skills';
+import Contact from './components/bottle_V1.1/ContactMe/Contact';
+import Terminal from './components/bottle_V1.1/routes/Terminal/Terminal';
+import Footer from './components/bottle_V1.1/Footer/Footer';
+
+// Agent system imports
+import { ChatProvider, useChat } from './components/bottle_V1.1/context/useContext';
+import ChatModal from './components/bottle_V1.1/AI_components/common/ChatModal';
+
 import './App.css';
+import Chat from './components/bottle_V1.1/AI_components/agents/chat';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -61,7 +75,7 @@ function App() {
             Cruise-Thru Portfolio
           </Link>
         </header>
-        <Speaker />
+        
         <main id="appMain">
           {isMobile ? (
             <>

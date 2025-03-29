@@ -1,7 +1,7 @@
 // src/routes/Terminal/Terminal.js
 import React, { useState, useEffect } from 'react';
-import journalEntries, { getAllEntries } from '../../components/TermJourn/journalLogs';
-import MemoizedJournalEntry from '../../components/TermJourn/Journal';
+import journalEntries, { getAllEntries } from '../../TermJourn/journalLogs';
+import MemoizedJournalEntry from '../../TermJourn/Journal';
 import './Terminal.css';
 
 const Terminal = () => {

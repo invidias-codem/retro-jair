@@ -1,0 +1,1080 @@
+/* =========================================
+   Mobile-First CSS for Chat Interface
+   ========================================= */
+
+   :root {
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+  
+    /* Tech Theme Colors */
+    --tech-primary: #2563eb;
+    --tech-secondary: #1e40af;
+    --tech-accent: #22c55e;
+    --tech-dark-bg: #0f172a;
+    --tech-dark-surface: #1e293b;
+    --tech-dark-text: #f8fafc;
+    --tech-light-bg: #ffffff;
+    --tech-light-surface: #f8fafc;
+    --tech-light-text: #1e293b;
+  
+    /* Mindful Theme Colors */
+    --mindful-primary: #5B9AA0;
+    --mindful-secondary: #457B9D;
+    --mindful-accent: #A8DADC;
+    --mindful-calm-bg: #1D3557;
+    --mindful-calm-surface: #2A4A73;
+    --mindful-calm-text: #F1FAEE;
+    --mindful-bright-bg: #ffffff;
+    --mindful-bright-surface: #F8F9FA;
+    --mindful-bright-text: #1D3557;
+  
+    /* Tier Styles */
+    --free-tier-bg: #e5e7eb;
+    --free-tier-text: #374151;
+    --basic-tier-bg: var(--tech-primary);
+    --basic-tier-text: white;
+    --pro-tier-bg: var(--tech-accent);
+    --pro-tier-text: white;
+    --premium-tier-bg: linear-gradient(135deg, var(--tech-primary), var(--tech-accent));
+    --premium-tier-text: white;
+  
+    /* Default Theme Colors (can be overridden) */
+    --primary: var(--tech-primary);
+    --secondary: var(--tech-secondary);
+    --accent: var(--tech-accent);
+    --bg: var(--tech-light-bg);
+    --surface: var(--tech-light-surface);
+    --text: var(--tech-light-text);
+    
+    /* Sizing Variables */
+    --header-height: 60px;
+    --footer-height: 80px;
+    --chat-width-mobile: 100%;
+    --chat-width-tablet: 90%;
+    --chat-width-desktop: 85%;
+    --chat-max-width: 1200px;
+    
+    /* Font Sizes - Mobile First */
+    --font-size-small: 0.75rem;
+    --font-size-base: 0.875rem;
+    --font-size-large: 1rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+  }
+  
+  /* =========================================
+     Base and Mobile Layout Styles
+     ========================================= */
+  
+  /* Chat Container */
+  .tech-chat-container,
+  .mindful-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    font-size: var(--font-size-base);
+  }
+  
+  /* Modal styling */
+  .tech-modal,
+  .mindful-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .tech-modal-content,
+  .mindful-modal-content {
+    position: relative;
+    background-color: var(--bg);
+    width: var(--chat-width-mobile);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: var(--text);
+  }
+  
+  /* Close button for modal */
+  .tech-close-button,
+  .mindful-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: var(--font-size-xl);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  
+  .tech-close-button:hover,
+  .mindful-close-button:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+  }
+  
+ /* Define the bounce animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateX(-50%) translateY(0); /* Centered horizontally */
+    }
+    40% {
+      transform: translateX(-50%) translateY(-20px); /* Bounce up */
+    }
+    60% {
+      transform: translateX(-50%) translateY(-10px); /* Smaller bounce up */
+    }
+  }
+  
+  /* Chat button to open modal - 3D, Bouncing, Top-Centered */
+  .tech-chat-button,
+  .mindful-chat-button {
+    position: fixed;
+    /* --- Positioning --- */
+    top: 20px;                   /* Distance from top */
+    left: 50%;                   /* Move left edge to center */
+    transform: translateX(-50%); /* Pull back by half its width to center */
+  
+    /* --- Styling --- */
+    padding: 12px 24px;          /* Adjusted padding for visual balance */
+    border-radius: var(--border-radius, 12px); /* Use variable or default */
+    border: none;                /* Remove default border */
+    background-color: var(--primary); /* Use theme primary color */
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;             /* Adjust font size if needed */
+    z-index: 1050;               /* Ensure it's above most elements */
+    transition: all 0.2s ease-out; /* Smooth transition for active state */
+  
+    /* --- 3D Effect --- */
+    /* Adjust the color stops for different themes if needed */
+    /* Tech Button Base Colors */
+    --button-bg: var(--tech-primary, #2563eb);
+    --button-shadow-color: var(--tech-secondary, #1e40af);
+    /* Mindful Button Base Colors (Override in .mindful-chat-button) */
+    --mindful-button-bg: var(--mindful-primary, #5B9AA0);
+    --mindful-button-shadow-color: var(--mindful-secondary, #457B9D);
+  
+    background-color: var(--button-bg);
+    /* Inset shadow for top light, main shadow for depth, subtle outer glow */
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                0 5px 0 var(--button-shadow-color), /* The "3D" edge */
+                0 6px 8px rgba(0, 0, 0, 0.3); /* Drop shadow */
+  
+    /* --- Text & Overflow --- */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;             /* Prevent it from being too wide on small screens */
+  
+    /* --- Bounce Animation --- */
+    animation-name: bounce;
+    animation-duration: 2.5s;      /* Control speed of bounce cycle */
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out; /* Smooth bounce */
+  }
+  
+  /* Apply Mindful theme colors */
+  .mindful-chat-button {
+    --button-bg: var(--mindful-button-bg);
+    --button-shadow-color: var(--mindful-button-shadow-color);
+    background-color: var(--button-bg); /* Re-apply background */
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                0 5px 0 var(--button-shadow-color),
+                0 6px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  
+  /* Pressed State for 3D Button */
+  .tech-chat-button:active,
+  .mindful-chat-button:active {
+    transform: translateX(-50%) translateY(3px); /* Move down slightly when pressed */
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                0 2px 0 var(--button-shadow-color), /* Reduced edge */
+                0 3px 4px rgba(0, 0, 0, 0.3); /* Reduced drop shadow */
+    filter: brightness(95%); /* Slightly darken */
+  }
+  
+  /* Optional: Pause animation on hover */
+  .tech-chat-button:hover,
+  .mindful-chat-button:hover {
+    animation-play-state: paused;
+    filter: brightness(110%); /* Slightly brighten on hover */
+  }
+  
+  /* =========================================
+     HEADER STYLES
+     ========================================= */
+  
+  /* Base styles (Mobile First) */
+.tech-header,
+.mindful-header {
+  display: flex;
+  flex-direction: column; /* Stack vertically on mobile */
+  align-items: center;    /* Center items horizontally in column layout */
+  padding: 2rem;          /* Reduced padding for mobile */
+  gap: 2rem;              /* Increased gap for vertical stacking */
+  background-color: var(--surface);
+  color: var(--text);
+  flex-shrink: 0;      /* Prevent shrinking (important for flex layout) */
+  margin: 3rem;
+}
+  
+  /* Logo Styles */
+  .tech-logo,
+  .mindful-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .tech-logo-icon,
+  .mindful-logo-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: white;
+  }
+  
+  .tech-logo-icon {
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
+  }
+  
+  .mindful-logo-icon {
+    background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary));
+  }
+  
+  .tech-logo-text,
+  .mindful-logo-text {
+    font-size: var(--font-size-large);
+    font-weight: bold;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  .tech-logo-text {
+    background-image: linear-gradient(135deg, var(--tech-primary), var(--tech-accent));
+  }
+  
+  .mindful-logo-text {
+    background-image: linear-gradient(135deg, var(--mindful-primary), var(--mindful-accent));
+  }
+  
+  /* Subscription Badge */
+  .tech-subscription-badge,
+  .mindful-subscription-badge {
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 999px;
+    font-size: var(--font-size-small);
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  
+  /* Header Controls */
+  .tech-controls,
+  .mindful-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  /* Buttons */
+  .tech-button,
+  .mindful-button {
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-small);
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  .tech-button:hover:not(:disabled),
+  .mindful-button:hover:not(:disabled) {
+    filter: brightness(110%);
+  }
+  
+  .tech-button:active:not(:disabled),
+  .mindful-button:active:not(:disabled) {
+    filter: brightness(90%);
+  }
+  
+  .tech-button:disabled,
+  .mindful-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Icon buttons */
+  .tech-button--icon,
+  .mindful-button--icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    padding: 0;
+  }
+  
+  /* Hide text on small screens */
+  .tech-button span,
+  .mindful-button span,
+  .mode-switch-text {
+    display: none;
+  }
+  
+  /* Settings button */
+  .tech-button--settings,
+  .mindful-button--settings {
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+  }
+  
+  .tech-theme.dark .tech-button--settings {
+    border-color: var(--tech-accent);
+    color: var(--tech-accent);
+  }
+  
+  .mindful-theme.calm .mindful-button--settings {
+    border-color: var(--mindful-accent);
+    color: var(--mindful-accent);
+  }
+  
+  /* Theme buttons */
+  .tech-button--theme {
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
+  }
+  
+  .mindful-button--theme {
+    background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary));
+  }
+  
+  /* =========================================
+     MOOD SELECTOR
+     ========================================= */
+  
+  .mood-selector {
+    background-color: rgba(91, 154, 160, 0.05);
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
+    margin: -2.5rem;
+    text-align: center;
+    color: var(--text);
+  }
+  
+  .mood-selector p {
+    margin-bottom: 0.5rem;
+    font-size: var(--font-size-small);
+  }
+  
+  .mood-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  
+  .mood-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--accent);
+    background-color: transparent;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    color: var(--text);
+    font-size: var(--font-size-small);
+    min-width: 50px;
+  }
+  
+  .mood-button span[role="img"] {
+    font-size: 1.2rem;
+    margin-bottom: 0.1rem;
+    filter: grayscale(30%);
+    transition: filter var(--transition-speed) ease;
+  }
+  
+  .mood-button:hover,
+  .mood-button:focus {
+    background-color: rgba(91, 154, 160, 0.1);
+    transform: translateY(-1px);
+    outline: none;
+    border-color: var(--primary);
+  }
+  
+  .mood-button.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  .mood-button.active span[role="img"] {
+    filter: grayscale(0%);
+  }
+  
+  /* =========================================
+     MESSAGES AREA
+     ========================================= */
+  
+  .tech-messages,
+  .mindful-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: -0.5rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0rem;
+  }
+  
+  .tech-message,
+  .mindful-message {
+    border-radius: var(--border-radius);
+    padding: 4.75rem;
+    max-width: 90%;
+    word-break: break-word;
+  }
+  
+  .tech-message.user,
+  .mindful-message.user {
+    background-color: var(--primary);
+    color: white;
+    align-self: flex-end;
+  }
+  
+  .tech-message.model,
+  .mindful-message.model {
+    background-color: var(--surface);
+    align-self: flex-start;
+  }
+  
+  .tech-message-content,
+  .mindful-message-content {
+    margin-bottom: 0.5rem;
+  }
+  
+  .tech-message-meta,
+  .mindful-message-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-small);
+    opacity: 0.7;
+  }
+  
+  .tech-code-block,
+  .mindful-code-block {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    overflow-x: auto;
+    font-family: monospace;
+  }
+  
+  /* Loading indicator */
+  .tech-loading,
+  .mindful-loading {
+    display: flex;
+    gap: 0.25rem;
+    align-self: flex-start;
+    padding: 0.5rem;
+  }
+  
+  .tech-loading-dot,
+  .mindful-loading-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    opacity: 0.7;
+    animation: pulse 1.4s infinite ease-in-out;
+  }
+  
+  .tech-loading-dot:nth-child(2),
+  .mindful-loading-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .tech-loading-dot:nth-child(3),
+  .mindful-loading-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+  
+  /* =========================================
+     INPUT AREA
+     ========================================= */
+  
+  .tech-input-container,
+  .mindful-input-container {
+    padding: 0.75rem;
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    background-color: var(--surface);
+  }
+  
+  .tech-input-wrapper,
+  .mindful-input-wrapper {
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tech-input,
+  .mindful-input {
+    width: 93%;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    background-color: var(--bg);
+    color: var(--text);
+    resize: none;
+    font-size: var(--font-size-base);
+    transition: border-color var(--transition-speed) ease;
+  }
+  
+  .tech-input:focus,
+  .mindful-input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  
+  .send-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .questions-counter,
+  .sessions-counter {
+    font-size: var(--font-size-small);
+    opacity: 0.8;
+  }
+  
+  .counter-number {
+    font-weight: bold;
+    margin-left: 0.25rem;
+  }
+  
+  /* =========================================
+     CRISIS RESOURCES SECTION
+     ========================================= */
+  
+  .wellness-resources {
+    padding: 0.75rem;
+    background-color: rgba(91, 154, 160, 0.05);
+    border-radius: var(--border-radius);
+    margin: 0.5rem;
+    font-size: var(--font-size-small);
+  }
+  
+  .wellness-resources h3 {
+    font-size: var(--font-size-base);
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+  }
+  
+  .wellness-resources ul {
+    padding-left: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  
+  .wellness-resources li {
+    margin-bottom: 0.25rem;
+  }
+  
+  /* =========================================
+     TABLET STYLES (576px+)
+     ========================================= */
+  
+  @media (min-width: 576px) {
+    :root {
+      --font-size-small: 0.8rem;
+      --font-size-base: 0.9rem;
+      --font-size-large: 1.1rem;
+      --font-size-xl: 1.3rem;
+      --font-size-2xl: 1.7rem;
+    }
+    
+    .tech-modal-content,
+    .mindful-modal-content {
+      width: var(--chat-width-tablet);
+      max-width: 500px;
+      height: 90vh;
+      border-radius: var(--border-radius);
+    }
+    
+    /* Ensure modal content uses flexbox */
+.tech-modal-content,
+.mindful-modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Make content container fill modal height */
+  max-height: auto; /* Ensure it doesn't exceed modal bounds */
+  /* Other styles (.g., background, border, etc.) remain as previously defined */
+}
+
+/* --- Header --- */
+.tech-header,
+.mindful-header {
+  display: flex;
+  flex-direction: row; /* Explicitly row */
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem; /* Adjusted padding */
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  flex-shrink: 0; /* Prevent header from shrinking */
+  /* Other header styles (.g., background, color) remain */
+}
+
+/* Ensure logo doesn't have extra padding causing layout shifts */
+.tech-logo,
+.mindful-logo {
+  padding-bottom: 0; /* Explicitly remove bottom padding if added elsewhere */
+  /* Other logo styles remain */
+}
+
+/* --- Mood Selector --- */
+/* =========================================
+   MOOD SELECTOR - Mobile-first optimization
+   ========================================= */
+
+/* Base mobile styling */
+.mood-selector {
+    padding: 0.75rem;
+    margin: 0.5rem 0.75rem;
+    border-radius: var(--border-radius);
+    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.05);
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--text);
+    border: 1px solid rgba(var(--primary-rgb, 91, 154, 160), 0.1);
+    width: calc(100% - 1.5rem); /* Full width minus margins */
+    box-sizing: border-box;
+  }
+  
+  .mood-selector p {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+  
+  .mood-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+  
+  .mood-button {
+    flex: 0 0 calc(20% - 0.4rem); /* 5 buttons per row on very small screens */
+    min-width: 45px;
+    max-width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.4rem 0.25rem;
+    border-radius: calc(var(--border-radius) - 2px);
+    border: 1px solid rgba(var(--primary-rgb, 91, 154, 160), 0.2);
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text);
+  }
+  
+  .mood-button span[role="img"] {
+    font-size: 1.2rem;
+    margin-bottom: 0.15rem;
+    filter: grayscale(30%);
+    transition: filter 0.2s ease;
+  }
+  
+  .mood-button span:not([role="img"]) {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  
+  .mood-button:hover,
+  .mood-button:focus {
+    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.1);
+    transform: translateY(-1px);
+    outline: none;
+    border-color: rgba(var(--primary-rgb, 91, 154, 160), 0.3);
+  }
+  
+  .mood-button.active {
+    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.2);
+    border-color: rgba(var(--primary-rgb, 91, 154, 160), 0.4);
+  }
+  
+  .mood-button.active span[role="img"] {
+    filter: grayscale(0%);
+  }
+  
+  /* Small phones (landscape orientation) */
+  @media (min-width: 480px) and (max-width: 767px) and (orientation: landscape) {
+    .mood-selector {
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .mood-buttons {
+      justify-content: space-around;
+    }
+    
+    .mood-button {
+      flex: 0 0 calc(20% - 0.5rem);
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.4rem;
+      text-align: left;
+    }
+    
+    .mood-button span[role="img"] {
+      margin-bottom: 0;
+      font-size: 1rem;
+    }
+  }
+  
+  /* Tablet portrait */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .mood-selector {
+      padding: 0.85rem 1rem;
+      margin: 0.75rem 1.25rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .mood-buttons {
+      gap: 0.6rem;
+    }
+    
+    .mood-button {
+      flex: 0 0 auto;
+      min-width: 70px;
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .mood-button span[role="img"] {
+      font-size: 1.4rem;
+    }
+    
+    .mood-button span:not([role="img"]) {
+      font-size: 0.8rem;
+    }
+  }
+  
+  /* Tablet landscape and small desktops */
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .mood-selector {
+      padding: 1rem;
+      margin: .75rem;
+      max-width: 25rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .mood-buttons {
+      gap: -0.25rem;
+      bottom: 0rem;
+    }
+    
+    .mood-button {
+      min-width: 80px;
+      padding: 0.6rem 0.75rem;
+    }
+    
+    .mood-button span[role="img"] {
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .mood-button span:not([role="img"]) {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Large desktops and above */
+  @media (min-width: 1200px) {
+    .mood-selector {
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .mood-button {
+      min-width: 90px;
+      padding: 0.75rem 1rem;
+    }
+    
+    .mood-button span[role="img"] {
+      font-size: 1.75rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .mood-button span:not([role="img"]) {
+      font-size: 1rem;
+    }
+  }
+  
+  /* Foldable devices in folded state */
+  @media (max-width: 280px) {
+    .mood-selector {
+      padding: 0.5rem;
+      margin: 0.4rem 0.5rem;
+    }
+    
+    .mood-buttons {
+      gap: 0.3rem;
+    }
+    
+    .mood-button {
+      flex: 0 0 calc(33.333% - 0.3rem); /* 3 buttons per row */
+      min-width: 40px;
+      padding: 0.35rem 0.2rem;
+    }
+    
+    .mood-button span[role="img"] {
+      font-size: 1rem;
+    }
+    
+    .mood-button span:not([role="img"]) {
+      font-size: 0.65rem;
+    }
+  }
+  
+  /* Foldable devices in expanded state or dual screen */
+  @media (min-width: 700px) and (max-width: 900px) and (orientation: landscape) {
+    .mood-selector {
+      padding: 0.75rem 1rem;
+      width: auto;
+      margin: 0.75rem 1.25rem;
+    }
+    
+    .mood-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+    
+    .mood-button {
+      flex: initial;
+      width: 100%;
+    }
+  }
+  
+  /* Specific case for iPad Pro and larger tablets */
+  @media (min-width: 1024px) and (max-height: 1366px) and (orientation: portrait) {
+    .mood-selector {
+      max-width: 80%;
+    }
+  }
+  
+  /* Support for dark mode preferences */
+  @media (prefers-color-scheme: dark) {
+    .mood-button {
+      border-color: rgba(var(--primary-rgb, 91, 154, 160), 0.3);
+    }
+    
+    .mood-button.active {
+      background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.3);
+    }
+  }
+  
+  /* High contrast mode for accessibility */
+  @media (prefers-contrast: high) {
+    .mood-selector {
+      border: 2px solid rgba(var(--primary-rgb, 91, 154, 160), 0.8);
+    }
+    
+    .mood-button {
+      border: 2px solid rgba(var(--primary-rgb, 91, 154, 160), 0.6);
+    }
+    
+    .mood-button.active {
+      border: 2px solid rgba(var(--primary-rgb, 91, 154, 160), 1);
+    }
+  }
+
+/* --- Messages Area (Crucial Part) --- */
+.tech-messages,
+.mindful-messages {
+  flex: 1 1 auto; /* Allow to grow and shrink, take available space */
+  overflow-y: auto; /* <<< THIS ENABLES SCROLLING */
+  padding: 0 1.5rem 1rem; /* Remove top padding if mood selector has margin */
+  scroll-behavior: smooth;
+  /* Ensure no fixed height is set here */
+  /* Scrollbar styles remain as previously defined */
+}
+
+/* --- Input Footer --- */
+.tech-input-container,
+.mindful-input-container {
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  /* Other input container styles remain */
+}
+
+    
+    .tech-message,
+    .mindful-message {
+      max-width: 80%;
+    }
+    
+    .tech-input,
+    .mindful-input {
+      padding: 0.75rem 0rem;
+    }
+  }
+  
+  /* =========================================
+     DESKTOP STYLES (992px+)
+     ========================================= */
+  
+  @media (min-width: 992px) {
+    :root {
+      --font-size-small: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-large: 1.25rem;
+      --font-size-xl: 1.5rem;
+      --font-size-2xl: 2rem;
+    }
+    
+    .tech-modal-content,
+    .mindful-modal-content {
+      width: var(--chat-width-desktop);
+      max-width: var(--chat-max-width);
+      height: 80vh;
+    }
+    
+    .tech-logo-icon,
+    .mindful-logo-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 1.4rem;
+    }
+    
+    /* Show text on desktop */
+    .tech-button span,
+    .mindful-button span,
+    .mode-switch-text {
+      display: inline;
+    }
+    
+    .tech-button--icon,
+    .mindful-button--icon {
+      width: auto;
+      height: auto;
+      border-radius: var(--border-radius);
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .tech-controls,
+    .mindful-controls {
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+    
+    .tech-messages,
+    .mindful-messages {
+      padding: 6rem;
+      gap: 1rem;
+    }
+    
+    .tech-message,
+    .mindful-message {
+      padding: 1rem;
+      max-width: 70%;
+      margin: 0rem;
+    }
+    
+    .tech-input-container,
+    .mindful-input-container {
+      padding: 1rem;
+    }
+    
+    .wellness-resources {
+      padding: 1rem;
+      margin: 1rem;
+    }
+  }
+  
+  /* =========================================
+     THEME COLORS
+     ========================================= */
+  
+  /* Tech Theme - Dark */
+  .tech-theme.dark {
+    --bg: var(--tech-dark-bg);
+    --surface: var(--tech-dark-surface);
+    --text: var(--tech-dark-text);
+    --primary-rgb: 37, 99, 235;
+  }
+  
+  /* Tech Theme - Light */
+  .tech-theme.light {
+    --bg: var(--tech-light-bg);
+    --surface: var(--tech-light-surface);
+    --text: var(--tech-light-text);
+    --primary-rgb: 37, 99, 235;
+  }
+  
+  /* Mindful Theme - Calm */
+  .mindful-theme.calm {
+    --bg: var(--mindful-calm-bg);
+    --surface: var(--mindful-calm-surface);
+    --text: var(--mindful-calm-text);
+    --primary-rgb: 91, 154, 160;
+  }
+  
+  /* Mindful Theme - Bright */
+  .mindful-theme.bright {
+    --bg: var(--mindful-bright-bg);
+    --surface: var(--mindful-bright-surface);
+    --text: var(--mindful-bright-text);
+    --primary-rgb: 91, 154, 160;
+  }

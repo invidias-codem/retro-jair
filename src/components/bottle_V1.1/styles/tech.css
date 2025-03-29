@@ -1,0 +1,74 @@
+:root {
+    /* Tech Theme Colors */
+    --tech-primary: #2563eb;     /* Royal Blue */
+    --tech-secondary: #1e40af;   /* Darker Blue */
+    --tech-accent: #22c55e;      /* Success Green */
+    --tech-warning: #eab308;     /* Warning Yellow */
+    --tech-error: #dc2626;       /* Error Red */
+    
+    /* Light/Dark Variables */
+    --light-bg: #ffffff;
+    --light-surface: #f8fafc;
+    --light-text: #1e293b;
+    
+    --dark-bg: #0f172a;
+    --dark-surface: #1e293b;
+    --dark-text: #f8fafc;
+  }
+  
+  /* Tech Theme Classes */
+  .tech-theme {
+    --primary: var(--tech-primary);
+    --secondary: var(--tech-secondary);
+    --accent: var(--tech-accent);
+    --warning: var(--tech-warning);
+    --error: var(--tech-error);
+  }
+  
+  .tech-theme.light {
+    --bg: var(--light-bg);
+    --surface: var(--light-surface);
+    --text: var(--light-text);
+  }
+  
+  .tech-theme.dark {
+    --bg: var(--dark-bg);
+    --surface: var(--dark-surface);
+    --text: var(--dark-text);
+  }
+  
+  .tech-theme .logo-icon {
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
+  }
+  
+  .tech-theme .logo-text {
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-accent));
+  }
+  
+  .tech-theme .button--settings {
+    background: transparent;
+    border: 1px solid var(--tech-primary);
+    color: var(--tech-primary);
+  }
+  
+  .tech-theme.dark .button--settings {
+    border-color: var(--tech-accent);
+    color: var(--tech-accent);
+  }
+  
+  .tech-theme .button--settings:hover {
+    background: rgba(37, 99, 235, 0.1);
+  }
+  
+  .tech-theme .button--theme {
+    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
+  }
+  
+  .tech-theme.dark .button--theme {
+    background: linear-gradient(135deg, var(--tech-accent), var(--tech-primary));
+  }
+  
+  .tech-theme .code-block {
+    background: var(--dark-bg);
+    color: #f8fafc;
+  }
