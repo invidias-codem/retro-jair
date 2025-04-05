@@ -98,7 +98,7 @@
   .mindful-modal-content {
     position: relative;
     background-color: var(--bg);
-    width: var(--chat-width-mobile);
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -237,6 +237,7 @@
   color: var(--text);
   flex-shrink: 0;      /* Prevent shrinking (important for flex layout) */
   margin: 3rem;
+  height: 8%;
 }
   
   /* Logo Styles */
@@ -465,9 +466,11 @@
   .tech-message,
   .mindful-message {
     border-radius: var(--border-radius);
-    padding: 4.75rem;
-    max-width: 90%;
+    padding: 2.75rem;
+    max-width: 50%;
+    max-height: 200%;
     word-break: break-word;
+    margin: 2rem;
   }
   
   .tech-message.user,

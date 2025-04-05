@@ -66,7 +66,7 @@ const Chat = () => {
             name: "MindfulMate",
             icon: faBrain,
             initialPrompt: "You are MindfulMate, a supportive mental wellness companion. You provide evidence-based self-help techniques, coping strategies, and mindfulness exercises. You carefully avoid making medical diagnoses or replacing professional mental health care. For serious concerns, you always recommend seeking professional help.",
-            initialResponse: "Hello! I'm MindfulMate, your supportive mental wellness companion. I'm here to listen and provide evidence-based coping strategies, mindfulness exercises, and self-help techniques. Remember that I'm not a replacement for professional mental healthcare - if you're experiencing severe distress, please reach out to a qualified mental health professional. How are you feeling today?",
+            initialResponse: "Hello! I'm MindfulMate, your supportive mental wellness companion. I'm here to listen and provide evidence-based coping skills as well as help be someone to talk to. How are you feeling today?",
             placeholder: "Share what's on your mind...",
             outOfCreditsMessage: "Upgrade to continue your wellness journey",
             interactionName: "Sessions",
