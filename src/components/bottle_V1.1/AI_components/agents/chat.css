@@ -1,1083 +1,963 @@
-/* =========================================
-   Mobile-First CSS for Chat Interface
-   ========================================= */
+/* ./chat.css */
 
+/* =========================================
+   ROOT VARIABLES & BASE STYLES
+   ========================================= */
    :root {
-    --border-radius: 12px;
-    --transition-speed: 0.3s;
+    --border-radius-small: 4px;
+    --border-radius: 8px;
+    --border-radius-large: 16px;
+    --spacing-xs: 0.25rem; /* 4px */
+    --spacing-sm: 0.5rem;  /* 8px */
+    --spacing-md: 1rem;    /* 16px */
+    --spacing-lg: 1.5rem;  /* 24px */
+    --spacing-xl: 2rem;    /* 32px */
   
-    /* Tech Theme Colors */
-    --tech-primary: #2563eb;
-    --tech-secondary: #1e40af;
-    --tech-accent: #22c55e;
-    --tech-dark-bg: #0f172a;
-    --tech-dark-surface: #1e293b;
-    --tech-dark-text: #f8fafc;
-    --tech-light-bg: #ffffff;
-    --tech-light-surface: #f8fafc;
-    --tech-light-text: #1e293b;
+    /* Default to dark theme - these will be overridden by theme classes */
+    --bg-primary: #1e1f22;        /* Main background */
+    --bg-secondary: #2b2d31;      /* Secondary background (e.g., input, model messages) */
+    --bg-tertiary: #313338;       /* Tertiary background (e.g., user messages, buttons) */
+    --bg-hover: #3a3c41;         /* Hover background */
+    --bg-accent: #5865f2;         /* Accent color (e.g., active elements) */
+    --text-primary: #dbdee1;       /* Primary text */
+    --text-secondary: #b8b9bf;     /* Secondary text (e.g., placeholders, timestamps) */
+    --text-accent: #ffffff;        /* Text on accent background */
+    --border-color: #404249;       /* Borders */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --success-color: #248046;
+    --error-color: #da373c;
+    --link-color: #6eb5f2;
   
-    /* Mindful Theme Colors */
-    --mindful-primary: #5B9AA0;
-    --mindful-secondary: #457B9D;
-    --mindful-accent: #A8DADC;
-    --mindful-calm-bg: #1D3557;
-    --mindful-calm-surface: #2A4A73;
-    --mindful-calm-text: #F1FAEE;
-    --mindful-bright-bg: #ffffff;
-    --mindful-bright-surface: #F8F9FA;
-    --mindful-bright-text: #1D3557;
+    --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  }
   
-    /* Tier Styles */
-    --free-tier-bg: #e5e7eb;
-    --free-tier-text: #374151;
-    --basic-tier-bg: var(--tech-primary);
-    --basic-tier-text: white;
-    --pro-tier-bg: var(--tech-accent);
-    --pro-tier-text: white;
-    --premium-tier-bg: linear-gradient(135deg, var(--tech-primary), var(--tech-accent));
-    --premium-tier-text: white;
-  
-    /* Default Theme Colors (can be overridden) */
-    --primary: var(--tech-primary);
-    --secondary: var(--tech-secondary);
-    --accent: var(--tech-accent);
-    --bg: var(--tech-light-bg);
-    --surface: var(--tech-light-surface);
-    --text: var(--tech-light-text);
-    
-    /* Sizing Variables */
-    --header-height: 60px;
-    --footer-height: 80px;
-    --chat-width-mobile: 100%;
-    --chat-width-tablet: 90%;
-    --chat-width-desktop: 85%;
-    --chat-max-width: 1200px;
-    
-    /* Font Sizes - Mobile First */
-    --font-size-small: 0.75rem;
-    --font-size-base: 0.875rem;
-    --font-size-large: 1rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
+  body {
+    font-family: var(--font-family-sans);
+    margin: 0;
+    line-height: 1.6;
   }
   
   /* =========================================
-     Base and Mobile Layout Styles
+     THEME DEFINITIONS
      ========================================= */
   
-  /* Chat Container */
-  .tech-chat-container,
-  .mindful-chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-    overflow: hidden;
-    font-size: var(--font-size-base);
+  /* --- Dark Theme (Tech Default) --- */
+  .dark {
+    --bg-primary: #131314; /* Slightly darker than original */
+    --bg-secondary: #1e1f20; /* Input, model msg background */
+    --bg-tertiary: #2a2b2c; /* User msg background */
+    --bg-hover: #3a3c41;
+    --bg-accent: #8ab4f8; /* Google Blue */
+    --text-primary: #e8eaed; /* Main text */
+    --text-secondary: #bdc1c6; /* Lighter secondary */
+    --text-accent: #131314; /* Text on accent */
+    --border-color: #3c4043;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --link-color: #8ab4f8;
   }
   
-  /* Modal styling */
-  .tech-modal,
-  .mindful-modal {
+  /* --- Light Theme (Tech Alt) --- */
+  .light {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f1f3f4; /* Input, model msg background */
+    --bg-tertiary: #e8f0fe; /* User msg background (light blue) */
+    --bg-hover: #e8eaed;
+    --bg-accent: #1a73e8; /* Google Blue */
+    --text-primary: #202124; /* Dark text */
+    --text-secondary: #5f6368;
+    --text-accent: #ffffff;
+    --border-color: #dadce0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --link-color: #1a73e8;
+  }
+  
+  /* --- Calm Theme (Wellness Default) --- */
+  .calm {
+    --bg-primary: #f0f4f8; /* Very light blue/grey */
+    --bg-secondary: #ffffff; /* Input, model msg background */
+    --bg-tertiary: #e6f1fc; /* User msg background (slightly darker blue) */
+    --bg-hover: #dbe7f5;
+    --bg-accent: #6fa8dc; /* Softer blue */
+    --text-primary: #3c4043; /* Dark grey text */
+    --text-secondary: #70757a;
+    --text-accent: #ffffff;
+    --border-color: #d2dbe3;
+    --shadow-color: rgba(111, 168, 220, 0.15);
+    --link-color: #3d85c6;
+  }
+  
+  /* --- Bright Theme (Wellness Alt) --- */
+  .bright {
+    --bg-primary: #fffbeb; /* Light yellow */
+    --bg-secondary: #ffffff; /* Input, model msg background */
+    --bg-tertiary: #fff0c7; /* User msg background (slightly darker yellow) */
+    --bg-hover: #fef4d8;
+    --bg-accent: #f9ab00; /* Amber/Yellow */
+    --text-primary: #4d4129; /* Dark brownish text */
+    --text-secondary: #7d6a47;
+    --text-accent: #4d4129;
+    --border-color: #fcefc8;
+    --shadow-color: rgba(249, 171, 0, 0.15);
+    --link-color: #e69138;
+  }
+  
+  /* =========================================
+     MODAL STYLES
+     ========================================= */
+  .modal { /* This styles the backdrop/overlay */
     position: fixed;
-    top: 0;
-    left: 0;
+    z-index: 1000;
+    inset: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */
+    backdrop-filter: blur(4px);
     display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
+    padding: var(--spacing-sm);
+    animation: fadeIn 0.3s ease-out;
   }
   
-  .tech-modal-content,
-  .mindful-modal-content {
-    position: relative;
-    background-color: var(--bg);
+  .modal-content { /* This is the structural container for the chat */
     width: 100%;
-    height: 100%;
+    max-width: 900px; /* Slightly narrower */
+    height: clamp(300px, 85vh, 750px); /* Responsive height, max 750px */
+    border-radius: var(--border-radius-large); /* More rounded */
+    box-shadow: 0 15px 40px var(--shadow-color);
+    position: relative;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    color: var(--text);
+    animation: slideUp 0.4s ease-out;
+    background-color: transparent; /* Content background is handled by chat-wrapper */
+    color: var(--text); /* Default text color */
+    border: none; /* Remove border, handled by chat-wrapper if needed */
+    overflow: hidden; /* Crucial for child element rounding */
   }
   
-  /* Close button for modal */
+  /* Wrapper inside modal-content to apply theme/mode background and border */
+  .chat-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: var(--border-radius-large); /* Match modal-content */
+    overflow: hidden; /* Important: hide overflow from content */
+    border: 1px solid var(--border-color);
+  }
+  
+  /* Specific container styles if needed (e.g., different borders) */
+  .tech-chat-container {
+    /* Specific tech styles */
+  }
+  .mindful-chat-container {
+    /* Specific mindful styles */
+  }
+  
+  /* Close Button */
   .tech-close-button,
   .mindful-close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 100;
-    background: transparent;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background: none;
     border: none;
-    color: var(--text);
-    font-size: var(--font-size-xl);
+    color: var(--text-secondary);
+    font-size: 1.5rem;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: var(--spacing-xs);
+    line-height: 1;
+    z-index: 10; /* Above header */
     border-radius: 50%;
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
   
   .tech-close-button:hover,
   .mindful-close-button:hover {
-    background-color: rgba(128, 128, 128, 0.1);
+    color: var(--text-primary);
+    background-color: var(--bg-hover);
   }
   
- /* Define the bounce animation */
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateX(-50%) translateY(0); /* Centered horizontally */
-    }
-    40% {
-      transform: translateX(-50%) translateY(-20px); /* Bounce up */
-    }
-    60% {
-      transform: translateX(-50%) translateY(-10px); /* Smaller bounce up */
-    }
-  }
-  
-  /* Chat button to open modal - 3D, Bouncing, Top-Centered */
-  .tech-chat-button,
-  .mindful-chat-button {
-    position: fixed;
-    /* --- Positioning --- */
-    top: 20px;                   /* Distance from top */
-    left: 50%;                   /* Move left edge to center */
-    transform: translateX(-50%); /* Pull back by half its width to center */
-  
-    /* --- Styling --- */
-    padding: 12px 24px;          /* Adjusted padding for visual balance */
-    border-radius: var(--border-radius, 12px); /* Use variable or default */
-    border: none;                /* Remove default border */
-    background-color: var(--primary); /* Use theme primary color */
-    color: white;
+  /* Initial Chat Open Button */
+  .chat-open-button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    border: none;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;             /* Adjust font size if needed */
-    z-index: 1050;               /* Ensure it's above most elements */
-    transition: all 0.2s ease-out; /* Smooth transition for active state */
-  
-    /* --- 3D Effect --- */
-    /* Adjust the color stops for different themes if needed */
-    /* Tech Button Base Colors */
-    --button-bg: var(--tech-primary, #2563eb);
-    --button-shadow-color: var(--tech-secondary, #1e40af);
-    /* Mindful Button Base Colors (Override in .mindful-chat-button) */
-    --mindful-button-bg: var(--mindful-primary, #5B9AA0);
-    --mindful-button-shadow-color: var(--mindful-secondary, #457B9D);
-  
-    background-color: var(--button-bg);
-    /* Inset shadow for top light, main shadow for depth, subtle outer glow */
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3),
-                0 5px 0 var(--button-shadow-color), /* The "3D" edge */
-                0 6px 8px rgba(0, 0, 0, 0.3); /* Drop shadow */
-  
-    /* --- Text & Overflow --- */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 80%;             /* Prevent it from being too wide on small screens */
-  
-    /* --- Bounce Animation --- */
-    animation-name: bounce;
-    animation-duration: 2.5s;      /* Control speed of bounce cycle */
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out; /* Smooth bounce */
+    font-size: 1rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .chat-open-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  /* Apply mode-specific button styles */
+  .tech-button {
+    background-color: var(--bg-accent);
+    color: var(--text-accent);
+  }
+  .mindful-button {
+    background-color: var(--bg-accent);
+    color: var(--text-accent);
+  }
+  /* Add specific hover styles if needed for open button */
+  .tech-button:hover {
+    background-color: color-mix(in srgb, var(--bg-accent) 90%, black);
+  }
+  .mindful-button:hover {
+    background-color: color-mix(in srgb, var(--bg-accent) 90%, black);
   }
   
-  /* Apply Mindful theme colors */
-  .mindful-chat-button {
-    --button-bg: var(--mindful-button-bg);
-    --button-shadow-color: var(--mindful-button-shadow-color);
-    background-color: var(--button-bg); /* Re-apply background */
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3),
-                0 5px 0 var(--button-shadow-color),
-                0 6px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  
-  /* Pressed State for 3D Button */
-  .tech-chat-button:active,
-  .mindful-chat-button:active {
-    transform: translateX(-50%) translateY(3px); /* Move down slightly when pressed */
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3),
-                0 2px 0 var(--button-shadow-color), /* Reduced edge */
-                0 3px 4px rgba(0, 0, 0, 0.3); /* Reduced drop shadow */
-    filter: brightness(95%); /* Slightly darken */
-  }
-  
-  /* Optional: Pause animation on hover */
-  .tech-chat-button:hover,
-  .mindful-chat-button:hover {
-    animation-play-state: paused;
-    filter: brightness(110%); /* Slightly brighten on hover */
-  }
   
   /* =========================================
      HEADER STYLES
      ========================================= */
+  .tech-header,
+  .mindful-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    background-color: var(--bg-primary); /* Ensure header bg matches */
+  }
   
-  /* Base styles (Mobile First) */
-.tech-header,
-.mindful-header {
-  display: flex;
-  flex-direction: column; /* Stack vertically on mobile */
-  align-items: center;    /* Center items horizontally in column layout */
-  padding: 2rem;          /* Reduced padding for mobile */
-  gap: 2rem;              /* Increased gap for vertical stacking */
-  background-color: var(--surface);
-  color: var(--text);
-  flex-shrink: 0;      /* Prevent shrinking (important for flex layout) */
-  margin: 3rem;
-  height: 8%;
-}
-  
-  /* Logo Styles */
+  /* Logo Area */
   .tech-logo,
   .mindful-logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding-bottom: 0.5rem;
+    gap: var(--spacing-sm);
+    flex-shrink: 1; /* Allow shrinking */
+    min-width: 0; /* Prevent overflow */
   }
   
   .tech-logo-icon,
   .mindful-logo-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    color: white;
-  }
-  
-  .tech-logo-icon {
-    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
-  }
-  
-  .mindful-logo-icon {
-    background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary));
+    font-size: 1.5rem;
+    color: var(--text-primary);
   }
   
   .tech-logo-text,
   .mindful-logo-text {
-    font-size: var(--font-size-large);
-    font-weight: bold;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-  
-  .tech-logo-text {
-    background-image: linear-gradient(135deg, var(--tech-primary), var(--tech-accent));
-  }
-  
-  .mindful-logo-text {
-    background-image: linear-gradient(135deg, var(--mindful-primary), var(--mindful-accent));
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   /* Subscription Badge */
   .tech-subscription-badge,
   .mindful-subscription-badge {
-    margin-left: 0.5rem;
-    padding: 0.15rem 0.4rem;
-    border-radius: 999px;
-    font-size: var(--font-size-small);
-    font-weight: bold;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-small);
+    margin-left: var(--spacing-sm);
     text-transform: uppercase;
-    line-height: 1.2;
     white-space: nowrap;
+  }
+  .tech-subscription-badge.free,
+  .mindful-subscription-badge.free {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+  }
+  .tech-subscription-badge.premium,
+  .mindful-subscription-badge.premium {
+    background-color: var(--success-color); /* Example */
+    color: white;
   }
   
   /* Header Controls */
   .tech-controls,
   .mindful-controls {
     display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
-    width: 100%;
+    align-items: center;
+    gap: var(--spacing-xs);
   }
   
-  /* Buttons */
+  /* Base styles for header buttons */
   .tech-button,
   .mindful-button {
-    padding: 0.5rem;
-    border-radius: var(--border-radius);
+    background: none;
     border: none;
-    font-weight: 600;
+    color: var(--text-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-small);
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-size-small);
-    background-color: var(--primary);
-    color: white;
+    line-height: 1; /* Ensure icon alignment */
   }
   
-  .tech-button:hover:not(:disabled),
-  .mindful-button:hover:not(:disabled) {
-    filter: brightness(110%);
+  .tech-button:hover,
+  .mindful-button:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
   }
-  
-  .tech-button:active:not(:disabled),
-  .mindful-button:active:not(:disabled) {
-    filter: brightness(90%);
-  }
-  
   .tech-button:disabled,
   .mindful-button:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
   }
   
-  /* Icon buttons */
+  /* Modifier for icon-only buttons */
   .tech-button--icon,
   .mindful-button--icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    padding: 0;
+    font-size: 1.1rem; /* Adjust icon size */
   }
   
-  /* Hide text on small screens */
+  /* Specific button text styling */
   .tech-button span,
-  .mindful-button span,
+  .mindful-button span {
+    margin-left: var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  
+  /* Hide text on smaller screens if needed */
   .mode-switch-text {
-    display: none;
+    display: none; /* Hidden by default, shown via media query */
   }
   
-  /* Settings button */
-  .tech-button--settings,
-  .mindful-button--settings {
-    background-color: transparent;
-    border: 1px solid var(--primary);
-    color: var(--primary);
-  }
-  
-  .tech-theme.dark .tech-button--settings {
-    border-color: var(--tech-accent);
-    color: var(--tech-accent);
-  }
-  
-  .mindful-theme.calm .mindful-button--settings {
-    border-color: var(--mindful-accent);
-    color: var(--mindful-accent);
-  }
-  
-  /* Theme buttons */
-  .tech-button--theme {
-    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
-  }
-  
-  .mindful-button--theme {
-    background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary));
+  /* Settings button text */
+  .tech-button--settings span,
+  .mindful-button--settings span {
+      display: none; /* Hide by default */
   }
   
   /* =========================================
-     MOOD SELECTOR
+     MOOD SELECTOR (WELLNESS MODE)
      ========================================= */
-  
   .mood-selector {
-    background-color: rgba(91, 154, 160, 0.05);
-    border-radius: var(--border-radius);
-    padding: 0.75rem;
-    margin: -2.5rem;
-    text-align: center;
-    color: var(--text);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary); /* Slightly different background */
   }
-  
   .mood-selector p {
-    margin-bottom: 0.5rem;
-    font-size: var(--font-size-small);
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
   }
-  
   .mood-buttons {
     display: flex;
     justify-content: center;
-    gap: 0.35rem;
-    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap; /* Allow wrapping */
   }
-  
   .mood-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.35rem 0.5rem;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--accent);
-    background-color: transparent;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-large); /* Pill shape */
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    color: var(--text);
-    font-size: var(--font-size-small);
-    min-width: 50px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
-  
-  .mood-button span[role="img"] {
-    font-size: 1.2rem;
-    margin-bottom: 0.1rem;
-    filter: grayscale(30%);
-    transition: filter var(--transition-speed) ease;
+  .mood-button:hover {
+    background-color: var(--bg-hover);
+    border-color: var(--border-color);
+    color: var(--text-primary);
   }
-  
-  .mood-button:hover,
-  .mood-button:focus {
-    background-color: rgba(91, 154, 160, 0.1);
-    transform: translateY(-1px);
-    outline: none;
-    border-color: var(--primary);
-  }
-  
   .mood-button.active {
-    background-color: var(--primary);
-    color: white;
-    border-color: var(--primary);
+    background-color: var(--bg-accent);
+    color: var(--text-accent);
+    border-color: var(--bg-accent);
+    font-weight: 500;
+  }
+  .mood-button span[role="img"] {
+    font-size: 1rem;
+  }
+  .mood-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
   }
   
-  .mood-button.active span[role="img"] {
-    filter: grayscale(0%);
+  /* Mobile Mood Selector */
+  .mobile-mood-selector {
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+  }
+  .mobile-mood-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Icon on right */
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+  }
+  .mobile-mood-toggle .toggle-icon {
+    transition: transform 0.2s ease;
+  }
+  .mobile-mood-selector.open .mobile-mood-toggle .toggle-icon {
+    transform: rotate(180deg);
+  }
+  
+  .mobile-mood-buttons {
+    display: none; /* Hidden by default */
+    padding: var(--spacing-sm);
+    padding-top: 0;
+    justify-content: space-around; /* Spread out buttons */
+    gap: var(--spacing-sm);
+  }
+  .mobile-mood-selector.open .mobile-mood-buttons {
+    display: flex; /* Show when open */
+  }
+  .mobile-mood-button {
+    background: none;
+    border: none;
+    padding: var(--spacing-sm);
+    border-radius: 50%; /* Circular buttons */
+    font-size: 1.5rem; /* Larger emoji */
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .mobile-mood-button:hover {
+    background-color: var(--bg-hover);
+  }
+  .mobile-mood-button.active {
+    background-color: var(--bg-accent);
+    color: var(--text-accent);
+  }
+  .mobile-mood-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
   }
   
   /* =========================================
-     MESSAGES AREA
+     MESSAGES AREA STYLES
      ========================================= */
-  
   .tech-messages,
   .mindful-messages {
-    flex: 1;
+    flex: 1; /* Grow to fill space */
     overflow-y: auto;
-    padding: -0.5rem;
+    overflow-x: hidden;
+    padding: var(--spacing-md);
+    scroll-behavior: smooth;
     display: flex;
     flex-direction: column;
-    margin: 0rem;
+    gap: var(--spacing-sm); /* Space between message groups */
   }
   
+  /* Message container */
   .tech-message,
   .mindful-message {
-    border-radius: var(--border-radius);
-    padding: 2.75rem;
-    max-width: 50%;
-    max-height: 200%;
-    word-break: break-word;
-    margin: 2rem;
+    display: flex;
+    max-width: 80%; /* Max width of message */
+    position: relative; /* For action button positioning */
   }
   
+  /* Message bubble - contains text and actions */
+  .tech-message-bubble,
+  .mindful-message-bubble {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    line-height: 1.5;
+    word-wrap: break-word;
+    position: relative; /* Contains icon/actions */
+    box-shadow: 0 1px 2px var(--shadow-color);
+    transition: background-color 0.2s ease; /* Smooth theme changes */
+  }
+  
+  /* User Message Alignment & Style */
   .tech-message.user,
   .mindful-message.user {
-    background-color: var(--primary);
-    color: white;
-    align-self: flex-end;
+    align-self: flex-end; /* Align right */
+    margin-left: auto; /* Push right */
+  }
+  .tech-message.user .tech-message-bubble,
+  .mindful-message.user .mindful-message-bubble {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary); /* Ensure contrast */
+    border-bottom-right-radius: var(--border-radius-small); /* Slightly different corner */
   }
   
+  /* Model Message Alignment & Style */
   .tech-message.model,
   .mindful-message.model {
-    background-color: var(--surface);
-    align-self: flex-start;
+    align-self: flex-start; /* Align left */
+    margin-right: auto; /* Push left */
+  }
+  .tech-message.model .tech-message-bubble,
+  .mindful-message.model .mindful-message-bubble {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-bottom-left-radius: var(--border-radius-small); /* Slightly different corner */
+    padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em); /* Make space for icon */
   }
   
-  .tech-message-content,
-  .mindful-message-content {
-    margin-bottom: 0.5rem;
+  /* Message Icon (Model only) */
+  .message-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    top: var(--spacing-sm);
+    font-size: 1em; /* Relative to parent font size */
+    color: var(--text-secondary);
   }
   
-  .tech-message-meta,
-  .mindful-message-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--font-size-small);
-    opacity: 0.7;
+  /* Message Text */
+  .message-text {
+    margin: 0;
+  }
+  .message-text p:first-child { margin-top: 0; }
+  .message-text p:last-child { margin-bottom: 0; }
+  
+  /* Message Action Button (Copy/Save) */
+  .message-action-button {
+    position: absolute;
+    bottom: var(--spacing-xs);
+    right: var(--spacing-xs);
+    background-color: var(--bg-primary); /* Match wrapper bg */
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: var(--spacing-xs);
+    font-size: 0.8rem;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    line-height: 1;
+  }
+  .tech-message-bubble:hover .message-action-button,
+  .mindful-message-bubble:hover .message-action-button {
+    opacity: 1; /* Show on hover */
+  }
+  .message-action-button:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
   }
   
-  .tech-code-block,
-  .mindful-code-block {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    overflow-x: auto;
-    font-family: monospace;
+  /* Special Mood Update Messages */
+  .tech-message.mood-update,
+  .mindful-message.mood-update {
+      align-self: center; /* Center align */
+      max-width: 60%;
+      font-style: italic;
+      text-align: center;
+  }
+  .tech-message.mood-update .tech-message-bubble,
+  .mindful-message.mood-update .mindful-message-bubble {
+      background-color: transparent;
+      color: var(--text-secondary);
+      box-shadow: none;
+      font-size: 0.9rem;
+      padding: var(--spacing-xs) var(--spacing-md);
   }
   
-  /* Loading indicator */
-  .tech-loading,
-  .mindful-loading {
-    display: flex;
-    gap: 0.25rem;
-    align-self: flex-start;
-    padding: 0.5rem;
+  
+  /* Code Blocks */
+  .message-text pre { /* Target pre tags directly within message text */
+    background-color: color-mix(in srgb, var(--bg-primary) 85%, black); /* Darker bg */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    overflow-x: auto; /* Enable horizontal scroll */
+    font-family: var(--font-family-mono);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--text-primary);
+    white-space: pre; /* Preserve whitespace */
+  }
+  .message-text code:not(pre code) { /* Inline code */
+    background-color: var(--bg-hover);
+    padding: 0.1em 0.3em;
+    border-radius: var(--border-radius-small);
+    font-family: var(--font-family-mono);
+    font-size: 0.85em;
   }
   
-  .tech-loading-dot,
-  .mindful-loading-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    opacity: 0.7;
-    animation: pulse 1.4s infinite ease-in-out;
+  /* Links */
+  .message-text a {
+      color: var(--link-color);
+      text-decoration: none;
+  }
+  .message-text a:hover {
+      text-decoration: underline;
   }
   
-  .tech-loading-dot:nth-child(2),
-  .mindful-loading-dot:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .tech-loading-dot:nth-child(3),
-  .mindful-loading-dot:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { transform: scale(0.8); opacity: 0.5; }
-    50% { transform: scale(1.2); opacity: 1; }
-  }
   
   /* =========================================
-     INPUT AREA
+     INPUT AREA / FOOTER STYLES
      ========================================= */
-  
-  .tech-input-container,
-  .mindful-input-container {
-    padding: 0.75rem;
-    border-top: 1px solid rgba(128, 128, 128, 0.2);
-    background-color: var(--surface);
+  .tech-footer,
+  .mindful-footer {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-primary); /* Match wrapper */
+    display: flex;
+    align-items: flex-end; /* Align items to bottom (for textarea growth) */
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
   }
   
-  .tech-input-wrapper,
-  .mindful-input-wrapper {
-    position: relative;
-    margin-bottom: 0.5rem;
-  }
-  
+  /* Textarea Input */
   .tech-input,
   .mindful-input {
-    width: 93%;
-    padding: 0.75rem;
+    flex: 1; /* Take remaining space */
+    min-height: 48px; /* Starting height */
+    max-height: 150px; /* Limit growth */
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius);
-    border: 1px solid rgba(128, 128, 128, 0.3);
-    background-color: var(--bg);
-    color: var(--text);
-    resize: none;
-    font-size: var(--font-size-base);
-    transition: border-color var(--transition-speed) ease;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary); /* Different bg for input */
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-family-sans);
+    resize: none; /* Disable manual resize */
+    line-height: 1.5;
+    overflow-y: auto; /* Allow scrolling within textarea when max-height reached */
+    transition: border-color 0.2s ease;
+    box-sizing: border-box; /* Consistent sizing */
   }
   
   .tech-input:focus,
   .mindful-input:focus {
     outline: none;
-    border-color: var(--primary);
+    border-color: var(--bg-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--bg-accent) 30%, transparent);
+  }
+  .tech-input::placeholder,
+  .mindful-input::placeholder {
+    color: var(--text-secondary);
+  }
+  .tech-input:disabled,
+  .mindful-input:disabled {
+    background-color: var(--bg-hover);
+    cursor: not-allowed;
+    opacity: 0.7;
   }
   
-  .send-button-wrapper {
+  
+  /* Send Button */
+  .tech-send-button,
+  .mindful-send-button {
+    height: 48px; /* Match min-height of textarea */
+    width: 48px;
+    padding: 0; /* Remove padding for icon centering */
+    font-size: 1.3rem;
+    border-radius: var(--border-radius);
+    flex-shrink: 0; /* Prevent shrinking */
+    /* Use mode-specific base button class for colors */
+  }
+  .tech-send-button { background-color: var(--bg-accent); color: var(--text-accent); }
+  .mindful-send-button { background-color: var(--bg-accent); color: var(--text-accent); }
+  
+  .tech-send-button:hover:not(:disabled) { background-color: color-mix(in srgb, var(--bg-accent) 90%, black); }
+  .mindful-send-button:hover:not(:disabled) { background-color: color-mix(in srgb, var(--bg-accent) 90%, black); }
+  
+  .tech-send-button:disabled,
+  .mindful-send-button:disabled {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  
+  /* =========================================
+     OTHER COMPONENTS
+     ========================================= */
+  
+  /* Loading Indicator */
+  .chat-loading-indicator {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-  }
-  
-  .questions-counter,
-  .sessions-counter {
-    font-size: var(--font-size-small);
-    opacity: 0.8;
-  }
-  
-  .counter-number {
-    font-weight: bold;
-    margin-left: 0.25rem;
-  }
-  
-  /* =========================================
-     CRISIS RESOURCES SECTION
-     ========================================= */
-  
-  .wellness-resources {
-    padding: 0.75rem;
-    background-color: rgba(91, 154, 160, 0.05);
-    border-radius: var(--border-radius);
-    margin: 0.5rem;
-    font-size: var(--font-size-small);
-  }
-  
-  .wellness-resources h3 {
-    font-size: var(--font-size-base);
-    margin-bottom: 0.5rem;
-    color: var(--primary);
-  }
-  
-  .wellness-resources ul {
-    padding-left: 1.25rem;
-    margin-top: 0.5rem;
-  }
-  
-  .wellness-resources li {
-    margin-bottom: 0.25rem;
-  }
-  
-  /* =========================================
-     TABLET STYLES (576px+)
-     ========================================= */
-  
-  @media (min-width: 576px) {
-    :root {
-      --font-size-small: 0.8rem;
-      --font-size-base: 0.9rem;
-      --font-size-large: 1.1rem;
-      --font-size-xl: 1.3rem;
-      --font-size-2xl: 1.7rem;
-    }
-    
-    .tech-modal-content,
-    .mindful-modal-content {
-      width: var(--chat-width-tablet);
-      max-width: 500px;
-      height: 90vh;
-      border-radius: var(--border-radius);
-    }
-    
-    /* Ensure modal content uses flexbox */
-.tech-modal-content,
-.mindful-modal-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* Make content container fill modal height */
-  max-height: auto; /* Ensure it doesn't exceed modal bounds */
-  /* Other styles (.g., background, border, etc.) remain as previously defined */
-}
-
-/* --- Header --- */
-.tech-header,
-.mindful-header {
-  display: flex;
-  flex-direction: row; /* Explicitly row */
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1.5rem; /* Adjusted padding */
-  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-  flex-shrink: 0; /* Prevent header from shrinking */
-  /* Other header styles (.g., background, color) remain */
-}
-
-/* Ensure logo doesn't have extra padding causing layout shifts */
-.tech-logo,
-.mindful-logo {
-  padding-bottom: 0; /* Explicitly remove bottom padding if added elsewhere */
-  /* Other logo styles remain */
-}
-
-/* --- Mood Selector --- */
-/* =========================================
-   MOOD SELECTOR - Mobile-first optimization
-   ========================================= */
-
-/* Base mobile styling */
-.mood-selector {
-    padding: 0.75rem;
-    margin: 0.5rem 0.75rem;
-    border-radius: var(--border-radius);
-    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.05);
-    text-align: center;
-    flex-shrink: 0;
-    color: var(--text);
-    border: 1px solid rgba(var(--primary-rgb, 91, 154, 160), 0.1);
-    width: calc(100% - 1.5rem); /* Full width minus margins */
-    box-sizing: border-box;
-  }
-  
-  .mood-selector p {
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
-    line-height: 1.3;
-  }
-  
-  .mood-buttons {
-    display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.5rem;
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    gap: var(--spacing-sm);
+  }
+  /* Mode specific loader colors if needed */
+  .tech-loading { /* styles */ }
+  .mindful-loading { /* styles */ }
+  
+  /* Error & Limit Messages */
+  .chat-error-display,
+  .chat-limit-message {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-sm) var(--spacing-md); /* Margin to separate */
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  .tech-error-message, /* Applied to both */
+  .mindful-error-message { /* Applied to both */
+    background-color: color-mix(in srgb, var(--error-color) 15%, var(--bg-secondary));
+    color: var(--error-color);
+    border: 1px solid color-mix(in srgb, var(--error-color) 30%, transparent);
   }
   
-  .mood-button {
-    flex: 0 0 calc(20% - 0.4rem); /* 5 buttons per row on very small screens */
-    min-width: 45px;
-    max-width: 70px;
+  /* Scroll to Bottom Button */
+  .scroll-to-bottom {
+    position: absolute;
+    bottom: calc(var(--spacing-md) + 60px); /* Position above input area */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 0.4rem 0.25rem;
-    border-radius: calc(var(--border-radius) - 2px);
-    border: 1px solid rgba(var(--primary-rgb, 91, 154, 160), 0.2);
-    background-color: transparent;
+    justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: var(--text);
+    box-shadow: 0 2px 5px var(--shadow-color);
+    z-index: 5; /* Above messages, below header */
+    transition: background-color 0.2s ease, opacity 0.3s ease;
+    opacity: 0.9;
+  }
+  .scroll-to-bottom:hover {
+    background-color: var(--bg-hover);
+    opacity: 1;
   }
   
-  .mood-button span[role="img"] {
-    font-size: 1.2rem;
-    margin-bottom: 0.15rem;
-    filter: grayscale(30%);
-    transition: filter 0.2s ease;
+  /* Wellness Resources */
+  .wellness-resources {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-sm) var(--spacing-md);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-secondary);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .wellness-resources h3 {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  .wellness-resources ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-sm) 0 0 0;
+  }
+  .wellness-resources li {
+    margin-bottom: var(--spacing-xs);
   }
   
-  .mood-button span:not([role="img"]) {
-    font-size: 0.7rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
+  /* Notification Toast */
+  .chat-notification {
+    position: fixed; /* Position relative to viewport */
+    bottom: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-small);
+    box-shadow: 0 3px 10px var(--shadow-color);
+    font-size: 0.9rem;
+    z-index: 1100; /* Above modal */
+    animation: fadeIn 0.3s ease-out, fadeOut 0.3s ease-in 2.2s forwards;
   }
   
-  .mood-button:hover,
-  .mood-button:focus {
-    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.1);
-    transform: translateY(-1px);
-    outline: none;
-    border-color: rgba(var(--primary-rgb, 91, 154, 160), 0.3);
-  }
-  
-  .mood-button.active {
-    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.2);
-    border-color: rgba(var(--primary-rgb, 91, 154, 160), 0.4);
-  }
-  
-  .mood-button.active span[role="img"] {
-    filter: grayscale(0%);
-  }
-  
-  /* Small phones (landscape orientation) */
-  @media (min-width: 480px) and (max-width: 767px) and (orientation: landscape) {
-    .mood-selector {
-      padding: 0.5rem 0.75rem;
-    }
-    
-    .mood-buttons {
-      justify-content: space-around;
-    }
-    
-    .mood-button {
-      flex: 0 0 calc(20% - 0.5rem);
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.3rem 0.4rem;
-      text-align: left;
-    }
-    
-    .mood-button span[role="img"] {
-      margin-bottom: 0;
-      font-size: 1rem;
-    }
-  }
-  
-  /* Tablet portrait */
-  @media (min-width: 768px) and (max-width: 991px) {
-    .mood-selector {
-      padding: 0.85rem 1rem;
-      margin: 0.75rem 1.25rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .mood-buttons {
-      gap: 0.6rem;
-    }
-    
-    .mood-button {
-      flex: 0 0 auto;
-      min-width: 70px;
-      padding: 0.5rem 0.75rem;
-    }
-    
-    .mood-button span[role="img"] {
-      font-size: 1.4rem;
-    }
-    
-    .mood-button span:not([role="img"]) {
-      font-size: 0.8rem;
-    }
-  }
-  
-  /* Tablet landscape and small desktops */
-  @media (min-width: 992px) and (max-width: 1199px) {
-    .mood-selector {
-      padding: 1rem;
-      margin: .75rem;
-      max-width: 25rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .mood-buttons {
-      gap: -0.25rem;
-      bottom: 0rem;
-    }
-    
-    .mood-button {
-      min-width: 80px;
-      padding: 0.6rem 0.75rem;
-    }
-    
-    .mood-button span[role="img"] {
-      font-size: 1.5rem;
-      margin-bottom: 0.25rem;
-    }
-    
-    .mood-button span:not([role="img"]) {
-      font-size: 0.9rem;
-    }
-  }
-  
-  /* Large desktops and above */
-  @media (min-width: 1200px) {
-    .mood-selector {
-      padding: 1.25rem 1.5rem;
-      margin: 1rem 2rem;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .mood-button {
-      min-width: 90px;
-      padding: 0.75rem 1rem;
-    }
-    
-    .mood-button span[role="img"] {
-      font-size: 1.75rem;
-      margin-bottom: 0.3rem;
-    }
-    
-    .mood-button span:not([role="img"]) {
-      font-size: 1rem;
-    }
-  }
-  
-  /* Foldable devices in folded state */
-  @media (max-width: 280px) {
-    .mood-selector {
-      padding: 0.5rem;
-      margin: 0.4rem 0.5rem;
-    }
-    
-    .mood-buttons {
-      gap: 0.3rem;
-    }
-    
-    .mood-button {
-      flex: 0 0 calc(33.333% - 0.3rem); /* 3 buttons per row */
-      min-width: 40px;
-      padding: 0.35rem 0.2rem;
-    }
-    
-    .mood-button span[role="img"] {
-      font-size: 1rem;
-    }
-    
-    .mood-button span:not([role="img"]) {
-      font-size: 0.65rem;
-    }
-  }
-  
-  /* Foldable devices in expanded state or dual screen */
-  @media (min-width: 700px) and (max-width: 900px) and (orientation: landscape) {
-    .mood-selector {
-      padding: 0.75rem 1rem;
-      width: auto;
-      margin: 0.75rem 1.25rem;
-    }
-    
-    .mood-buttons {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-    }
-    
-    .mood-button {
-      flex: initial;
-      width: 100%;
-    }
-  }
-  
-  /* Specific case for iPad Pro and larger tablets */
-  @media (min-width: 1024px) and (max-height: 1366px) and (orientation: portrait) {
-    .mood-selector {
-      max-width: 80%;
-    }
-  }
-  
-  /* Support for dark mode preferences */
-  @media (prefers-color-scheme: dark) {
-    .mood-button {
-      border-color: rgba(var(--primary-rgb, 91, 154, 160), 0.3);
-    }
-    
-    .mood-button.active {
-      background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.3);
-    }
-  }
-  
-  /* High contrast mode for accessibility */
-  @media (prefers-contrast: high) {
-    .mood-selector {
-      border: 2px solid rgba(var(--primary-rgb, 91, 154, 160), 0.8);
-    }
-    
-    .mood-button {
-      border: 2px solid rgba(var(--primary-rgb, 91, 154, 160), 0.6);
-    }
-    
-    .mood-button.active {
-      border: 2px solid rgba(var(--primary-rgb, 91, 154, 160), 1);
-    }
-  }
-
-/* --- Messages Area (Crucial Part) --- */
-.tech-messages,
-.mindful-messages {
-  flex: 1 1 auto; /* Allow to grow and shrink, take available space */
-  overflow-y: auto; /* <<< THIS ENABLES SCROLLING */
-  padding: 0 1.5rem 1rem; /* Remove top padding if mood selector has margin */
-  scroll-behavior: smooth;
-  /* Ensure no fixed height is set here */
-  /* Scrollbar styles remain as previously defined */
-}
-
-/* --- Input Footer --- */
-.tech-input-container,
-.mindful-input-container {
-  flex-shrink: 0; /* Prevent footer from shrinking */
-  /* Other input container styles remain */
-}
-
-    
-    .tech-message,
-    .mindful-message {
-      max-width: 80%;
-    }
-    
-    .tech-input,
-    .mindful-input {
-      padding: 0.75rem 0rem;
-    }
-  }
   
   /* =========================================
-     DESKTOP STYLES (992px+)
+     RESPONSIVE ADJUSTMENTS
      ========================================= */
   
-  @media (min-width: 992px) {
-    :root {
-      --font-size-small: 0.875rem;
-      --font-size-base: 1rem;
-      --font-size-large: 1.25rem;
-      --font-size-xl: 1.5rem;
-      --font-size-2xl: 2rem;
+  /* Medium screens (Tablets) */
+  @media (max-width: 768px) {
+    .modal-content {
+      max-width: 95%;
+      height: 90vh;
     }
-    
-    .tech-modal-content,
-    .mindful-modal-content {
-      width: var(--chat-width-desktop);
-      max-width: var(--chat-max-width);
-      height: 80vh;
+  
+    .tech-header,
+    .mindful-header {
+      padding: var(--spacing-sm);
     }
-    
-    .tech-logo-icon,
-    .mindful-logo-icon {
-      width: 36px;
-      height: 36px;
-      font-size: 1.4rem;
+  
+    .tech-logo-text,
+    .mindful-logo-text {
+      font-size: 1rem;
     }
-    
-    /* Show text on desktop */
-    .tech-button span,
-    .mindful-button span,
-    .mode-switch-text {
-      display: inline;
+  
+    /* Hide some button text */
+    .mode-switch-text,
+    .tech-button--settings span,
+    .mindful-button--settings span {
+      display: none;
     }
-    
-    .tech-button--icon,
-    .mindful-button--icon {
-      width: auto;
-      height: auto;
-      border-radius: var(--border-radius);
-      padding: 0.5rem 0.75rem;
-    }
-    
-    .tech-controls,
-    .mindful-controls {
-      gap: 0.75rem;
-      justify-content: flex-end;
-    }
-    
+  
     .tech-messages,
     .mindful-messages {
-      padding: 6rem;
-      gap: 1rem;
+       padding: var(--spacing-sm);
+       gap: var(--spacing-xs);
     }
-    
+  
     .tech-message,
     .mindful-message {
-      padding: 1rem;
-      max-width: 70%;
-      margin: 0rem;
+      max-width: 85%;
     }
-    
-    .tech-input-container,
-    .mindful-input-container {
-      padding: 1rem;
+  
+    .tech-footer,
+    .mindful-footer {
+       padding: var(--spacing-sm);
     }
-    
-    .wellness-resources {
-      padding: 1rem;
-      margin: 1rem;
+  }
+  
+  /* Small screens (Mobile) */
+  @media (max-width: 576px) {
+    .modal {
+      padding: 0;
+      align-items: flex-end; /* Stick to bottom */
+    }
+  
+    .modal-content {
+      width: 100%;
+      max-width: 100%;
+      height: 90vh; /* Almost full height */
+      max-height: none;
+      border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Rounded top only */
+    }
+  
+    .chat-wrapper {
+       border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Match content */
+       border: none; /* Remove border on mobile */
+    }
+  
+    .tech-close-button,
+    .mindful-close-button {
+      top: var(--spacing-xs);
+      right: var(--spacing-xs);
+    }
+  
+    .tech-header,
+    .mindful-header {
+      flex-wrap: wrap; /* Allow wrapping */
+      justify-content: center;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-sm) var(--spacing-md);
+    }
+  
+    .tech-logo,
+    .mindful-logo {
+       order: 1; /* Logo first */
+       width: 100%;
+       justify-content: center; /* Center logo area */
+    }
+    .tech-controls,
+    .mindful-controls {
+       order: 2; /* Controls second */
+       width: 100%;
+       justify-content: space-around; /* Spread out controls */
+    }
+    .tech-subscription-badge,
+    .mindful-subscription-badge {
+        display: none; /* Hide badge on mobile */
+    }
+  
+    .tech-messages,
+    .mindful-messages {
+      padding: var(--spacing-md) var(--spacing-sm); /* More vertical, less horizontal */
+    }
+  
+    .tech-message,
+    .mindful-message {
+      max-width: 90%; /* Slightly wider */
+    }
+  
+     .tech-message.model .tech-message-bubble,
+     .mindful-message.model .mindful-message-bubble {
+       padding-left: var(--spacing-md); /* Reduce padding for icon */
+     }
+     .message-icon {
+         display: none; /* Hide model icon on mobile to save space */
+     }
+  
+     .message-action-button {
+         opacity: 0.7; /* Make button slightly visible on mobile without hover */
+         background-color: transparent;
+         border: none;
+         font-size: 1rem; /* Larger tap target */
+     }
+  
+  
+    .tech-footer,
+    .mindful-footer {
+      padding: var(--spacing-sm);
+    }
+  
+    .tech-input,
+    .mindful-input {
+      min-height: 44px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    .tech-send-button,
+    .mindful-send-button {
+       height: 44px;
+       width: 44px;
+    }
+  
+    .scroll-to-bottom {
+       bottom: calc(var(--spacing-md) + 55px); /* Adjust position */
+       width: 32px;
+       height: 32px;
+    }
+  }
+  
+  /* Landscape on small devices */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .modal-content {
+      height: 95vh;
+    }
+    .tech-input,
+    .mindful-input {
+      max-height: 80px; /* Reduce max height */
+    }
+    .mood-selector, /* Hide desktop mood selector */
+    .wellness-resources { /* Hide resources */
+        display: none;
     }
   }
   
   /* =========================================
-     THEME COLORS
+     ANIMATIONS
      ========================================= */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  /* Removed messageAppear animation for simplicity, can be added back if desired */
   
-  /* Tech Theme - Dark */
-  .tech-theme.dark {
-    --bg: var(--tech-dark-bg);
-    --surface: var(--tech-dark-surface);
-    --text: var(--tech-dark-text);
-    --primary-rgb: 37, 99, 235;
-  }
-  
-  /* Tech Theme - Light */
-  .tech-theme.light {
-    --bg: var(--tech-light-bg);
-    --surface: var(--tech-light-surface);
-    --text: var(--tech-light-text);
-    --primary-rgb: 37, 99, 235;
-  }
-  
-  /* Mindful Theme - Calm */
-  .mindful-theme.calm {
-    --bg: var(--mindful-calm-bg);
-    --surface: var(--mindful-calm-surface);
-    --text: var(--mindful-calm-text);
-    --primary-rgb: 91, 154, 160;
-  }
-  
-  /* Mindful Theme - Bright */
-  .mindful-theme.bright {
-    --bg: var(--mindful-bright-bg);
-    --surface: var(--mindful-bright-surface);
-    --text: var(--mindful-bright-text);
-    --primary-rgb: 91, 154, 160;
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .modal,
+    .modal-content,
+    .chat-notification {
+      animation: fadeIn 0.01s ease-out !important; /* Fast fade instead of no animation */
+    }
+    .chat-notification {
+        animation: fadeIn 0.01s ease-out, fadeOut 0.01s ease-in 2.48s forwards !important;
+    }
   }
