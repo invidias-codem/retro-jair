@@ -1,0 +1,47 @@
+/* ./components/bottle_V1.1/AI_components/common/chatInterface.css */
+.chat-interface-container {
+    padding: 1rem;
+    /* Add more container styles if needed */
+    height: 100%; /* Allow chat agents to fill space */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .agent-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee; /* Example separator */
+  }
+  
+  .selector-button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px; /* Pill shape */
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .selector-button:hover {
+    background-color: #eee;
+    border-color: #bbb;
+  }
+  
+  .selector-button.active {
+    /* Example active styles - adapt to your theme */
+    background-color: #007bff; /* Primary color */
+    color: white;
+    border-color: #007bff;
+    font-weight: 600;
+  }
+  
+  .active-chat-agent {
+    flex-grow: 1; /* Allow the agent component to take remaining space */
+    /* Add positioning or sizing if needed */
+  }

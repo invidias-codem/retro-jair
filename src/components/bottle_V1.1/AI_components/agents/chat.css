@@ -961,3 +961,223 @@
         animation: fadeIn 0.01s ease-out, fadeOut 0.01s ease-in 2.48s forwards !important;
     }
   }
+
+  /* stem.css */
+
+/* General Styling */
+.stem-chat-container {
+  /* Overall container styling */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Or set a fixed height if desired */
+}
+
+.stem-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.stem-logo {
+  display: flex;
+  align-items: center;
+}
+
+.stem-logo-icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  color: #007bff; /* Example: Brand color */
+}
+
+.stem-logo-text {
+  font-weight: bold;
+}
+
+.stem-subscription-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  color: #fff;
+}
+
+.stem-subscription-badge.free {
+  background-color: #ccc;
+}
+
+.stem-subscription-badge.premium {
+  background-color: #007bff;
+}
+
+.stem-controls {
+  display: flex;
+  align-items: center;
+}
+
+.stem-button {
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.stem-button--icon {
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stem-button--icon .fa-sm {
+  font-size: 0.8rem;
+}
+
+.stem-button--theme {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.stem-button--settings {
+  background-color: #eee;
+  color: #666;
+}
+
+.stem-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stem-message {
+  margin-bottom: 1rem;
+}
+
+.stem-message-bubble {
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 80%;
+  position: relative;
+}
+
+.stem-message.model {
+  background-color: #f0f0f0;
+  color: #333;
+  text-align: left;
+}
+
+.stem-message.model .message-icon {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+.stem-message.user {
+  background-color: #007bff; /* Example: Brand color */
+  color: #fff;
+  text-align: right;
+}
+
+.stem-message .message-text {
+  margin: 0;
+  white-space: pre-wrap; /* Preserve line breaks */
+}
+
+.stem-message-action-button {
+  background-color: transparent;
+  color: #999;
+  margin-left: 0.5rem;
+}
+
+.stem-loading-indicator {
+  text-align: center;
+  margin-top: 1rem;
+  color: #666;
+}
+
+.stem-error-message {
+  background-color: #ffebeb;
+  color: #c00;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.stem-footer {
+  display: flex;
+  align-items: center;
+}
+
+.stem-input {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.7rem;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+.stem-send-button {
+  background-color: #007bff; /* Example: Brand color */
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.scroll-to-bottom {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.scroll-to-bottom:hover {
+  opacity: 1;
+}
+
+.chat-notification {
+  position: absolute;
+  top: -30px;
+  right: 10px;
+  background-color: #007bff; /* Example: Brand color */
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Dark Theme (Basic Example) */
+.stem-chat-container.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.stem-message.model.dark {
+  background-color: #444;
+}
+
+.stem-message.model.dark .message-icon {
+  background-color: #444;
+}

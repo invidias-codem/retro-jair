@@ -16,8 +16,9 @@ import {
   faSpinner // Added for loading state
 } from '@fortawesome/free-solid-svg-icons';
 import "./chat.css"; // Ensure this CSS file exists and contains necessary styles
+import "./StemChat";
 
-const Chat = () => {
+const TechChat = () => {
     // Core state
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [messages, setMessages] = useState([]);
@@ -647,4 +648,4 @@ const Chat = () => {
     );
 };
 
-export default Chat;
+export default TechChat;

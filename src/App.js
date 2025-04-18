@@ -5,8 +5,7 @@ import {
   Routes,
   Link,
   useLocation,
-  useParams,
-  useNavigate
+  // Removed unused imports: useParams, useNavigate (unless used elsewhere)
 } from 'react-router-dom';
 import { useTransition, animated } from '@react-spring/web';
 
@@ -19,33 +18,46 @@ import Contact from './components/bottle_V1.1/ContactMe/Contact';
 import Terminal from './components/bottle_V1.1/routes/Terminal/Terminal';
 import Footer from './components/bottle_V1.1/Footer/Footer';
 
-// Agent system imports
+// Agent system imports - KEEP these for now, might be used by modal or context
 import { ChatProvider, useChat } from './components/bottle_V1.1/context/useContext';
 import ChatModal from './components/bottle_V1.1/AI_components/common/ChatModal';
 
+// Import the NEW Chat Interface component
+import ChatInterface from './components/bottle_V1.1/AI_components/ChatInterface'; // Adjust path if needed
+
+// REMOVE the direct import of the old Chat/TechChat component
+// import Chat from './components/bottle_V1.1/AI_components/agents/chat';
+
 import './App.css';
-import Chat from './components/bottle_V1.1/AI_components/agents/chat';
 
 function AnimatedRoutes() {
   const location = useLocation();
   const transitions = useTransition(location, {
+    // Stagger: 50, // Optional: add stagger if needed
     from: { opacity: 0, transform: 'translateY(50px)' },
     enter: { opacity: 1, transform: 'translateY(0px)' },
     leave: { opacity: 0, transform: 'translateY(-50px)' },
+    config: { tension: 220, friction: 20 }, // Example config
   });
 
   return transitions((props, item) => (
-    <animated.div style={props}>
-      <Routes location={item}>
-        <Route path="/" element={<AboutMe />} />
-        <Route path="/about" element={<AboutMe />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/skills" element={<Skills />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/terminal" element={<Terminal />} />
-       
-      </Routes>
+    <animated.div style={props} className="animated-route-wrapper"> {/* Added class for potential styling */}
+      {/* Use Suspense if any routed components use React.lazy */}
+      {/* <Suspense fallback={<div>Loading Page...</div>}> */}
+        <Routes location={item}>
+          <Route path="/" element={<AboutMe />} />
+          <Route path="/about" element={<AboutMe />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/skills" element={<Skills />} />
+          <Route path="/contact" element={<Contact />} />
+          {/* MODIFIED ROUTE: Use ChatInterface for the /chat path */}
+          <Route path="/chat" element={<ChatInterface />} />
+          <Route path="/terminal" element={<Terminal />} />
+          {/* Add other routes as needed */}
+          {/* Optional: Add a 404 Not Found route */}
+          {/* <Route path="*" element={<NotFoundComponent />} /> */}
+        </Routes>
+      {/* </Suspense> */}
     </animated.div>
   ));
 }
@@ -67,37 +79,46 @@ function App() {
     setShowMenu(!showMenu);
   };
 
+  // Assuming ChatProvider should wrap the part of the app using the chat context
+  // If it needs to wrap everything, move it outside <Router> or inside <div id="appContainer">
   return (
-    <Router>
-      <div id="appContainer">
-        <header id="appHeader">
-          <Link to="/" id="appHeaderLink">
-            Cruise-Thru Portfolio
-          </Link>
-        </header>
-        
-        <main id="appMain">
-          {isMobile ? (
-            <>
-              <div id="appSidebar" className={showMenu ? 'show' : ''}>
-                <Menu onItemClick={() => setShowMenu(false)} />
+    <ChatProvider> {/* Example: Wrap with ChatProvider if needed globally or for modal */}
+      <Router>
+        <div id="appContainer">
+          <header id="appHeader">
+            <Link to="/" id="appHeaderLink">
+              Cruise-Thru Portfolio {/* Consider a more descriptive title */}
+            </Link>
+          </header>
+
+          <main id="appMain">
+            {isMobile ? (
+              <>
+                <div id="appSidebar" className={`mobile-sidebar ${showMenu ? 'show' : ''}`}> {/* Added class */}
+                  <Menu onItemClick={() => setShowMenu(false)} />
+                </div>
+                <button id="menuToggle" onClick={toggleMenu} aria-label={showMenu ? 'Close Menu' : 'Open Menu'} aria-expanded={showMenu}>
+                   {/* Use more descriptive icons/text if possible */}
+                   {showMenu ? '✕' : '☰'}
+                </button>
+              </>
+            ) : (
+              <div id="appSidebar">
+                <Menu />
               </div>
-              <button id="menuToggle" onClick={toggleMenu}>
-                {showMenu ? '↓' : '↑'}
-              </button>
-            </>
-          ) : (
-            <div id="appSidebar">
-              <Menu />
+            )}
+            <div id="appContent">
+              <AnimatedRoutes />
             </div>
-          )}
-          <div id="appContent">
-            <AnimatedRoutes />
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+          </main>
+
+          {/* Render ChatModal here if it's meant to be a global modal triggered by context */}
+          {/* <ChatModal /> */}
+
+          <Footer />
+        </div>
+      </Router>
+    </ChatProvider>
   );
 }
 
