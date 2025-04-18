@@ -1181,3 +1181,228 @@
 .stem-message.model.dark .message-icon {
   background-color: #444;
 }
+
+/* =========================================
+   RESPONSIVE ADJUSTMENTS (MOBILE OPTIMIZATION)
+   ========================================= */
+
+/* Medium screens (Tablets & Large Phones) */
+@media (max-width: 768px) {
+  /* If StemChat is used within the modal structure from chat.css */
+  .stem-modal .stem-modal-content {
+    max-width: 95%;
+    height: 90vh;
+  }
+
+  .stem-chat-container {
+    padding: var(--spacing-sm); /* Reduce overall padding */
+  }
+
+  .stem-header {
+    padding: var(--spacing-sm);
+  }
+
+  .stem-logo-text {
+    font-size: 1rem; /* Slightly smaller logo text */
+    max-width: 150px; /* Prevent overflow */
+  }
+
+  /* Hide button text spans */
+  .stem-button--settings span {
+    display: none;
+  }
+
+  .stem-messages {
+     padding: var(--spacing-sm);
+     gap: var(--spacing-xs);
+  }
+
+  .stem-message {
+    max-width: 85%; /* Allow messages to be a bit wider */
+  }
+
+  .stem-message-bubble { /* Renamed from stem-message.model/user */
+      padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+   /* Adjust model message padding for icon space */
+   .stem-message.model .stem-message-bubble {
+     padding-left: calc(var(--spacing-sm) + var(--spacing-xs) + 1em);
+   }
+
+
+  .stem-footer {
+     padding: var(--spacing-sm);
+     gap: var(--spacing-xs); /* Reduce gap in footer */
+  }
+
+  .stem-input {
+      min-height: 46px;
+      max-height: 120px;
+  }
+
+  /* Adjust footer button sizes slightly */
+  .stem-footer .stem-button--icon {
+      padding: var(--spacing-sm); /* Ensure decent tap target */
+      font-size: 1rem; /* Slightly smaller icon */
+  }
+  .stem-send-button {
+      height: 46px;
+      width: 46px;
+      font-size: 1.2rem;
+  }
+
+  .scroll-to-bottom {
+      width: 34px;
+      height: 34px;
+      /* Adjust bottom position based on potentially smaller footer */
+      bottom: calc(var(--spacing-md) + 60px);
+  }
+
+  /* Hide subscription badge on tablets/mobile? Optional */
+  .stem-subscription-badge {
+      /* display: none; */
+  }
+
+}
+
+/* Small screens (Mobile Phones) */
+@media (max-width: 576px) {
+
+  /* Adapt modal positioning if used */
+  .stem-modal {
+    padding: 0;
+    align-items: flex-end; /* Stick to bottom */
+  }
+  .stem-modal .stem-modal-content {
+    width: 100%;
+    max-width: 100%;
+    height: 90vh;
+    max-height: none;
+    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Rounded top only */
+  }
+  /* Adapt chat wrapper inside modal */
+   .stem-modal .stem-modal-content .chat-wrapper.stem-chat-container {
+     border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Match content */
+     border: none; /* Remove border on mobile */
+  }
+
+  .stem-chat-container {
+    padding: var(--spacing-xs); /* Minimal padding */
+  }
+
+  .stem-header {
+    flex-wrap: wrap; /* Allow wrapping */
+    justify-content: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .stem-logo {
+     order: 1; /* Logo first */
+     width: 100%;
+     justify-content: center;
+  }
+  .stem-controls {
+     order: 2; /* Controls second */
+     width: 100%;
+     justify-content: space-around; /* Spread out controls */
+  }
+  .stem-subscription-badge {
+      display: none; /* Hide badge on small mobile */
+  }
+
+  .stem-messages {
+    padding: var(--spacing-md) var(--spacing-sm); /* More vertical, less horizontal padding */
+  }
+
+  .stem-message {
+    max-width: 90%; /* Even wider messages */
+  }
+
+   .stem-message.model .stem-message-bubble {
+     padding-left: var(--spacing-sm); /* Reduce padding more */
+   }
+   .message-icon.model-icon { /* Specificity for model icon */
+       display: none; /* Hide model icon on mobile to save space */
+   }
+
+   .message-action-button { /* Target action button */
+       opacity: 0.7; /* Make button slightly visible on mobile without hover */
+       background-color: transparent;
+       border: none;
+       font-size: 1rem; /* Larger tap target */
+       padding: var(--spacing-xs);
+       /* Adjust positioning if needed */
+       bottom: 2px;
+       right: 2px;
+   }
+
+
+  .stem-footer {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-xs);
+  }
+
+  .stem-input {
+    min-height: 44px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.95rem; /* Slightly smaller font in input */
+  }
+
+  /* Ensure footer buttons are reasonably sized */
+  .stem-footer .stem-button--icon {
+     height: 44px; /* Match input height */
+     width: 40px; /* Slightly narrower */
+     font-size: 1rem;
+     padding: 0; /* Remove padding if fixed size */
+  }
+  .stem-send-button {
+     height: 44px;
+     width: 44px;
+  }
+
+  .scroll-to-bottom {
+     bottom: calc(var(--spacing-md) + 55px); /* Adjust position based on final footer height */
+     width: 32px;
+     height: 32px;
+  }
+
+  /* Adjust placeholder notepad style for mobile if needed */
+  .virtual-notepad-placeholder {
+      padding: var(--spacing-sm) !important; /* Override inline style if needed */
+  }
+}
+
+/* Landscape on small devices */
+@media (max-height: 500px) and (orientation: landscape) {
+  .stem-modal .stem-modal-content {
+    height: 95vh;
+  }
+  .stem-input {
+    max-height: 80px; /* Reduce max height in landscape */
+  }
+  .stem-messages {
+      padding: var(--spacing-xs); /* Less padding */
+  }
+  .stem-footer {
+      padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  /* Hide less critical elements in landscape if space is tight */
+   .stem-logo-text,
+   .stem-subscription-badge {
+       /* display: none; */
+   }
+}
+
+/* =========================================
+   (Keep Animations and Reduced Motion styles
+    from the end of chat.css if desired)
+   ========================================= */
+/* Example: */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* ... other animations ... */
+@media (prefers-reduced-motion: reduce) {
+  /* ... reduced motion styles ... */
+}
