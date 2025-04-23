@@ -2,16 +2,17 @@
 import React, { useState } from 'react';
 
 // Import the specific chat agent components
-// Adjust paths if necessary based on your actual file structure
 import TechChat from './agents/TechChat';
-import StemChat from './agents/StemChat'; // Assuming stem.js is renamed/created here
+import StemChat from './agents/StemChat';
+import BishopChat from './agents/BishopChat'; 
 
-// Optional: Import common chat styles if needed for the interface itself
-import './common/chatInterface.css'; // Create this CSS file for styling selectors etc.
+// Optional: Import common chat styles
+import './common/chatInterface.css';
 
 const ChatInterface = () => {
   // State to manage which agent is active
-  const [activeAgent, setActiveAgent] = useState('tech'); // Default to 'tech'
+  // Consider setting default to null or a specific agent like 'tech'
+  const [activeAgent, setActiveAgent] = useState('tech');
 
   return (
     <div className="chat-interface-container">
@@ -29,21 +30,21 @@ const ChatInterface = () => {
         >
           🔬 Professor AI
         </button>
-        {/* Add more buttons here if you create more agents */}
+        {/* 2. Add the new button for Bishop AI */}
+        <button
+          onClick={() => setActiveAgent('bishop')}
+          className={`selector-button ${activeAgent === 'bishop' ? 'active' : ''}`}
+        >
+          📖 Bishop AI {/* Or use faBookBible icon */}
+        </button>
       </div>
 
       {/* Conditionally Render the Active Agent Component */}
       <div className="active-chat-agent">
         {activeAgent === 'tech' && <TechChat />}
         {activeAgent === 'stem' && <StemChat />}
-        {/*
-           Note: TechChat and StemChat currently manage their own modal state (isModalOpen).
-           If you want this ChatInterface to *always* show the chat without needing an
-           "Open" button inside the agent components, you'll need to adjust the agent
-           components to render their content directly without checking isModalOpen,
-           or manage the modal visibility from here.
-           For now, assuming the agent components render their "Open" button or are always visible.
-        */}
+        {/* 3. Add the conditional rendering for BishopChat */}
+        {activeAgent === 'bishop' && <BishopChat />}
       </div>
     </div>
   );

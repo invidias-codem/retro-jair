@@ -91,10 +91,32 @@ function Projects() {
         ))}
       </div>
       <div className="text-center mt-5">
-        <a href="/JJ's_Resume2024.pdf" download="JJ's_Resume2024.pdf" className="download-resume-button">
-          Preview Resume (PDF)
-        </a>
-      </div>
+  {/* PDF Preview */}
+  <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto', height: '600px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
+    <embed
+      src="JJ's_Resume(2025).pdf"
+      type="application/pdf"
+      width="100%"
+      height="100%"
+      title="Resume Preview"
+    />
+    {/* 
+      Alternatively, you can use <iframe> or <object>:
+      <iframe src="JJ's_Resume(2025).pdf" width="100%" height="100%" style={{ border: 'none' }} title="Resume Preview"></iframe>
+    */}
+  </div>
+
+  {/* Download Button */}
+  <a
+    href="JJ's_Resume(2025).pdf"
+    download="JJ's_Resume(2025).pdf"
+    className="download-resume-button"
+    style={{ display: 'inline-block', marginTop: '20px' }}
+  >
+    Download Resume (PDF)
+  </a>
+</div>
+
     </section>
   );
 }

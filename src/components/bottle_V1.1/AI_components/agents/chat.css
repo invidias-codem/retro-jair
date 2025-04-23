@@ -1,4 +1,4 @@
-/* ./chat.css */
+/* chat.css - Optimized & Consolidated */
 
 /* =========================================
    ROOT VARIABLES & BASE STYLES
@@ -13,20 +13,20 @@
     --spacing-lg: 1.5rem;  /* 24px */
     --spacing-xl: 2rem;    /* 32px */
   
-    /* Default to dark theme - these will be overridden by theme classes */
-    --bg-primary: #1e1f22;        /* Main background */
-    --bg-secondary: #2b2d31;      /* Secondary background (e.g., input, model messages) */
-    --bg-tertiary: #313338;       /* Tertiary background (e.g., user messages, buttons) */
-    --bg-hover: #3a3c41;         /* Hover background */
-    --bg-accent: #5865f2;         /* Accent color (e.g., active elements) */
-    --text-primary: #dbdee1;       /* Primary text */
-    --text-secondary: #b8b9bf;     /* Secondary text (e.g., placeholders, timestamps) */
-    --text-accent: #ffffff;        /* Text on accent background */
-    --border-color: #404249;       /* Borders */
-    --shadow-color: rgba(0, 0, 0, 0.3);
-    --success-color: #248046;
-    --error-color: #da373c;
-    --link-color: #6eb5f2;
+    /* Default theme variables (can be overridden by .dark, .light, etc.) */
+    --bg-primary: #f0f4f8;        /* Defaulting to 'calm' values */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f1fc;
+    --bg-hover: #dbe7f5;
+    --bg-accent: #6fa8dc;
+    --text-primary: #3c4043;
+    --text-secondary: #70757a;
+    --text-accent: #ffffff;
+    --border-color: #d2dbe3;
+    --shadow-color: rgba(111, 168, 220, 0.15);
+    --success-color: #34a853;     /* Example success */
+    --error-color: #ea4335;      /* Example error */
+    --link-color: #3d85c6;
   
     --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
@@ -41,905 +41,581 @@
   /* =========================================
      THEME DEFINITIONS
      ========================================= */
-  
-  /* --- Dark Theme (Tech Default) --- */
   .dark {
-    --bg-primary: #131314; /* Slightly darker than original */
-    --bg-secondary: #1e1f20; /* Input, model msg background */
-    --bg-tertiary: #2a2b2c; /* User msg background */
-    --bg-hover: #3a3c41;
-    --bg-accent: #8ab4f8; /* Google Blue */
-    --text-primary: #e8eaed; /* Main text */
-    --text-secondary: #bdc1c6; /* Lighter secondary */
-    --text-accent: #131314; /* Text on accent */
-    --border-color: #3c4043;
-    --shadow-color: rgba(0, 0, 0, 0.5);
-    --link-color: #8ab4f8;
+    --bg-primary: #131314; --bg-secondary: #1e1f20; --bg-tertiary: #2a2b2c;
+    --bg-hover: #3a3c41; --bg-accent: #8ab4f8; --text-primary: #e8eaed;
+    --text-secondary: #bdc1c6; --text-accent: #131314; --border-color: #3c4043;
+    --shadow-color: rgba(0, 0, 0, 0.5); --link-color: #8ab4f8;
+    --error-color: #f28b82; --success-color: #81c995;
   }
-  
-  /* --- Light Theme (Tech Alt) --- */
   .light {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f1f3f4; /* Input, model msg background */
-    --bg-tertiary: #e8f0fe; /* User msg background (light blue) */
-    --bg-hover: #e8eaed;
-    --bg-accent: #1a73e8; /* Google Blue */
-    --text-primary: #202124; /* Dark text */
-    --text-secondary: #5f6368;
-    --text-accent: #ffffff;
-    --border-color: #dadce0;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --link-color: #1a73e8;
+    --bg-primary: #ffffff; --bg-secondary: #f1f3f4; --bg-tertiary: #e8f0fe;
+    --bg-hover: #e8eaed; --bg-accent: #1a73e8; --text-primary: #202124;
+    --text-secondary: #5f6368; --text-accent: #ffffff; --border-color: #dadce0;
+    --shadow-color: rgba(0, 0, 0, 0.1); --link-color: #1a73e8;
+    --error-color: #d93025; --success-color: #1e8e3e;
   }
-  
-  /* --- Calm Theme (Wellness Default) --- */
-  .calm {
-    --bg-primary: #f0f4f8; /* Very light blue/grey */
-    --bg-secondary: #ffffff; /* Input, model msg background */
-    --bg-tertiary: #e6f1fc; /* User msg background (slightly darker blue) */
-    --bg-hover: #dbe7f5;
-    --bg-accent: #6fa8dc; /* Softer blue */
-    --text-primary: #3c4043; /* Dark grey text */
-    --text-secondary: #70757a;
-    --text-accent: #ffffff;
-    --border-color: #d2dbe3;
-    --shadow-color: rgba(111, 168, 220, 0.15);
-    --link-color: #3d85c6;
+  .calm { /* Matches root defaults */
+    --bg-primary: #f0f4f8; --bg-secondary: #ffffff; --bg-tertiary: #e6f1fc;
+    --bg-hover: #dbe7f5; --bg-accent: #6fa8dc; --text-primary: #3c4043;
+    --text-secondary: #70757a; --text-accent: #ffffff; --border-color: #d2dbe3;
+    --shadow-color: rgba(111, 168, 220, 0.15); --link-color: #3d85c6;
+    --error-color: #c53929; --success-color: #188038;
   }
-  
-  /* --- Bright Theme (Wellness Alt) --- */
   .bright {
-    --bg-primary: #fffbeb; /* Light yellow */
-    --bg-secondary: #ffffff; /* Input, model msg background */
-    --bg-tertiary: #fff0c7; /* User msg background (slightly darker yellow) */
-    --bg-hover: #fef4d8;
-    --bg-accent: #f9ab00; /* Amber/Yellow */
-    --text-primary: #4d4129; /* Dark brownish text */
-    --text-secondary: #7d6a47;
-    --text-accent: #4d4129;
-    --border-color: #fcefc8;
-    --shadow-color: rgba(249, 171, 0, 0.15);
-    --link-color: #e69138;
+    --bg-primary: #fffbeb; --bg-secondary: #ffffff; --bg-tertiary: #fff0c7;
+    --bg-hover: #fef4d8; --bg-accent: #f9ab00; --text-primary: #4d4129;
+    --text-secondary: #7d6a47; --text-accent: #4d4129; --border-color: #fcefc8;
+    --shadow-color: rgba(249, 171, 0, 0.15); --link-color: #e69138;
+    --error-color: #d93025; --success-color: #188038;
   }
   
   /* =========================================
-     MODAL STYLES
+     COMMON MODAL & WRAPPER STYLES
      ========================================= */
-  .modal { /* This styles the backdrop/overlay */
-    position: fixed;
-    z-index: 1000;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-sm);
-    animation: fadeIn 0.3s ease-out;
+  .modal { /* Backdrop/overlay */
+    position: fixed; z-index: 1000; inset: 0; width: 100%; height: 100%;
+    overflow: hidden; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--spacing-sm); animation: fadeIn 0.3s ease-out;
   }
   
-  .modal-content { /* This is the structural container for the chat */
-    width: 100%;
-    max-width: 900px; /* Slightly narrower */
-    height: clamp(300px, 85vh, 750px); /* Responsive height, max 750px */
-    border-radius: var(--border-radius-large); /* More rounded */
-    box-shadow: 0 15px 40px var(--shadow-color);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    animation: slideUp 0.4s ease-out;
-    background-color: transparent; /* Content background is handled by chat-wrapper */
-    color: var(--text); /* Default text color */
-    border: none; /* Remove border, handled by chat-wrapper if needed */
-    overflow: hidden; /* Crucial for child element rounding */
+  .modal-content { /* Structural container */
+    width: 100%; max-width: 900px; height: clamp(300px, 85vh, 750px);
+    border-radius: var(--border-radius-large); box-shadow: 0 15px 40px var(--shadow-color);
+    position: relative; display: flex; flex-direction: column;
+    animation: slideUp 0.4s ease-out; background-color: transparent;
+    border: none; overflow: hidden;
   }
   
-  /* Wrapper inside modal-content to apply theme/mode background and border */
-  .chat-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    border-radius: var(--border-radius-large); /* Match modal-content */
-    overflow: hidden; /* Important: hide overflow from content */
+  .chat-wrapper { /* Inner wrapper for theme/border */
+    display: flex; flex-direction: column; width: 100%; height: 100%;
+    background-color: var(--bg-primary); color: var(--text-primary);
+    border-radius: var(--border-radius-large); overflow: hidden;
     border: 1px solid var(--border-color);
   }
   
-  /* Specific container styles if needed (e.g., different borders) */
-  .tech-chat-container {
-    /* Specific tech styles */
-  }
-  .mindful-chat-container {
-    /* Specific mindful styles */
+  /* Agent-specific container class association (mostly for themes via JS) */
+  .tech-chat-container,
+  .mindful-chat-container,
+  .stem-chat-container,
+  .bishop-chat-container {
+    /* Agent-specific container overrides can go here if needed */
   }
   
-  /* Close Button */
-  .tech-close-button,
-  .mindful-close-button {
-    position: absolute;
-    top: var(--spacing-sm);
-    right: var(--spacing-sm);
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: var(--spacing-xs);
-    line-height: 1;
-    z-index: 10; /* Above header */
-    border-radius: 50%;
+  /* Common Close Button Styling (Agent-specific class names for targeting) */
+  .tech-close-button, .mindful-close-button,
+  .stem-close-button, .bishop-close-button {
+    position: absolute; top: var(--spacing-sm); right: var(--spacing-sm);
+    background: none; border: none; color: var(--text-secondary);
+    font-size: 1.5rem; cursor: pointer; padding: var(--spacing-xs);
+    line-height: 1; z-index: 10; border-radius: 50%;
     transition: color 0.2s ease, background-color 0.2s ease;
   }
-  
-  .tech-close-button:hover,
-  .mindful-close-button:hover {
-    color: var(--text-primary);
-    background-color: var(--bg-hover);
+  .tech-close-button:hover, .mindful-close-button:hover,
+  .stem-close-button:hover, .bishop-close-button:hover {
+    color: var(--text-primary); background-color: var(--bg-hover);
   }
   
-  /* Initial Chat Open Button */
+  /* Initial Chat Open Button (Common Style) */
   .chat-open-button {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius);
+    border: none; cursor: pointer; font-size: 1rem; font-weight: 500;
+    display: inline-flex; align-items: center; gap: var(--spacing-sm);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* Default colors - Use agent-specific classes to override */
+    background-color: var(--bg-accent);
+    color: var(--text-accent);
   }
   .chat-open-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      filter: brightness(95%);
   }
-  /* Apply mode-specific button styles */
-  .tech-button {
-    background-color: var(--bg-accent);
-    color: var(--text-accent);
+  /* Agent-specific open button color overrides (if needed) */
+  .chat-open-button.tech-button { /* background/color already set by tech-button */ }
+  .chat-open-button.mindful-button { /* Use mindful accent */
+      /* background-color: var(--bg-accent); */ /* Assuming mindful theme is applied */
   }
-  .mindful-button {
-    background-color: var(--bg-accent);
-    color: var(--text-accent);
+  .chat-open-button.stem-button { /* Use stem accent */
+       /* background-color: var(--bg-accent); */ /* Assuming stem theme is applied */
   }
-  /* Add specific hover styles if needed for open button */
-  .tech-button:hover {
-    background-color: color-mix(in srgb, var(--bg-accent) 90%, black);
-  }
-  .mindful-button:hover {
-    background-color: color-mix(in srgb, var(--bg-accent) 90%, black);
+  .chat-open-button.bishop-button { /* Use bishop accent */
+       /* background-color: var(--bg-accent); */ /* Assuming bishop theme is applied */
   }
   
   
   /* =========================================
-     HEADER STYLES
+     COMMON HEADER STYLES
      ========================================= */
-  .tech-header,
-  .mindful-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .tech-header, .mindful-header,
+  .stem-header, .bishop-header {
+    display: flex; justify-content: space-between; align-items: center;
     padding: var(--spacing-sm) var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0;
-    background-color: var(--bg-primary); /* Ensure header bg matches */
+    flex-shrink: 0; background-color: var(--bg-primary);
   }
   
-  /* Logo Area */
-  .tech-logo,
-  .mindful-logo {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    flex-shrink: 1; /* Allow shrinking */
-    min-width: 0; /* Prevent overflow */
+  /* Common Logo Area Structure */
+  .tech-logo, .mindful-logo,
+  .stem-logo, .bishop-logo {
+    display: flex; align-items: center; gap: var(--spacing-sm);
+    flex-shrink: 1; min-width: 0;
   }
   
-  .tech-logo-icon,
-  .mindful-logo-icon {
-    font-size: 1.5rem;
-    color: var(--text-primary);
+  /* Common Logo Icon */
+  .tech-logo-icon, .mindful-logo-icon,
+  .stem-logo-icon, .bishop-logo-icon {
+    font-size: 1.5rem; color: var(--text-primary);
+    /* Agent-specific icon color override if needed */
+    /* Example: .stem-logo-icon { color: green; } */
   }
   
-  .tech-logo-text,
-  .mindful-logo-text {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  /* Common Logo Text */
+  .tech-logo-text, .mindful-logo-text,
+  .stem-logo-text, .bishop-logo-text {
+    font-size: 1.1rem; font-weight: 600; color: var(--text-primary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   
-  /* Subscription Badge */
-  .tech-subscription-badge,
-  .mindful-subscription-badge {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--border-radius-small);
-    margin-left: var(--spacing-sm);
-    text-transform: uppercase;
-    white-space: nowrap;
+  /* Common Subscription Badge */
+  .tech-subscription-badge, .mindful-subscription-badge,
+  .stem-subscription-badge, .bishop-subscription-badge {
+    font-size: 0.7rem; font-weight: 600; padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-small); margin-left: var(--spacing-sm);
+    text-transform: uppercase; white-space: nowrap;
   }
-  .tech-subscription-badge.free,
-  .mindful-subscription-badge.free {
-    background-color: var(--bg-tertiary);
-    color: var(--text-secondary);
+  .tech-subscription-badge.free, .mindful-subscription-badge.free,
+  .stem-subscription-badge.free, .bishop-subscription-badge.free {
+    background-color: var(--bg-tertiary); color: var(--text-secondary);
   }
-  .tech-subscription-badge.premium,
-  .mindful-subscription-badge.premium {
-    background-color: var(--success-color); /* Example */
-    color: white;
+  .tech-subscription-badge.premium, .mindful-subscription-badge.premium,
+  .stem-subscription-badge.premium, .bishop-subscription-badge.premium {
+    background-color: var(--success-color); color: var(--text-accent);
   }
   
-  /* Header Controls */
-  .tech-controls,
-  .mindful-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
+  /* Common Header Controls */
+  .tech-controls, .mindful-controls,
+  .stem-controls, .bishop-controls {
+    display: flex; align-items: center; gap: var(--spacing-xs);
   }
   
-  /* Base styles for header buttons */
-  .tech-button,
-  .mindful-button {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    padding: var(--spacing-sm);
-    border-radius: var(--border-radius-small);
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1; /* Ensure icon alignment */
+  /* =========================================
+     COMMON BUTTON STYLES (within Header/Footer)
+     ========================================= */
+  /* Base style for agent buttons */
+  .tech-button, .mindful-button,
+  .stem-button, .bishop-button {
+    background: none; border: none; color: var(--text-secondary);
+    padding: var(--spacing-sm); border-radius: var(--border-radius-small);
+    cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease;
+    display: inline-flex; align-items: center; justify-content: center;
+    line-height: 1;
   }
-  
-  .tech-button:hover,
-  .mindful-button:hover {
-    background-color: var(--bg-hover);
-    color: var(--text-primary);
+  .tech-button:hover:not(:disabled), .mindful-button:hover:not(:disabled),
+  .stem-button:hover:not(:disabled), .bishop-button:hover:not(:disabled) {
+    background-color: var(--bg-hover); color: var(--text-primary);
   }
-  .tech-button:disabled,
-  .mindful-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  .tech-button:disabled, .mindful-button:disabled,
+  .stem-button:disabled, .bishop-button:disabled {
+    opacity: 0.5; cursor: not-allowed;
   }
   
   /* Modifier for icon-only buttons */
-  .tech-button--icon,
-  .mindful-button--icon {
-    font-size: 1.1rem; /* Adjust icon size */
+  .tech-button--icon, .mindful-button--icon,
+  .stem-button--icon, .bishop-button--icon {
+    font-size: 1.1rem;
   }
   
-  /* Specific button text styling */
-  .tech-button span,
-  .mindful-button span {
-    margin-left: var(--spacing-sm);
-    font-size: 0.9rem;
+  /* Modifier for buttons with text */
+  .tech-button span, .mindful-button span,
+  .stem-button span, .bishop-button span {
+    margin-left: var(--spacing-sm); font-size: 0.9rem;
   }
   
-  /* Hide text on smaller screens if needed */
-  .mode-switch-text {
-    display: none; /* Hidden by default, shown via media query */
-  }
-  
-  /* Settings button text */
-  .tech-button--settings span,
-  .mindful-button--settings span {
-      display: none; /* Hide by default */
+  /* Hiding specific button text */
+  .mode-switch-text, /* Only used in original tech/mindful */
+  .tech-button--settings span, .mindful-button--settings span,
+  .stem-button--settings span, .bishop-button--settings span {
+      display: none;
   }
   
   /* =========================================
-     MOOD SELECTOR (WELLNESS MODE)
+     AGENT-SPECIFIC COMPONENTS (Mood Selector, Resources)
      ========================================= */
-  .mood-selector {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--bg-secondary); /* Slightly different background */
-  }
-  .mood-selector p {
-    margin: 0 0 var(--spacing-sm) 0;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    text-align: center;
-  }
-  .mood-buttons {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    flex-wrap: wrap; /* Allow wrapping */
-  }
-  .mood-button {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-large); /* Pill shape */
-    background-color: var(--bg-primary);
-    color: var(--text-secondary);
-    cursor: pointer;
-    font-size: 0.85rem;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  }
-  .mood-button:hover {
-    background-color: var(--bg-hover);
-    border-color: var(--border-color);
-    color: var(--text-primary);
-  }
-  .mood-button.active {
-    background-color: var(--bg-accent);
-    color: var(--text-accent);
-    border-color: var(--bg-accent);
-    font-weight: 500;
-  }
-  .mood-button span[role="img"] {
-    font-size: 1rem;
-  }
-  .mood-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-  }
   
-  /* Mobile Mood Selector */
-  .mobile-mood-selector {
-    border-bottom: 1px solid var(--border-color);
+  /* --- MOOD SELECTOR (MindfulMate Only) --- */
+  .mindful-chat-container .mood-selector { /* Scope to mindful container */
+    padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-secondary);
   }
-  .mobile-mood-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Icon on right */
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    cursor: pointer;
-    text-align: left;
+  .mindful-chat-container .mood-selector p { /* ... rest of mood selector styles ... */
+      margin: 0 0 var(--spacing-sm) 0; font-size: 0.9rem;
+      color: var(--text-secondary); text-align: center;
   }
-  .mobile-mood-toggle .toggle-icon {
-    transition: transform 0.2s ease;
+  .mindful-chat-container .mood-buttons { /* ... */
+      display: flex; justify-content: center; gap: var(--spacing-sm); flex-wrap: wrap;
   }
-  .mobile-mood-selector.open .mobile-mood-toggle .toggle-icon {
-    transform: rotate(180deg);
+  .mindful-chat-container .mood-button { /* ... */
+      padding: var(--spacing-xs) var(--spacing-sm); border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-large); background-color: var(--bg-primary);
+      color: var(--text-secondary); cursor: pointer; font-size: 0.85rem;
+      display: inline-flex; align-items: center; gap: var(--spacing-xs);
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
+  .mindful-chat-container .mood-button:hover { /* ... */
+      background-color: var(--bg-hover); border-color: var(--border-color); color: var(--text-primary);
+  }
+  .mindful-chat-container .mood-button.active { /* ... */
+      background-color: var(--bg-accent); color: var(--text-accent); border-color: var(--bg-accent); font-weight: 500;
+  }
+  .mindful-chat-container .mood-button span[role="img"] { font-size: 1rem; }
+  .mindful-chat-container .mood-button:disabled { opacity: 0.6; cursor: not-allowed; }
   
-  .mobile-mood-buttons {
-    display: none; /* Hidden by default */
-    padding: var(--spacing-sm);
-    padding-top: 0;
-    justify-content: space-around; /* Spread out buttons */
-    gap: var(--spacing-sm);
+  /* --- MOBILE MOOD SELECTOR (MindfulMate Only) --- */
+  .mindful-chat-container .mobile-mood-selector { /* Scope to mindful container */
+    border-bottom: 1px solid var(--border-color); background-color: var(--bg-secondary);
   }
-  .mobile-mood-selector.open .mobile-mood-buttons {
-    display: flex; /* Show when open */
+  .mindful-chat-container .mobile-mood-toggle { /* ... rest of mobile mood styles ... */
+      display: flex; align-items: center; justify-content: space-between; width: 100%;
+      padding: var(--spacing-sm) var(--spacing-md); background: none; border: none;
+      color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; text-align: left;
   }
-  .mobile-mood-button {
-    background: none;
-    border: none;
-    padding: var(--spacing-sm);
-    border-radius: 50%; /* Circular buttons */
-    font-size: 1.5rem; /* Larger emoji */
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  .mindful-chat-container .mobile-mood-toggle .toggle-icon { transition: transform 0.2s ease; }
+  .mindful-chat-container .mobile-mood-selector.open .mobile-mood-toggle .toggle-icon { transform: rotate(180deg); }
+  .mindful-chat-container .mobile-mood-buttons { display: none; padding: var(--spacing-sm); padding-top: 0; justify-content: space-around; gap: var(--spacing-sm); }
+  .mindful-chat-container .mobile-mood-selector.open .mobile-mood-buttons { display: flex; }
+  .mindful-chat-container .mobile-mood-button { background: none; border: none; padding: var(--spacing-sm); border-radius: 50%; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer; transition: background-color 0.2s ease; }
+  .mindful-chat-container .mobile-mood-button:hover { background-color: var(--bg-hover); }
+  .mindful-chat-container .mobile-mood-button.active { background-color: var(--bg-accent); color: var(--text-accent); }
+  .mindful-chat-container .mobile-mood-button:disabled { opacity: 0.6; cursor: not-allowed; }
+  
+  /* --- WELLNESS RESOURCES (MindfulMate Only) --- */
+  .mindful-chat-container .wellness-resources { /* Scope to mindful container */
+    padding: var(--spacing-sm) var(--spacing-md); margin: var(--spacing-sm) var(--spacing-md);
+    border: 1px dashed var(--border-color); border-radius: var(--border-radius);
+    background-color: var(--bg-secondary); font-size: 0.85rem; color: var(--text-secondary);
   }
-  .mobile-mood-button:hover {
-    background-color: var(--bg-hover);
+  .mindful-chat-container .wellness-resources h3 { /* ... rest of resource styles ... */
+      font-size: 0.9rem; color: var(--text-primary); margin: 0 0 var(--spacing-sm) 0;
+      display: flex; align-items: center; gap: var(--spacing-sm);
   }
-  .mobile-mood-button.active {
-    background-color: var(--bg-accent);
-    color: var(--text-accent);
-  }
-  .mobile-mood-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-  }
+  .mindful-chat-container .wellness-resources ul { list-style: none; padding: 0; margin: var(--spacing-sm) 0 0 0; }
+  .mindful-chat-container .wellness-resources li { margin-bottom: var(--spacing-xs); }
   
   /* =========================================
-     MESSAGES AREA STYLES
+     COMMON MESSAGES AREA STYLES
      ========================================= */
-  .tech-messages,
-  .mindful-messages {
-    flex: 1; /* Grow to fill space */
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: var(--spacing-md);
-    scroll-behavior: smooth;
-    display: flex;
-    flex-direction: column;
+  .tech-messages, .mindful-messages,
+  .stem-messages, .bishop-messages {
+    flex: 1; overflow-y: auto; overflow-x: hidden; padding: var(--spacing-md);
+    scroll-behavior: smooth; display: flex; flex-direction: column;
     gap: var(--spacing-sm); /* Space between message groups */
   }
   
-  /* Message container */
-  .tech-message,
-  .mindful-message {
-    display: flex;
-    max-width: 80%; /* Max width of message */
-    position: relative; /* For action button positioning */
+  /* Common Message container */
+  .tech-message, .mindful-message,
+  .stem-message, .bishop-message {
+    display: flex; max-width: 80%; position: relative;
   }
   
-  /* Message bubble - contains text and actions */
-  .tech-message-bubble,
-  .mindful-message-bubble {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    line-height: 1.5;
-    word-wrap: break-word;
-    position: relative; /* Contains icon/actions */
-    box-shadow: 0 1px 2px var(--shadow-color);
-    transition: background-color 0.2s ease; /* Smooth theme changes */
+  /* Common Message bubble - contains text and actions */
+  .tech-message-bubble, .mindful-message-bubble,
+  .stem-message-bubble, .bishop-message-bubble {
+    padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius);
+    line-height: 1.6; word-wrap: break-word; position: relative;
+    box-shadow: 0 1px 2px var(--shadow-color); transition: background-color 0.2s ease;
   }
   
-  /* User Message Alignment & Style */
-  .tech-message.user,
-  .mindful-message.user {
-    align-self: flex-end; /* Align right */
-    margin-left: auto; /* Push right */
+  /* User Message Alignment & Style (Common) */
+  .tech-message.user, .mindful-message.user,
+  .stem-message.user, .bishop-message.user {
+    align-self: flex-end; margin-left: auto;
   }
-  .tech-message.user .tech-message-bubble,
-  .mindful-message.user .mindful-message-bubble {
-    background-color: var(--bg-tertiary);
-    color: var(--text-primary); /* Ensure contrast */
-    border-bottom-right-radius: var(--border-radius-small); /* Slightly different corner */
+  .tech-message.user .tech-message-bubble, .mindful-message.user .mindful-message-bubble,
+  .stem-message.user .stem-message-bubble, .bishop-message.user .bishop-message-bubble {
+    background-color: var(--bg-tertiary); color: var(--text-primary); /* Default user bg */
+    border-bottom-right-radius: var(--border-radius-small);
+    /* Specific override for user accent color if needed by theme */
+    /* Example: .bishop-chat-container .bishop-message.user .bishop-message-bubble { background-color: var(--bg-accent); color: var(--text-accent); } */
   }
-  
-  /* Model Message Alignment & Style */
-  .tech-message.model,
-  .mindful-message.model {
-    align-self: flex-start; /* Align left */
-    margin-right: auto; /* Push left */
-  }
-  .tech-message.model .tech-message-bubble,
-  .mindful-message.model .mindful-message-bubble {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border-bottom-left-radius: var(--border-radius-small); /* Slightly different corner */
-    padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em); /* Make space for icon */
+  /* Example specific user bubble override for Bishop */
+  .bishop-message.user .bishop-message-bubble {
+      background-color: var(--bg-accent); /* Use theme accent for user */
+      color: var(--text-accent);
   }
   
-  /* Message Icon (Model only) */
-  .message-icon {
-    position: absolute;
-    left: var(--spacing-md);
-    top: var(--spacing-sm);
-    font-size: 1em; /* Relative to parent font size */
-    color: var(--text-secondary);
+  
+  /* Model Message Alignment & Style (Common) */
+  .tech-message.model, .mindful-message.model,
+  .stem-message.model, .bishop-message.model {
+    align-self: flex-start; margin-right: auto;
+  }
+  .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
+  .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble {
+    background-color: var(--bg-secondary); color: var(--text-primary);
+    border-bottom-left-radius: var(--border-radius-small);
+    padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em); /* Default space for icon */
   }
   
-  /* Message Text */
-  .message-text {
-    margin: 0;
+  /* Message Icon (Model only - Common) */
+  .message-icon.model-icon { /* Target using common class + model-icon */
+    position: absolute; left: var(--spacing-md); top: var(--spacing-sm);
+    font-size: 1em; color: var(--text-secondary);
   }
+  
+  /* Message Text (Common Structure) */
+  .message-text { margin: 0; }
   .message-text p:first-child { margin-top: 0; }
   .message-text p:last-child { margin-bottom: 0; }
-  
-  /* Message Action Button (Copy/Save) */
-  .message-action-button {
-    position: absolute;
-    bottom: var(--spacing-xs);
-    right: var(--spacing-xs);
-    background-color: var(--bg-primary); /* Match wrapper bg */
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: var(--spacing-xs);
-    font-size: 0.8rem;
-    border-radius: var(--border-radius-small);
-    cursor: pointer;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 0.2s ease, background-color 0.2s ease;
-    line-height: 1;
+  .message-text em { font-style: italic; }
+  .message-text strong { font-weight: bold; }
+  .message-text blockquote {
+      border-left: 3px solid var(--border-color); padding-left: var(--spacing-sm);
+      margin-left: var(--spacing-xs); color: var(--text-secondary); font-style: italic;
   }
-  .tech-message-bubble:hover .message-action-button,
-  .mindful-message-bubble:hover .message-action-button {
-    opacity: 1; /* Show on hover */
-  }
-  .message-action-button:hover {
-    background-color: var(--bg-hover);
-    color: var(--text-primary);
-  }
-  
-  /* Special Mood Update Messages */
-  .tech-message.mood-update,
-  .mindful-message.mood-update {
-      align-self: center; /* Center align */
-      max-width: 60%;
-      font-style: italic;
-      text-align: center;
-  }
-  .tech-message.mood-update .tech-message-bubble,
-  .mindful-message.mood-update .mindful-message-bubble {
-      background-color: transparent;
-      color: var(--text-secondary);
-      box-shadow: none;
-      font-size: 0.9rem;
-      padding: var(--spacing-xs) var(--spacing-md);
-  }
-  
-  
-  /* Code Blocks */
-  .message-text pre { /* Target pre tags directly within message text */
-    background-color: color-mix(in srgb, var(--bg-primary) 85%, black); /* Darker bg */
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-small);
-    padding: var(--spacing-sm) var(--spacing-md);
-    margin: var(--spacing-sm) 0;
-    overflow-x: auto; /* Enable horizontal scroll */
-    font-family: var(--font-family-mono);
-    font-size: 0.85rem;
-    line-height: 1.4;
-    color: var(--text-primary);
-    white-space: pre; /* Preserve whitespace */
+  .message-text pre { /* Code Blocks */
+    background-color: color-mix(in srgb, var(--bg-primary) 85%, black);
+    border: 1px solid var(--border-color); border-radius: var(--border-radius-small);
+    padding: var(--spacing-sm) var(--spacing-md); margin: var(--spacing-sm) 0;
+    overflow-x: auto; font-family: var(--font-family-mono); font-size: 0.85rem;
+    line-height: 1.4; color: var(--text-primary); white-space: pre;
   }
   .message-text code:not(pre code) { /* Inline code */
-    background-color: var(--bg-hover);
-    padding: 0.1em 0.3em;
-    border-radius: var(--border-radius-small);
-    font-family: var(--font-family-mono);
+    background-color: var(--bg-hover); padding: 0.1em 0.3em;
+    border-radius: var(--border-radius-small); font-family: var(--font-family-mono);
     font-size: 0.85em;
   }
+  .message-text a { color: var(--link-color); text-decoration: none; }
+  .message-text a:hover { text-decoration: underline; }
   
-  /* Links */
-  .message-text a {
-      color: var(--link-color);
-      text-decoration: none;
+  /* Message Action Button (Common) */
+  .message-action-button { /* Common class */
+    position: absolute; bottom: var(--spacing-xs); right: var(--spacing-xs);
+    background-color: var(--bg-primary); border: 1px solid var(--border-color);
+    color: var(--text-secondary); padding: var(--spacing-xs); font-size: 0.8rem;
+    border-radius: var(--border-radius-small); cursor: pointer; opacity: 0;
+    transition: opacity 0.2s ease, background-color 0.2s ease; line-height: 1;
   }
-  .message-text a:hover {
-      text-decoration: underline;
+  /* Show on hover for any message bubble */
+  .tech-message-bubble:hover .message-action-button,
+  .mindful-message-bubble:hover .message-action-button,
+  .stem-message-bubble:hover .message-action-button,
+  .bishop-message-bubble:hover .message-action-button {
+    opacity: 1;
+  }
+  .message-action-button:hover {
+    background-color: var(--bg-hover); color: var(--text-primary);
+  }
+  
+  /* Special Mood Update Messages (MindfulMate only) */
+  .mindful-message.mood-update { /* Scope to mindful agent */
+      align-self: center; max-width: 60%; font-style: italic; text-align: center;
+  }
+  .mindful-message.mood-update .mindful-message-bubble {
+      background-color: transparent; color: var(--text-secondary); box-shadow: none;
+      font-size: 0.9rem; padding: var(--spacing-xs) var(--spacing-md);
   }
   
   
   /* =========================================
-     INPUT AREA / FOOTER STYLES
+     COMMON FOOTER / INPUT AREA STYLES
      ========================================= */
-  .tech-footer,
-  .mindful-footer {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-top: 1px solid var(--border-color);
-    background-color: var(--bg-primary); /* Match wrapper */
-    display: flex;
-    align-items: flex-end; /* Align items to bottom (for textarea growth) */
-    gap: var(--spacing-sm);
-    flex-shrink: 0;
+  .tech-footer, .mindful-footer,
+  .stem-footer, .bishop-footer {
+    padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--border-color);
+    background-color: var(--bg-primary); display: flex; align-items: flex-end;
+    gap: var(--spacing-sm); flex-shrink: 0;
   }
   
-  /* Textarea Input */
-  .tech-input,
-  .mindful-input {
-    flex: 1; /* Take remaining space */
-    min-height: 48px; /* Starting height */
-    max-height: 150px; /* Limit growth */
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-secondary); /* Different bg for input */
-    color: var(--text-primary);
-    font-size: 1rem;
-    font-family: var(--font-family-sans);
-    resize: none; /* Disable manual resize */
-    line-height: 1.5;
-    overflow-y: auto; /* Allow scrolling within textarea when max-height reached */
-    transition: border-color 0.2s ease;
-    box-sizing: border-box; /* Consistent sizing */
+  /* Textarea Input (Common Style) */
+  .tech-input, .mindful-input,
+  .stem-input, .bishop-input {
+    flex: 1; min-height: 48px; max-height: 150px;
+    padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius);
+    border: 1px solid var(--border-color); background-color: var(--bg-secondary);
+    color: var(--text-primary); font-size: 1rem; font-family: var(--font-family-sans);
+    resize: none; line-height: 1.5; overflow-y: auto;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease; box-sizing: border-box;
   }
-  
-  .tech-input:focus,
-  .mindful-input:focus {
-    outline: none;
-    border-color: var(--bg-accent);
+  .tech-input:focus, .mindful-input:focus,
+  .stem-input:focus, .bishop-input:focus {
+    outline: none; border-color: var(--bg-accent);
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--bg-accent) 30%, transparent);
   }
-  .tech-input::placeholder,
-  .mindful-input::placeholder {
+  .tech-input::placeholder, .mindful-input::placeholder,
+  .stem-input::placeholder, .bishop-input::placeholder {
     color: var(--text-secondary);
   }
-  .tech-input:disabled,
-  .mindful-input:disabled {
-    background-color: var(--bg-hover);
-    cursor: not-allowed;
-    opacity: 0.7;
+  .tech-input:disabled, .mindful-input:disabled,
+  .stem-input:disabled, .bishop-input:disabled {
+    background-color: var(--bg-hover); cursor: not-allowed; opacity: 0.7;
+  }
+  
+  /* Footer Buttons (Common base for icon buttons like File, Notepad) */
+  .tech-footer .tech-button--icon, .mindful-footer .mindful-button--icon,
+  .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon {
+       height: 48px; /* Match input min-height */
+       width: 48px;
+       padding: 0; /* Remove padding if fixed size */
+       font-size: 1.1rem;
+       flex-shrink: 0;
+       /* Default background/color inherited from base .agent-button */
+  }
+  /* Override specific footer button appearance if needed */
+  .stem-footer .stem-button--icon { /* Style file/notepad buttons */
+      /* Example: background-color: var(--bg-secondary); */
   }
   
   
-  /* Send Button */
-  .tech-send-button,
-  .mindful-send-button {
-    height: 48px; /* Match min-height of textarea */
-    width: 48px;
-    padding: 0; /* Remove padding for icon centering */
-    font-size: 1.3rem;
-    border-radius: var(--border-radius);
-    flex-shrink: 0; /* Prevent shrinking */
-    /* Use mode-specific base button class for colors */
+  /* Send Button (Common style, agent-specific colors) */
+  .tech-send-button, .mindful-send-button,
+  .stem-send-button, .bishop-send-button {
+    height: 48px; width: 48px; padding: 0; font-size: 1.3rem;
+    border-radius: var(--border-radius); flex-shrink: 0;
+    background-color: var(--bg-accent); color: var(--text-accent);
+    transition: background-color 0.2s ease;
   }
-  .tech-send-button { background-color: var(--bg-accent); color: var(--text-accent); }
-  .mindful-send-button { background-color: var(--bg-accent); color: var(--text-accent); }
-  
-  .tech-send-button:hover:not(:disabled) { background-color: color-mix(in srgb, var(--bg-accent) 90%, black); }
-  .mindful-send-button:hover:not(:disabled) { background-color: color-mix(in srgb, var(--bg-accent) 90%, black); }
-  
-  .tech-send-button:disabled,
-  .mindful-send-button:disabled {
-    background-color: var(--bg-tertiary);
-    color: var(--text-secondary);
-    opacity: 0.6;
-    cursor: not-allowed;
+  .tech-send-button:hover:not(:disabled), .mindful-send-button:hover:not(:disabled),
+  .stem-send-button:hover:not(:disabled), .bishop-send-button:hover:not(:disabled) {
+     background-color: color-mix(in srgb, var(--bg-accent) 85%, black);
+  }
+  .tech-send-button:disabled, .mindful-send-button:disabled,
+  .stem-send-button:disabled, .bishop-send-button:disabled {
+    background-color: var(--bg-tertiary); color: var(--text-secondary);
+    opacity: 0.6; cursor: not-allowed;
   }
   
   
   /* =========================================
-     OTHER COMPONENTS
+     COMMON OTHER COMPONENTS
      ========================================= */
   
-  /* Loading Indicator */
+  /* Loading Indicator (Common structure) */
   .chat-loading-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-sm);
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    gap: var(--spacing-sm);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--spacing-sm); font-size: 0.9rem;
+    color: var(--text-secondary); gap: var(--spacing-sm);
   }
-  /* Mode specific loader colors if needed */
-  .tech-loading { /* styles */ }
-  .mindful-loading { /* styles */ }
+  /* Agent-specific loader class targets if needed */
+  .tech-loading, .mindful-loading,
+  .stem-loading, .bishop-loading { /* styles if needed */ }
   
-  /* Error & Limit Messages */
+  /* Error & Limit Messages (Common structure) */
   .chat-error-display,
   .chat-limit-message {
-    padding: var(--spacing-sm) var(--spacing-md);
-    margin: var(--spacing-sm) var(--spacing-md); /* Margin to separate */
-    border-radius: var(--border-radius);
-    font-size: 0.9rem;
-    text-align: center;
+    padding: var(--spacing-sm) var(--spacing-md); margin: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius); font-size: 0.9rem; text-align: center;
   }
-  .tech-error-message, /* Applied to both */
-  .mindful-error-message { /* Applied to both */
+  /* Agent-specific error message class targets (for consistency) */
+  .tech-error-message, .mindful-error-message,
+  .stem-error-message, .bishop-error-message {
     background-color: color-mix(in srgb, var(--error-color) 15%, var(--bg-secondary));
     color: var(--error-color);
     border: 1px solid color-mix(in srgb, var(--error-color) 30%, transparent);
   }
   
-  /* Scroll to Bottom Button */
+  /* Scroll to Bottom Button (Common) */
   .scroll-to-bottom {
-    position: absolute;
-    bottom: calc(var(--spacing-md) + 60px); /* Position above input area */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 5px var(--shadow-color);
-    z-index: 5; /* Above messages, below header */
-    transition: background-color 0.2s ease, opacity 0.3s ease;
+    position: absolute; bottom: calc(var(--spacing-md) + 60px); left: 50%;
+    transform: translateX(-50%); background-color: var(--bg-secondary);
+    color: var(--text-primary); border: 1px solid var(--border-color);
+    border-radius: 50%; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 2px 5px var(--shadow-color);
+    z-index: 5; transition: background-color 0.2s ease, opacity 0.3s ease;
     opacity: 0.9;
   }
-  .scroll-to-bottom:hover {
-    background-color: var(--bg-hover);
-    opacity: 1;
-  }
+  .scroll-to-bottom:hover { background-color: var(--bg-hover); opacity: 1; }
   
-  /* Wellness Resources */
-  .wellness-resources {
-    padding: var(--spacing-sm) var(--spacing-md);
-    margin: var(--spacing-sm) var(--spacing-md);
-    border: 1px dashed var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--bg-secondary);
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-  }
-  .wellness-resources h3 {
-    font-size: 0.9rem;
-    color: var(--text-primary);
-    margin: 0 0 var(--spacing-sm) 0;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
-  .wellness-resources ul {
-    list-style: none;
-    padding: 0;
-    margin: var(--spacing-sm) 0 0 0;
-  }
-  .wellness-resources li {
-    margin-bottom: var(--spacing-xs);
-  }
-  
-  /* Notification Toast */
+  /* Notification Toast (Common) */
   .chat-notification {
-    position: fixed; /* Position relative to viewport */
-    bottom: var(--spacing-lg);
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--bg-tertiary);
-    color: var(--text-primary);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius-small);
-    box-shadow: 0 3px 10px var(--shadow-color);
-    font-size: 0.9rem;
-    z-index: 1100; /* Above modal */
+    position: fixed; bottom: var(--spacing-lg); left: 50%; transform: translateX(-50%);
+    background-color: var(--bg-tertiary); color: var(--text-primary);
+    padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-small);
+    box-shadow: 0 3px 10px var(--shadow-color); font-size: 0.9rem; z-index: 1100;
     animation: fadeIn 0.3s ease-out, fadeOut 0.3s ease-in 2.2s forwards;
   }
   
-  
-  /* =========================================
-     RESPONSIVE ADJUSTMENTS
-     ========================================= */
-  
-  /* Medium screens (Tablets) */
-  @media (max-width: 768px) {
-    .modal-content {
-      max-width: 95%;
-      height: 90vh;
-    }
-  
-    .tech-header,
-    .mindful-header {
-      padding: var(--spacing-sm);
-    }
-  
-    .tech-logo-text,
-    .mindful-logo-text {
-      font-size: 1rem;
-    }
-  
-    /* Hide some button text */
-    .mode-switch-text,
-    .tech-button--settings span,
-    .mindful-button--settings span {
-      display: none;
-    }
-  
-    .tech-messages,
-    .mindful-messages {
-       padding: var(--spacing-sm);
-       gap: var(--spacing-xs);
-    }
-  
-    .tech-message,
-    .mindful-message {
-      max-width: 85%;
-    }
-  
-    .tech-footer,
-    .mindful-footer {
-       padding: var(--spacing-sm);
-    }
+  /* Placeholder for Virtual Notepad (Common) */
+  .virtual-notepad-placeholder {
+      padding: 1rem; border-top: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      /* Add more styles as needed */
   }
   
-  /* Small screens (Mobile) */
+  /* =========================================
+     CONSOLIDATED RESPONSIVE ADJUSTMENTS
+     ========================================= */
+  
+  /* Medium screens (Tablets & Large Phones) */
+  @media (max-width: 768px) {
+    .modal-content { max-width: 95%; height: 90vh; }
+    .chat-wrapper { /* Affects all agent containers */
+        padding: var(--spacing-sm);
+    }
+    .tech-header, .mindful-header, .stem-header, .bishop-header { padding: var(--spacing-sm); }
+    .tech-logo-text, .mindful-logo-text, .stem-logo-text, .bishop-logo-text { font-size: 1rem; max-width: 150px; }
+    .mode-switch-text, /* Common elements to hide text */
+    .tech-button--settings span, .mindful-button--settings span,
+    .stem-button--settings span, .bishop-button--settings span { display: none; }
+  
+    .tech-messages, .mindful-messages, .stem-messages, .bishop-messages { padding: var(--spacing-sm); gap: var(--spacing-xs); }
+    .tech-message, .mindful-message, .stem-message, .bishop-message { max-width: 85%; }
+    .tech-message-bubble, .mindful-message-bubble, .stem-message-bubble, .bishop-message-bubble { padding: var(--spacing-xs) var(--spacing-sm); }
+    .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
+    .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble { padding-left: calc(var(--spacing-sm) + var(--spacing-xs) + 1em); }
+  
+    .tech-footer, .mindful-footer, .stem-footer, .bishop-footer { padding: var(--spacing-sm); gap: var(--spacing-xs); }
+    .tech-input, .mindful-input, .stem-input, .bishop-input { min-height: 46px; max-height: 120px; }
+  
+    /* Common footer icon/send button sizing */
+    .tech-footer .tech-button--icon, .mindful-footer .mindful-button--icon,
+    .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon { padding: var(--spacing-sm); font-size: 1rem; }
+    .tech-send-button, .mindful-send-button, .stem-send-button, .bishop-send-button { height: 46px; width: 46px; font-size: 1.2rem; }
+  
+    .scroll-to-bottom { width: 34px; height: 34px; bottom: calc(var(--spacing-md) + 60px); }
+  }
+  
+  /* Small screens (Mobile Phones) */
   @media (max-width: 576px) {
-    .modal {
-      padding: 0;
-      align-items: flex-end; /* Stick to bottom */
-    }
+    .modal { padding: 0; align-items: flex-end; }
+    .modal-content { width: 100%; max-width: 100%; height: 90vh; max-height: none; border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; }
+    .chat-wrapper { border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; border: none; padding: var(--spacing-xs); }
   
-    .modal-content {
-      width: 100%;
-      max-width: 100%;
-      height: 90vh; /* Almost full height */
-      max-height: none;
-      border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Rounded top only */
-    }
+    .tech-close-button, .mindful-close-button, .stem-close-button, .bishop-close-button { top: var(--spacing-xs); right: var(--spacing-xs); }
   
-    .chat-wrapper {
-       border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Match content */
-       border: none; /* Remove border on mobile */
-    }
+    .tech-header, .mindful-header, .stem-header, .bishop-header { flex-wrap: wrap; justify-content: center; gap: var(--spacing-xs); padding: var(--spacing-sm) var(--spacing-md); }
+    .tech-logo, .mindful-logo, .stem-logo, .bishop-logo { order: 1; width: 100%; justify-content: center; }
+    .tech-controls, .mindful-controls, .stem-controls, .bishop-controls { order: 2; width: 100%; justify-content: space-around; }
+    .tech-subscription-badge, .mindful-subscription-badge, .stem-subscription-badge, .bishop-subscription-badge { display: none; }
   
-    .tech-close-button,
-    .mindful-close-button {
-      top: var(--spacing-xs);
-      right: var(--spacing-xs);
-    }
+    .tech-messages, .mindful-messages, .stem-messages, .bishop-messages { padding: var(--spacing-md) var(--spacing-sm); }
+    .tech-message, .mindful-message, .stem-message, .bishop-message { max-width: 90%; }
+    .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
+    .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble { padding-left: var(--spacing-sm); }
+    .message-icon.model-icon { display: none; }
+    .message-action-button { opacity: 0.7; background-color: transparent; border: none; font-size: 1rem; padding: var(--spacing-xs); bottom: 2px; right: 2px; }
   
-    .tech-header,
-    .mindful-header {
-      flex-wrap: wrap; /* Allow wrapping */
-      justify-content: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-sm) var(--spacing-md);
-    }
+    .tech-footer, .mindful-footer, .stem-footer, .bishop-footer { padding: var(--spacing-sm); gap: var(--spacing-xs); }
+    .tech-input, .mindful-input, .stem-input, .bishop-input { min-height: 44px; padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.95rem; }
   
-    .tech-logo,
-    .mindful-logo {
-       order: 1; /* Logo first */
-       width: 100%;
-       justify-content: center; /* Center logo area */
-    }
-    .tech-controls,
-    .mindful-controls {
-       order: 2; /* Controls second */
-       width: 100%;
-       justify-content: space-around; /* Spread out controls */
-    }
-    .tech-subscription-badge,
-    .mindful-subscription-badge {
-        display: none; /* Hide badge on mobile */
-    }
+    /* Common footer icon/send button sizing for mobile */
+    .tech-footer .tech-button--icon, .mindful-footer .mindful-button--icon,
+    .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon { height: 44px; width: 40px; font-size: 1rem; padding: 0; }
+    .tech-send-button, .mindful-send-button, .stem-send-button, .bishop-send-button { height: 44px; width: 44px; }
   
-    .tech-messages,
-    .mindful-messages {
-      padding: var(--spacing-md) var(--spacing-sm); /* More vertical, less horizontal */
-    }
-  
-    .tech-message,
-    .mindful-message {
-      max-width: 90%; /* Slightly wider */
-    }
-  
-     .tech-message.model .tech-message-bubble,
-     .mindful-message.model .mindful-message-bubble {
-       padding-left: var(--spacing-md); /* Reduce padding for icon */
-     }
-     .message-icon {
-         display: none; /* Hide model icon on mobile to save space */
-     }
-  
-     .message-action-button {
-         opacity: 0.7; /* Make button slightly visible on mobile without hover */
-         background-color: transparent;
-         border: none;
-         font-size: 1rem; /* Larger tap target */
-     }
-  
-  
-    .tech-footer,
-    .mindful-footer {
-      padding: var(--spacing-sm);
-    }
-  
-    .tech-input,
-    .mindful-input {
-      min-height: 44px;
-      padding: var(--spacing-xs) var(--spacing-sm);
-    }
-    .tech-send-button,
-    .mindful-send-button {
-       height: 44px;
-       width: 44px;
-    }
-  
-    .scroll-to-bottom {
-       bottom: calc(var(--spacing-md) + 55px); /* Adjust position */
-       width: 32px;
-       height: 32px;
-    }
+    .scroll-to-bottom { bottom: calc(var(--spacing-md) + 55px); width: 32px; height: 32px; }
+    .virtual-notepad-placeholder { padding: var(--spacing-sm) !important; }
   }
   
   /* Landscape on small devices */
   @media (max-height: 500px) and (orientation: landscape) {
-    .modal-content {
-      height: 95vh;
-    }
-    .tech-input,
-    .mindful-input {
-      max-height: 80px; /* Reduce max height */
-    }
-    .mood-selector, /* Hide desktop mood selector */
-    .wellness-resources { /* Hide resources */
-        display: none;
-    }
+    .modal-content { height: 95vh; }
+    .tech-input, .mindful-input, .stem-input, .bishop-input { max-height: 80px; }
+    .tech-messages, .mindful-messages, .stem-messages, .bishop-messages { padding: var(--spacing-xs); }
+    .tech-footer, .mindful-footer, .stem-footer, .bishop-footer { padding: var(--spacing-xs) var(--spacing-sm); }
+    .mood-selector, .wellness-resources { display: none; } /* Hide agent-specific elements */
   }
   
   /* =========================================
@@ -948,461 +624,8 @@
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
   @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  /* Removed messageAppear animation for simplicity, can be added back if desired */
   
-  /* Reduced Motion */
   @media (prefers-reduced-motion: reduce) {
-    .modal,
-    .modal-content,
-    .chat-notification {
-      animation: fadeIn 0.01s ease-out !important; /* Fast fade instead of no animation */
-    }
-    .chat-notification {
-        animation: fadeIn 0.01s ease-out, fadeOut 0.01s ease-in 2.48s forwards !important;
-    }
+    .modal, .modal-content, .chat-notification { animation: fadeIn 0.01s ease-out !important; }
+    .chat-notification { animation: fadeIn 0.01s ease-out, fadeOut 0.01s ease-in 2.48s forwards !important; }
   }
-
-  /* stem.css */
-
-/* General Styling */
-.stem-chat-container {
-  /* Overall container styling */
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* Or set a fixed height if desired */
-}
-
-.stem-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.stem-logo {
-  display: flex;
-  align-items: center;
-}
-
-.stem-logo-icon {
-  font-size: 1.2rem;
-  margin-right: 0.5rem;
-  color: #007bff; /* Example: Brand color */
-}
-
-.stem-logo-text {
-  font-weight: bold;
-}
-
-.stem-subscription-badge {
-  padding: 0.2rem 0.5rem;
-  border-radius: 3px;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  color: #fff;
-}
-
-.stem-subscription-badge.free {
-  background-color: #ccc;
-}
-
-.stem-subscription-badge.premium {
-  background-color: #007bff;
-}
-
-.stem-controls {
-  display: flex;
-  align-items: center;
-}
-
-.stem-button {
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  margin-left: 0.5rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.stem-button--icon {
-  padding: 0.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.stem-button--icon .fa-sm {
-  font-size: 0.8rem;
-}
-
-.stem-button--theme {
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-.stem-button--settings {
-  background-color: #eee;
-  color: #666;
-}
-
-.stem-messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.stem-message {
-  margin-bottom: 1rem;
-}
-
-.stem-message-bubble {
-  padding: 1rem;
-  border-radius: 8px;
-  max-width: 80%;
-  position: relative;
-}
-
-.stem-message.model {
-  background-color: #f0f0f0;
-  color: #333;
-  text-align: left;
-}
-
-.stem-message.model .message-icon {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  background-color: #f0f0f0;
-  color: #333;
-  border-radius: 50%;
-  padding: 3px;
-}
-
-.stem-message.user {
-  background-color: #007bff; /* Example: Brand color */
-  color: #fff;
-  text-align: right;
-}
-
-.stem-message .message-text {
-  margin: 0;
-  white-space: pre-wrap; /* Preserve line breaks */
-}
-
-.stem-message-action-button {
-  background-color: transparent;
-  color: #999;
-  margin-left: 0.5rem;
-}
-
-.stem-loading-indicator {
-  text-align: center;
-  margin-top: 1rem;
-  color: #666;
-}
-
-.stem-error-message {
-  background-color: #ffebeb;
-  color: #c00;
-  padding: 1rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-
-.stem-footer {
-  display: flex;
-  align-items: center;
-}
-
-.stem-input {
-  flex-grow: 1;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0.7rem;
-  margin-right: 0.5rem;
-  font-size: 1rem;
-}
-
-.stem-send-button {
-  background-color: #007bff; /* Example: Brand color */
-  color: #fff;
-  padding: 0.6rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.scroll-to-bottom {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
-}
-
-.scroll-to-bottom:hover {
-  opacity: 1;
-}
-
-.chat-notification {
-  position: absolute;
-  top: -30px;
-  right: 10px;
-  background-color: #007bff; /* Example: Brand color */
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
-/* Dark Theme (Basic Example) */
-.stem-chat-container.dark {
-  background-color: #333;
-  color: #fff;
-}
-
-.stem-message.model.dark {
-  background-color: #444;
-}
-
-.stem-message.model.dark .message-icon {
-  background-color: #444;
-}
-
-/* =========================================
-   RESPONSIVE ADJUSTMENTS (MOBILE OPTIMIZATION)
-   ========================================= */
-
-/* Medium screens (Tablets & Large Phones) */
-@media (max-width: 768px) {
-  /* If StemChat is used within the modal structure from chat.css */
-  .stem-modal .stem-modal-content {
-    max-width: 95%;
-    height: 90vh;
-  }
-
-  .stem-chat-container {
-    padding: var(--spacing-sm); /* Reduce overall padding */
-  }
-
-  .stem-header {
-    padding: var(--spacing-sm);
-  }
-
-  .stem-logo-text {
-    font-size: 1rem; /* Slightly smaller logo text */
-    max-width: 150px; /* Prevent overflow */
-  }
-
-  /* Hide button text spans */
-  .stem-button--settings span {
-    display: none;
-  }
-
-  .stem-messages {
-     padding: var(--spacing-sm);
-     gap: var(--spacing-xs);
-  }
-
-  .stem-message {
-    max-width: 85%; /* Allow messages to be a bit wider */
-  }
-
-  .stem-message-bubble { /* Renamed from stem-message.model/user */
-      padding: var(--spacing-xs) var(--spacing-sm);
-  }
-
-   /* Adjust model message padding for icon space */
-   .stem-message.model .stem-message-bubble {
-     padding-left: calc(var(--spacing-sm) + var(--spacing-xs) + 1em);
-   }
-
-
-  .stem-footer {
-     padding: var(--spacing-sm);
-     gap: var(--spacing-xs); /* Reduce gap in footer */
-  }
-
-  .stem-input {
-      min-height: 46px;
-      max-height: 120px;
-  }
-
-  /* Adjust footer button sizes slightly */
-  .stem-footer .stem-button--icon {
-      padding: var(--spacing-sm); /* Ensure decent tap target */
-      font-size: 1rem; /* Slightly smaller icon */
-  }
-  .stem-send-button {
-      height: 46px;
-      width: 46px;
-      font-size: 1.2rem;
-  }
-
-  .scroll-to-bottom {
-      width: 34px;
-      height: 34px;
-      /* Adjust bottom position based on potentially smaller footer */
-      bottom: calc(var(--spacing-md) + 60px);
-  }
-
-  /* Hide subscription badge on tablets/mobile? Optional */
-  .stem-subscription-badge {
-      /* display: none; */
-  }
-
-}
-
-/* Small screens (Mobile Phones) */
-@media (max-width: 576px) {
-
-  /* Adapt modal positioning if used */
-  .stem-modal {
-    padding: 0;
-    align-items: flex-end; /* Stick to bottom */
-  }
-  .stem-modal .stem-modal-content {
-    width: 100%;
-    max-width: 100%;
-    height: 90vh;
-    max-height: none;
-    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Rounded top only */
-  }
-  /* Adapt chat wrapper inside modal */
-   .stem-modal .stem-modal-content .chat-wrapper.stem-chat-container {
-     border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; /* Match content */
-     border: none; /* Remove border on mobile */
-  }
-
-  .stem-chat-container {
-    padding: var(--spacing-xs); /* Minimal padding */
-  }
-
-  .stem-header {
-    flex-wrap: wrap; /* Allow wrapping */
-    justify-content: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm) var(--spacing-md);
-  }
-
-  .stem-logo {
-     order: 1; /* Logo first */
-     width: 100%;
-     justify-content: center;
-  }
-  .stem-controls {
-     order: 2; /* Controls second */
-     width: 100%;
-     justify-content: space-around; /* Spread out controls */
-  }
-  .stem-subscription-badge {
-      display: none; /* Hide badge on small mobile */
-  }
-
-  .stem-messages {
-    padding: var(--spacing-md) var(--spacing-sm); /* More vertical, less horizontal padding */
-  }
-
-  .stem-message {
-    max-width: 90%; /* Even wider messages */
-  }
-
-   .stem-message.model .stem-message-bubble {
-     padding-left: var(--spacing-sm); /* Reduce padding more */
-   }
-   .message-icon.model-icon { /* Specificity for model icon */
-       display: none; /* Hide model icon on mobile to save space */
-   }
-
-   .message-action-button { /* Target action button */
-       opacity: 0.7; /* Make button slightly visible on mobile without hover */
-       background-color: transparent;
-       border: none;
-       font-size: 1rem; /* Larger tap target */
-       padding: var(--spacing-xs);
-       /* Adjust positioning if needed */
-       bottom: 2px;
-       right: 2px;
-   }
-
-
-  .stem-footer {
-    padding: var(--spacing-sm);
-    gap: var(--spacing-xs);
-  }
-
-  .stem-input {
-    min-height: 44px;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: 0.95rem; /* Slightly smaller font in input */
-  }
-
-  /* Ensure footer buttons are reasonably sized */
-  .stem-footer .stem-button--icon {
-     height: 44px; /* Match input height */
-     width: 40px; /* Slightly narrower */
-     font-size: 1rem;
-     padding: 0; /* Remove padding if fixed size */
-  }
-  .stem-send-button {
-     height: 44px;
-     width: 44px;
-  }
-
-  .scroll-to-bottom {
-     bottom: calc(var(--spacing-md) + 55px); /* Adjust position based on final footer height */
-     width: 32px;
-     height: 32px;
-  }
-
-  /* Adjust placeholder notepad style for mobile if needed */
-  .virtual-notepad-placeholder {
-      padding: var(--spacing-sm) !important; /* Override inline style if needed */
-  }
-}
-
-/* Landscape on small devices */
-@media (max-height: 500px) and (orientation: landscape) {
-  .stem-modal .stem-modal-content {
-    height: 95vh;
-  }
-  .stem-input {
-    max-height: 80px; /* Reduce max height in landscape */
-  }
-  .stem-messages {
-      padding: var(--spacing-xs); /* Less padding */
-  }
-  .stem-footer {
-      padding: var(--spacing-xs) var(--spacing-sm);
-  }
-
-  /* Hide less critical elements in landscape if space is tight */
-   .stem-logo-text,
-   .stem-subscription-badge {
-       /* display: none; */
-   }
-}
-
-/* =========================================
-   (Keep Animations and Reduced Motion styles
-    from the end of chat.css if desired)
-   ========================================= */
-/* Example: */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-/* ... other animations ... */
-@media (prefers-reduced-motion: reduce) {
-  /* ... reduced motion styles ... */
-}
