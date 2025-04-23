@@ -1,47 +1,92 @@
-/* ./components/bottle_V1.1/AI_components/common/chatInterface.css */
-.chat-interface-container {
-    padding: 1rem;
-    /* Add more container styles if needed */
-    height: 100%; /* Allow chat agents to fill space */
+/* ./components/bottle_V1.1/AI_components/common/chatInterface.css - Optimized */
+
+/* Assumes root variables (--spacing-*, --bg-*, --text-*, --border-*, etc.)
+   from chat.css are available in the scope where this component is used. */
+
+   .chat-interface-container {
+    /* Use spacing variables for consistency */
+    padding: var(--spacing-md, 1rem);
+    height: 100%; /* Fill parent height */
     display: flex;
     flex-direction: column;
+    box-sizing: border-box; /* Include padding in height calculation */
   }
   
   .agent-selector {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee; /* Example separator */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    gap: var(--spacing-sm, 0.5rem); /* Use spacing variable for gap */
+    /* Use spacing variables for margin/padding */
+    margin-bottom: var(--spacing-lg, 1.5rem);
+    padding-bottom: var(--spacing-md, 1rem);
+    /* Use theme variable for border */
+    border-bottom: 1px solid var(--border-color, #eee);
+    flex-shrink: 0; /* Prevent selector area from shrinking */
   }
   
   .selector-button {
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px; /* Pill shape */
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    color: #333;
+    /* Use spacing variables for padding */
+    padding: var(--spacing-sm, 0.6rem) var(--spacing-md, 1.2rem);
+    border-radius: 20px; /* Keep pill shape */
+    /* Use theme variables for border and background */
+    border: 1px solid var(--border-color, #ccc);
+    background-color: var(--bg-secondary, #f9f9f9);
+    color: var(--text-secondary, #333); /* Use secondary text color for non-active */
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 500;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap; /* Prevent button text wrapping */
   }
   
   .selector-button:hover {
-    background-color: #eee;
-    border-color: #bbb;
+    /* Use theme variable for hover background */
+    background-color: var(--bg-hover, #eee);
+    border-color: var(--border-color, #bbb); /* Keep border consistent or slightly darker */
+    color: var(--text-primary, #111); /* Use primary text color on hover */
   }
   
   .selector-button.active {
-    /* Example active styles - adapt to your theme */
-    background-color: #007bff; /* Primary color */
-    color: white;
-    border-color: #007bff;
+    /* Use theme accent colors for active state */
+    background-color: var(--bg-accent, #007bff);
+    color: var(--text-accent, white);
+    border-color: var(--bg-accent, #007bff);
     font-weight: 600;
   }
   
   .active-chat-agent {
-    flex-grow: 1; /* Allow the agent component to take remaining space */
-    /* Add positioning or sizing if needed */
+    flex-grow: 1; /* Critical: Allows the nested chat agent to fill remaining space */
+    display: flex; /* Ensure the child fills this container if it's also flex */
+    flex-direction: column; /* Assuming the child agent uses column layout */
+    overflow: hidden; /* Prevent content overflow issues if child misbehaves */
+    min-height: 0; /* Important for flex children in some browsers */
+  }
+  
+  /* --- Responsive Adjustments (Optional but recommended) --- */
+  
+  /* Slightly reduce spacing on very small screens if needed */
+  @media (max-width: 576px) {
+    .chat-interface-container {
+      padding: var(--spacing-sm, 0.5rem);
+    }
+  
+    .agent-selector {
+      gap: var(--spacing-xs, 0.25rem);
+      margin-bottom: var(--spacing-md, 1rem);
+      padding-bottom: var(--spacing-sm, 0.5rem);
+    }
+  
+    .selector-button {
+      padding: var(--spacing-xs, 0.4rem) var(--spacing-sm, 0.8rem);
+      font-size: 0.85rem; /* Slightly smaller font */
+    }
+  }
+  
+  /* Adjustments for very short screens (like mobile landscape) */
+  @media (max-height: 500px) and (orientation: landscape) {
+      .agent-selector {
+          margin-bottom: var(--spacing-sm, 0.5rem); /* Reduce bottom margin */
+          padding-bottom: var(--spacing-xs, 0.25rem); /* Reduce bottom padding */
+      }
   }

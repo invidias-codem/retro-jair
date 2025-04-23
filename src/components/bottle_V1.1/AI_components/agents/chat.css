@@ -12,7 +12,7 @@
     --spacing-md: 1rem;    /* 16px */
     --spacing-lg: 1.5rem;  /* 24px */
     --spacing-xl: 2rem;    /* 32px */
-  
+
     /* Default theme variables (can be overridden by .dark, .light, etc.) */
     --bg-primary: #f0f4f8;        /* Defaulting to 'calm' values */
     --bg-secondary: #ffffff;
@@ -27,17 +27,17 @@
     --success-color: #34a853;     /* Example success */
     --error-color: #ea4335;      /* Example error */
     --link-color: #3d85c6;
-  
+
     --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   }
-  
+
   body {
     font-family: var(--font-family-sans);
     margin: 0;
     line-height: 1.6;
   }
-  
+
   /* =========================================
      THEME DEFINITIONS
      ========================================= */
@@ -69,7 +69,7 @@
     --shadow-color: rgba(249, 171, 0, 0.15); --link-color: #e69138;
     --error-color: #d93025; --success-color: #188038;
   }
-  
+
   /* =========================================
      COMMON MODAL & WRAPPER STYLES
      ========================================= */
@@ -79,7 +79,7 @@
     display: flex; align-items: center; justify-content: center;
     padding: var(--spacing-sm); animation: fadeIn 0.3s ease-out;
   }
-  
+
   .modal-content { /* Structural container */
     width: 100%; max-width: 900px; height: clamp(300px, 85vh, 750px);
     border-radius: var(--border-radius-large); box-shadow: 0 15px 40px var(--shadow-color);
@@ -87,14 +87,14 @@
     animation: slideUp 0.4s ease-out; background-color: transparent;
     border: none; overflow: hidden;
   }
-  
+
   .chat-wrapper { /* Inner wrapper for theme/border */
-    display: flex; flex-direction: column; width: 95%; height: 101%;
+    display: flex; flex-direction: column; width: 100%; height: 100%; /* Adjusted from 85%/102% for consistency */
     background-color: var(--bg-primary); color: var(--text-primary);
     border-radius: var(--border-radius-large); overflow: hidden;
     border: 1px solid var(--border-color);
   }
-  
+
   /* Agent-specific container class association (mostly for themes via JS) */
   .tech-chat-container,
   .mindful-chat-container,
@@ -102,7 +102,7 @@
   .bishop-chat-container {
     /* Agent-specific container overrides can go here if needed */
   }
-  
+
   /* Common Close Button Styling (Agent-specific class names for targeting) */
   .tech-close-button, .mindful-close-button,
   .stem-close-button, .bishop-close-button {
@@ -116,13 +116,13 @@
   .stem-close-button:hover, .bishop-close-button:hover {
     color: var(--text-primary); background-color: var(--bg-hover);
   }
-  
+
   /* Initial Chat Open Button (Common Style) */
   .chat-open-button {
     padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius);
     border: none; cursor: pointer; font-size: 1rem; font-weight: 500;
     display: inline-flex; align-items: center; gap: var(--spacing-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; /* Added filter */
     /* Default colors - Use agent-specific classes to override */
     background-color: var(--bg-accent);
     color: var(--text-accent);
@@ -143,8 +143,8 @@
   .chat-open-button.bishop-button { /* Use bishop accent */
        /* background-color: var(--bg-accent); */ /* Assuming bishop theme is applied */
   }
-  
-  
+
+
   /* =========================================
      COMMON HEADER STYLES
      ========================================= */
@@ -154,36 +154,39 @@
     padding: var(--spacing-sm) var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0; background-color: var(--bg-primary);
+    position: relative; /* Added for potential absolute elements */
+    z-index: 2; /* Ensure header is above messages */
   }
-  
+
   /* Common Logo Area Structure */
   .tech-logo, .mindful-logo,
   .stem-logo, .bishop-logo {
     display: flex; align-items: center; gap: var(--spacing-sm);
     flex-shrink: 1; min-width: 0;
   }
-  
+
   /* Common Logo Icon */
   .tech-logo-icon, .mindful-logo-icon,
   .stem-logo-icon, .bishop-logo-icon {
     font-size: 1.5rem; color: var(--text-primary);
+    flex-shrink: 0; /* Prevent icon shrinking */
     /* Agent-specific icon color override if needed */
     /* Example: .stem-logo-icon { color: green; } */
   }
-  
+
   /* Common Logo Text */
   .tech-logo-text, .mindful-logo-text,
   .stem-logo-text, .bishop-logo-text {
     font-size: 1.1rem; font-weight: 600; color: var(--text-primary);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  
+
   /* Common Subscription Badge */
   .tech-subscription-badge, .mindful-subscription-badge,
   .stem-subscription-badge, .bishop-subscription-badge {
     font-size: 0.7rem; font-weight: 600; padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--border-radius-small); margin-left: var(--spacing-sm);
-    text-transform: uppercase; white-space: nowrap;
+    text-transform: uppercase; white-space: nowrap; flex-shrink: 0; /* Prevent shrinking */
   }
   .tech-subscription-badge.free, .mindful-subscription-badge.free,
   .stem-subscription-badge.free, .bishop-subscription-badge.free {
@@ -193,13 +196,14 @@
   .stem-subscription-badge.premium, .bishop-subscription-badge.premium {
     background-color: var(--success-color); color: var(--text-accent);
   }
-  
+
   /* Common Header Controls */
   .tech-controls, .mindful-controls,
   .stem-controls, .bishop-controls {
     display: flex; align-items: center; gap: var(--spacing-xs);
+    flex-shrink: 0; /* Prevent controls shrinking */
   }
-  
+
   /* =========================================
      COMMON BUTTON STYLES (within Header/Footer)
      ========================================= */
@@ -210,7 +214,7 @@
     padding: var(--spacing-sm); border-radius: var(--border-radius-small);
     cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease;
     display: inline-flex; align-items: center; justify-content: center;
-    line-height: 1;
+    line-height: 1; font-size: 1rem; /* Base font size for icons */
   }
   .tech-button:hover:not(:disabled), .mindful-button:hover:not(:disabled),
   .stem-button:hover:not(:disabled), .bishop-button:hover:not(:disabled) {
@@ -220,34 +224,36 @@
   .stem-button:disabled, .bishop-button:disabled {
     opacity: 0.5; cursor: not-allowed;
   }
-  
+
   /* Modifier for icon-only buttons */
   .tech-button--icon, .mindful-button--icon,
   .stem-button--icon, .bishop-button--icon {
-    font-size: 1.1rem;
+     /* Use base font-size, specific sizing below */
   }
-  
+
   /* Modifier for buttons with text */
   .tech-button span, .mindful-button span,
   .stem-button span, .bishop-button span {
     margin-left: var(--spacing-sm); font-size: 0.9rem;
+    display: inline-block; /* Ensure span exists */
   }
-  
+
   /* Hiding specific button text */
   .mode-switch-text, /* Only used in original tech/mindful */
   .tech-button--settings span, .mindful-button--settings span,
   .stem-button--settings span, .bishop-button--settings span {
+      /* Hide by default, overridden in larger screens if needed */
       display: none;
   }
-  
+
   /* =========================================
      AGENT-SPECIFIC COMPONENTS (Mood Selector, Resources)
      ========================================= */
-  
+
   /* --- MOOD SELECTOR (MindfulMate Only) --- */
   .mindful-chat-container .mood-selector { /* Scope to mindful container */
     padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--border-color);
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-secondary); flex-shrink: 0; /* Prevent shrinking */
   }
   .mindful-chat-container .mood-selector p { /* ... rest of mood selector styles ... */
       margin: 0 0 var(--spacing-sm) 0; font-size: 0.9rem;
@@ -271,10 +277,12 @@
   }
   .mindful-chat-container .mood-button span[role="img"] { font-size: 1rem; }
   .mindful-chat-container .mood-button:disabled { opacity: 0.6; cursor: not-allowed; }
-  
+
   /* --- MOBILE MOOD SELECTOR (MindfulMate Only) --- */
   .mindful-chat-container .mobile-mood-selector { /* Scope to mindful container */
     border-bottom: 1px solid var(--border-color); background-color: var(--bg-secondary);
+    display: none; /* Hidden by default, shown via media query */
+    flex-shrink: 0; /* Prevent shrinking */
   }
   .mindful-chat-container .mobile-mood-toggle { /* ... rest of mobile mood styles ... */
       display: flex; align-items: center; justify-content: space-between; width: 100%;
@@ -289,12 +297,13 @@
   .mindful-chat-container .mobile-mood-button:hover { background-color: var(--bg-hover); }
   .mindful-chat-container .mobile-mood-button.active { background-color: var(--bg-accent); color: var(--text-accent); }
   .mindful-chat-container .mobile-mood-button:disabled { opacity: 0.6; cursor: not-allowed; }
-  
+
   /* --- WELLNESS RESOURCES (MindfulMate Only) --- */
   .mindful-chat-container .wellness-resources { /* Scope to mindful container */
     padding: var(--spacing-sm) var(--spacing-md); margin: var(--spacing-sm) var(--spacing-md);
     border: 1px dashed var(--border-color); border-radius: var(--border-radius);
     background-color: var(--bg-secondary); font-size: 0.85rem; color: var(--text-secondary);
+    flex-shrink: 0; /* Prevent shrinking */
   }
   .mindful-chat-container .wellness-resources h3 { /* ... rest of resource styles ... */
       font-size: 0.9rem; color: var(--text-primary); margin: 0 0 var(--spacing-sm) 0;
@@ -302,23 +311,26 @@
   }
   .mindful-chat-container .wellness-resources ul { list-style: none; padding: 0; margin: var(--spacing-sm) 0 0 0; }
   .mindful-chat-container .wellness-resources li { margin-bottom: var(--spacing-xs); }
-  
+
   /* =========================================
      COMMON MESSAGES AREA STYLES
      ========================================= */
   .tech-messages, .mindful-messages,
   .stem-messages, .bishop-messages {
-    flex: 1; overflow-y: auto; overflow-x: hidden; padding: var(--spacing-md);
+    flex: 1 1 auto; /* Allow growing and shrinking, set basis to auto */
+    overflow-y: auto; overflow-x: hidden; padding: var(--spacing-md);
     scroll-behavior: smooth; display: flex; flex-direction: column;
     gap: var(--spacing-sm); /* Space between message groups */
+    position: relative; /* For scroll-to-bottom positioning */
+    min-height: 0; /* Prevent flexbox overflow issues */
   }
-  
+
   /* Common Message container */
   .tech-message, .mindful-message,
   .stem-message, .bishop-message {
     display: flex; max-width: 80%; position: relative;
   }
-  
+
   /* Common Message bubble - contains text and actions */
   .tech-message-bubble, .mindful-message-bubble,
   .stem-message-bubble, .bishop-message-bubble {
@@ -326,7 +338,7 @@
     line-height: 1.6; word-wrap: break-word; position: relative;
     box-shadow: 0 1px 2px var(--shadow-color); transition: background-color 0.2s ease;
   }
-  
+
   /* User Message Alignment & Style (Common) */
   .tech-message.user, .mindful-message.user,
   .stem-message.user, .bishop-message.user {
@@ -340,12 +352,12 @@
     /* Example: .bishop-chat-container .bishop-message.user .bishop-message-bubble { background-color: var(--bg-accent); color: var(--text-accent); } */
   }
   /* Example specific user bubble override for Bishop */
-  .bishop-message.user .bishop-message-bubble {
+  .bishop-chat-container .bishop-message.user .bishop-message-bubble { /* Scope to bishop container */
       background-color: var(--bg-accent); /* Use theme accent for user */
       color: var(--text-accent);
   }
-  
-  
+
+
   /* Model Message Alignment & Style (Common) */
   .tech-message.model, .mindful-message.model,
   .stem-message.model, .bishop-message.model {
@@ -355,15 +367,25 @@
   .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble {
     background-color: var(--bg-secondary); color: var(--text-primary);
     border-bottom-left-radius: var(--border-radius-small);
-    padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em); /* Default space for icon */
+    /* Add padding for icon IF icon is visible */
+    /* padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em); Default space for icon */
   }
-  
+   /* Conditionally add padding if icon exists and is visible */
+   .tech-message.model .tech-message-bubble:has(.message-icon.model-icon),
+   .mindful-message.model .mindful-message-bubble:has(.message-icon.model-icon),
+   .stem-message.model .stem-message-bubble:has(.message-icon.model-icon),
+   .bishop-message.model .bishop-message-bubble:has(.message-icon.model-icon) {
+       padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em);
+   }
+
+
   /* Message Icon (Model only - Common) */
   .message-icon.model-icon { /* Target using common class + model-icon */
     position: absolute; left: var(--spacing-md); top: var(--spacing-sm);
     font-size: 1em; color: var(--text-secondary);
+    display: block; /* Ensure it's displayed by default */
   }
-  
+
   /* Message Text (Common Structure) */
   .message-text { margin: 0; }
   .message-text p:first-child { margin-top: 0; }
@@ -388,7 +410,7 @@
   }
   .message-text a { color: var(--link-color); text-decoration: none; }
   .message-text a:hover { text-decoration: underline; }
-  
+
   /* Message Action Button (Common) */
   .message-action-button { /* Common class */
     position: absolute; bottom: var(--spacing-xs); right: var(--spacing-xs);
@@ -396,6 +418,7 @@
     color: var(--text-secondary); padding: var(--spacing-xs); font-size: 0.8rem;
     border-radius: var(--border-radius-small); cursor: pointer; opacity: 0;
     transition: opacity 0.2s ease, background-color 0.2s ease; line-height: 1;
+    z-index: 1; /* Ensure above bubble background */
   }
   /* Show on hover for any message bubble */
   .tech-message-bubble:hover .message-action-button,
@@ -407,17 +430,17 @@
   .message-action-button:hover {
     background-color: var(--bg-hover); color: var(--text-primary);
   }
-  
+
   /* Special Mood Update Messages (MindfulMate only) */
-  .mindful-message.mood-update { /* Scope to mindful agent */
+  .mindful-chat-container .mindful-message.mood-update { /* Scope to mindful agent */
       align-self: center; max-width: 60%; font-style: italic; text-align: center;
   }
-  .mindful-message.mood-update .mindful-message-bubble {
+  .mindful-chat-container .mindful-message.mood-update .mindful-message-bubble {
       background-color: transparent; color: var(--text-secondary); box-shadow: none;
       font-size: 0.9rem; padding: var(--spacing-xs) var(--spacing-md);
   }
-  
-  
+
+
   /* =========================================
      COMMON FOOTER / INPUT AREA STYLES
      ========================================= */
@@ -426,8 +449,10 @@
     padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--border-color);
     background-color: var(--bg-primary); display: flex; align-items: flex-end;
     gap: var(--spacing-sm); flex-shrink: 0;
+    position: relative; /* Added for potential absolute elements */
+    z-index: 2; /* Ensure footer is above messages */
   }
-  
+
   /* Textarea Input (Common Style) */
   .tech-input, .mindful-input,
   .stem-input, .bishop-input {
@@ -451,12 +476,12 @@
   .stem-input:disabled, .bishop-input:disabled {
     background-color: var(--bg-hover); cursor: not-allowed; opacity: 0.7;
   }
-  
+
   /* Footer Buttons (Common base for icon buttons like File, Notepad) */
   .tech-footer .tech-button--icon, .mindful-footer .mindful-button--icon,
   .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon {
-       height: 48px; /* Match input min-height */
-       width: 48px;
+       min-height: 48px; /* Match input min-height */
+       min-width: 48px; /* Ensure square shape */
        padding: 0; /* Remove padding if fixed size */
        font-size: 1.1rem;
        flex-shrink: 0;
@@ -466,15 +491,15 @@
   .stem-footer .stem-button--icon { /* Style file/notepad buttons */
       /* Example: background-color: var(--bg-secondary); */
   }
-  
-  
+
+
   /* Send Button (Common style, agent-specific colors) */
   .tech-send-button, .mindful-send-button,
   .stem-send-button, .bishop-send-button {
     height: 48px; width: 48px; padding: 0; font-size: 1.3rem;
     border-radius: var(--border-radius); flex-shrink: 0;
     background-color: var(--bg-accent); color: var(--text-accent);
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, opacity 0.2s ease; /* Added opacity */
   }
   .tech-send-button:hover:not(:disabled), .mindful-send-button:hover:not(:disabled),
   .stem-send-button:hover:not(:disabled), .bishop-send-button:hover:not(:disabled) {
@@ -485,27 +510,30 @@
     background-color: var(--bg-tertiary); color: var(--text-secondary);
     opacity: 0.6; cursor: not-allowed;
   }
-  
-  
+
+
   /* =========================================
      COMMON OTHER COMPONENTS
      ========================================= */
-  
+
   /* Loading Indicator (Common structure) */
   .chat-loading-indicator {
     display: flex; align-items: center; justify-content: center;
     padding: var(--spacing-sm); font-size: 0.9rem;
     color: var(--text-secondary); gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0; /* Add some margin */
+    flex-shrink: 0; /* Prevent shrinking */
   }
   /* Agent-specific loader class targets if needed */
   .tech-loading, .mindful-loading,
   .stem-loading, .bishop-loading { /* styles if needed */ }
-  
+
   /* Error & Limit Messages (Common structure) */
   .chat-error-display,
   .chat-limit-message {
     padding: var(--spacing-sm) var(--spacing-md); margin: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius); font-size: 0.9rem; text-align: center;
+    flex-shrink: 0; /* Prevent shrinking */
   }
   /* Agent-specific error message class targets (for consistency) */
   .tech-error-message, .mindful-error-message,
@@ -514,20 +542,27 @@
     color: var(--error-color);
     border: 1px solid color-mix(in srgb, var(--error-color) 30%, transparent);
   }
-  
+
   /* Scroll to Bottom Button (Common) */
   .scroll-to-bottom {
-    position: absolute; bottom: calc(var(--spacing-md) + 60px); left: 50%;
+    position: absolute; /* Position relative to messages container */
+    bottom: var(--spacing-md); /* Position above footer */
+    left: 50%;
     transform: translateX(-50%); background-color: var(--bg-secondary);
     color: var(--text-primary); border: 1px solid var(--border-color);
     border-radius: 50%; width: 36px; height: 36px;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; box-shadow: 0 2px 5px var(--shadow-color);
-    z-index: 5; transition: background-color 0.2s ease, opacity 0.3s ease;
-    opacity: 0.9;
+    z-index: 5; transition: background-color 0.2s ease, opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0; /* Hidden by default, shown via JS */
+    visibility: hidden; /* Ensure hidden when opacity is 0 */
+  }
+  .scroll-to-bottom.visible { /* Class added by JS */
+      opacity: 0.9;
+      visibility: visible;
   }
   .scroll-to-bottom:hover { background-color: var(--bg-hover); opacity: 1; }
-  
+
   /* Notification Toast (Common) */
   .chat-notification {
     position: fixed; bottom: var(--spacing-lg); left: 50%; transform: translateX(-50%);
@@ -536,96 +571,187 @@
     box-shadow: 0 3px 10px var(--shadow-color); font-size: 0.9rem; z-index: 1100;
     animation: fadeIn 0.3s ease-out, fadeOut 0.3s ease-in 2.2s forwards;
   }
-  
+
   /* Placeholder for Virtual Notepad (Common) */
   .virtual-notepad-placeholder {
       padding: 1rem; border-top: 1px solid var(--border-color);
       background: var(--bg-secondary);
+      flex-shrink: 0; /* Prevent shrinking */
       /* Add more styles as needed */
   }
-  
+
   /* =========================================
      CONSOLIDATED RESPONSIVE ADJUSTMENTS
      ========================================= */
-  
+
   /* Medium screens (Tablets & Large Phones) */
   @media (max-width: 768px) {
     .modal-content { max-width: 95%; height: 90vh; }
     .chat-wrapper { /* Affects all agent containers */
-        padding: var(--spacing-sm);
+       /* No padding override needed here */
     }
     .tech-header, .mindful-header, .stem-header, .bishop-header { padding: var(--spacing-sm); }
     .tech-logo-text, .mindful-logo-text, .stem-logo-text, .bishop-logo-text { font-size: 1rem; max-width: 150px; }
-    .mode-switch-text, /* Common elements to hide text */
-    .tech-button--settings span, .mindful-button--settings span,
-    .stem-button--settings span, .bishop-button--settings span { display: none; }
-  
+
+    /* Show settings text on slightly larger screens? Optional */
+    /* .tech-button--settings span, .mindful-button--settings span,
+    .stem-button--settings span, .bishop-button--settings span { display: inline-block; } */
+
     .tech-messages, .mindful-messages, .stem-messages, .bishop-messages { padding: var(--spacing-sm); gap: var(--spacing-xs); }
     .tech-message, .mindful-message, .stem-message, .bishop-message { max-width: 85%; }
     .tech-message-bubble, .mindful-message-bubble, .stem-message-bubble, .bishop-message-bubble { padding: var(--spacing-xs) var(--spacing-sm); }
-    .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
-    .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble { padding-left: calc(var(--spacing-sm) + var(--spacing-xs) + 1em); }
-  
+
+    /* Adjust model padding based on icon presence */
+    .tech-message.model .tech-message-bubble:has(.message-icon.model-icon),
+    .mindful-message.model .mindful-message-bubble:has(.message-icon.model-icon),
+    .stem-message.model .stem-message-bubble:has(.message-icon.model-icon),
+    .bishop-message.model .bishop-message-bubble:has(.message-icon.model-icon) {
+        padding-left: calc(var(--spacing-sm) + var(--spacing-xs) + 1em);
+    }
+    .tech-message.model .tech-message-bubble:not(:has(.message-icon.model-icon)),
+    .mindful-message.model .mindful-message-bubble:not(:has(.message-icon.model-icon)),
+    .stem-message.model .stem-message-bubble:not(:has(.message-icon.model-icon)),
+    .bishop-message.model .bishop-message-bubble:not(:has(.message-icon.model-icon)) {
+        padding-left: var(--spacing-sm); /* Default if icon is hidden */
+    }
+
+
     .tech-footer, .mindful-footer, .stem-footer, .bishop-footer { padding: var(--spacing-sm); gap: var(--spacing-xs); }
     .tech-input, .mindful-input, .stem-input, .bishop-input { min-height: 46px; max-height: 120px; }
-  
+
     /* Common footer icon/send button sizing */
     .tech-footer .tech-button--icon, .mindful-footer .mindful-button--icon,
-    .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon { padding: var(--spacing-sm); font-size: 1rem; }
+    .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon { min-height: 46px; min-width: 46px; font-size: 1rem; }
     .tech-send-button, .mindful-send-button, .stem-send-button, .bishop-send-button { height: 46px; width: 46px; font-size: 1.2rem; }
-  
-    .scroll-to-bottom { width: 34px; height: 34px; bottom: calc(var(--spacing-md) + 60px); }
+
+    .scroll-to-bottom { width: 34px; height: 34px; bottom: var(--spacing-sm); /* Adjusted for this breakpoint */ }
+
+    /* Hide desktop mood selector, show mobile toggle */
+     .mindful-chat-container .mood-selector { display: none; }
+     .mindful-chat-container .mobile-mood-selector { display: block; }
   }
-  
-  /* Small screens (Mobile Phones) */
+
+  /* Small screens (Mobile Phones - Portrait Focus) */
   @media (max-width: 576px) {
-    .modal { padding: 0; align-items: flex-end; }
-    .modal-content { width: 100%; max-width: 100%; height: 90vh; max-height: none; border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; }
-    .chat-wrapper { border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; border: none; padding: var(--spacing-xs); }
-  
-    .tech-close-button, .mindful-close-button, .stem-close-button, .bishop-close-button { top: var(--spacing-xs); right: var(--spacing-xs); }
-  
+    .modal { padding: 0; align-items: flex-end; /* Dock to bottom */ }
+    .modal-content { width: 100%; max-width: 100%; height: 90vh; max-height: none; border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; animation: slideUpFromBottom 0.4s ease-out; } /* Changed animation */
+    .chat-wrapper { border-radius: var(--border-radius-large) var(--border-radius-large) 0 0; border: none; /* Remove padding override */ }
+
+    .tech-close-button, .mindful-close-button, .stem-close-button, .bishop-close-button { top: var(--spacing-xs); right: var(--spacing-xs); font-size: 1.8rem; /* Slightly larger tap target */ }
+
     .tech-header, .mindful-header, .stem-header, .bishop-header { flex-wrap: wrap; justify-content: center; gap: var(--spacing-xs); padding: var(--spacing-sm) var(--spacing-md); }
-    .tech-logo, .mindful-logo, .stem-logo, .bishop-logo { order: 1; width: 100%; justify-content: center; }
-    .tech-controls, .mindful-controls, .stem-controls, .bishop-controls { order: 2; width: 100%; justify-content: space-around; }
-    .tech-subscription-badge, .mindful-subscription-badge, .stem-subscription-badge, .bishop-subscription-badge { display: none; }
-  
+    .tech-logo, .mindful-logo, .stem-logo, .bishop-logo { order: 1; width: 100%; justify-content: center; text-align: center; /* Center text if it wraps */ }
+    .tech-logo-text, .mindful-logo-text, .stem-logo-text, .bishop-logo-text { white-space: normal; } /* Allow wrapping */
+    .tech-controls, .mindful-controls, .stem-controls, .bishop-controls { order: 2; width: 100%; justify-content: space-around; border-top: 1px solid var(--border-color); margin-top: var(--spacing-xs); padding-top: var(--spacing-xs); }
+    .tech-subscription-badge, .mindful-subscription-badge, .stem-subscription-badge, .bishop-subscription-badge { display: none; } /* Hide badge */
+    .tech-button span, .mindful-button span, .stem-button span, .bishop-button span { display: none; } /* Ensure all text is hidden */
+
     .tech-messages, .mindful-messages, .stem-messages, .bishop-messages { padding: var(--spacing-md) var(--spacing-sm); }
     .tech-message, .mindful-message, .stem-message, .bishop-message { max-width: 90%; }
-    .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
-    .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble { padding-left: var(--spacing-sm); }
+
+     /* Hide model icon on small screens */
     .message-icon.model-icon { display: none; }
+    /* Adjust model padding since icon is hidden */
+    .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
+    .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble {
+        padding-left: var(--spacing-sm);
+    }
+
     .message-action-button { opacity: 0.7; background-color: transparent; border: none; font-size: 1rem; padding: var(--spacing-xs); bottom: 2px; right: 2px; }
-  
+
     .tech-footer, .mindful-footer, .stem-footer, .bishop-footer { padding: var(--spacing-sm); gap: var(--spacing-xs); }
     .tech-input, .mindful-input, .stem-input, .bishop-input { min-height: 44px; padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.95rem; }
-  
+
     /* Common footer icon/send button sizing for mobile */
     .tech-footer .tech-button--icon, .mindful-footer .mindful-button--icon,
-    .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon { height: 44px; width: 40px; font-size: 1rem; padding: 0; }
+    .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon { min-height: 44px; min-width: 40px; font-size: 1rem; }
     .tech-send-button, .mindful-send-button, .stem-send-button, .bishop-send-button { height: 44px; width: 44px; }
-  
-    .scroll-to-bottom { bottom: calc(var(--spacing-md) + 55px); width: 32px; height: 32px; }
+
+    .scroll-to-bottom { bottom: var(--spacing-xs); width: 32px; height: 32px; } /* Adjusted position for mobile */
     .virtual-notepad-placeholder { padding: var(--spacing-sm) !important; }
   }
-  
-  /* Landscape on small devices */
+
+  /* Landscape on small devices - REFINED */
   @media (max-height: 500px) and (orientation: landscape) {
-    .modal-content { height: 95vh; }
-    .tech-input, .mindful-input, .stem-input, .bishop-input { max-height: 80px; }
-    .tech-messages, .mindful-messages, .stem-messages, .bishop-messages { padding: var(--spacing-xs); }
-    .tech-footer, .mindful-footer, .stem-footer, .bishop-footer { padding: var(--spacing-xs) var(--spacing-sm); }
-    .mood-selector, .wellness-resources { display: none; } /* Hide agent-specific elements */
+    .modal-content { height: 95vh; } /* Keep slightly less than full height */
+
+    .tech-header, .mindful-header, .stem-header, .bishop-header {
+        padding: var(--spacing-xs) var(--spacing-sm); /* Further reduce padding */
+        flex-wrap: nowrap; /* Prevent wrapping in landscape */
+        justify-content: space-between; /* Reset justification */
+    }
+     .tech-logo, .mindful-logo, .stem-logo, .bishop-logo {
+        order: 0; /* Reset order */
+        width: auto; /* Reset width */
+        justify-content: flex-start; /* Reset justification */
+    }
+    .tech-controls, .mindful-controls, .stem-controls, .bishop-controls {
+        order: 0; /* Reset order */
+        width: auto; /* Reset width */
+        border-top: none; margin-top: 0; padding-top: 0; /* Reset mobile wrapping styles */
+    }
+    .tech-logo-text, .mindful-logo-text, .stem-logo-text, .bishop-logo-text {
+        max-width: 100px; /* Limit text width */
+        white-space: nowrap; /* Prevent wrapping again */
+        font-size: 0.9rem; /* Smaller text */
+    }
+     .tech-button span, .mindful-button span, .stem-button span, .bishop-button span {
+         display: none; /* Ensure text is hidden */
+     }
+
+
+    .tech-footer, .mindful-footer, .stem-footer, .bishop-footer {
+        padding: var(--spacing-xs) var(--spacing-sm); /* Minimal padding */
+        gap: var(--spacing-xs);
+    }
+    .tech-input, .mindful-input, .stem-input, .bishop-input {
+        min-height: 40px; /* Slightly smaller min height */
+        max-height: 80px; /* Keep max height limit */
+        font-size: 0.9rem; /* Slightly smaller font */
+    }
+    /* Footer button sizing for landscape */
+    .tech-footer .tech-button--icon, .mindful-footer .mindful-button--icon,
+    .stem-footer .stem-button--icon, .bishop-footer .bishop-button--icon {
+        min-height: 40px; min-width: 40px; /* Match input height */
+        font-size: 1rem;
+    }
+    .tech-send-button, .mindful-send-button, .stem-send-button, .bishop-send-button {
+        height: 40px; width: 40px; /* Match input height */
+        font-size: 1.1rem;
+    }
+
+    .tech-messages, .mindful-messages, .stem-messages, .bishop-messages {
+         padding: var(--spacing-xs); /* Minimal padding */
+    }
+
+    .scroll-to-bottom {
+        bottom: var(--spacing-xs); /* Position just above the minimal footer */
+        width: 30px; height: 30px; /* Slightly smaller */
+    }
+
+    /* Agent-specific elements to hide */
+    .mood-selector, .mobile-mood-selector, .wellness-resources {
+         display: none !important; /* Ensure these are hidden */
+    }
+     /* Hide model icon in landscape too */
+     .message-icon.model-icon { display: none; }
+     .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
+     .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble {
+         padding-left: var(--spacing-sm); /* Adjust padding */
+     }
   }
-  
+
   /* =========================================
      ANIMATIONS
      ========================================= */
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
   @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  
+  @keyframes slideUpFromBottom { from { transform: translateY(100%); opacity: 0.5; } to { transform: translateY(0); opacity: 1; } } /* New animation */
+
+
   @media (prefers-reduced-motion: reduce) {
     .modal, .modal-content, .chat-notification { animation: fadeIn 0.01s ease-out !important; }
     .chat-notification { animation: fadeIn 0.01s ease-out, fadeOut 0.01s ease-in 2.48s forwards !important; }
+    .scroll-to-bottom { transition: opacity 0.01s ease, visibility 0.01s step-end; } /* Reduce motion for scroll button */
   }
