@@ -113,7 +113,7 @@
   display: grid;
   place-items: center;
   padding: var(--dynamic-spacing);
-  z-index: 100;
+  z-index: 110;
   
   /* Modern blur effect with fallback */
   @supports (backdrop-filter: blur(8px)) {
@@ -124,13 +124,13 @@
 
 .modal-content {
   width: var(--container-width);
-  max-height: 90dvh;
+  max-height: 95dvh;
   background-color: var(--bg-color);
   color: var(--text-color);
   border: 2px solid var(--primary-color);
   border-radius: var(--border-radius);
   padding: var(--dynamic-spacing);
-  overflow-y: auto;
+  overflow-y: scroll;
   overscroll-behavior: contain;
   
   /* Smooth scrolling with reduced motion preference */
