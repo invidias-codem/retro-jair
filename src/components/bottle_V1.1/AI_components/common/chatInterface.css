@@ -7,6 +7,7 @@
     /* Use spacing variables for consistency */
     padding: var(--spacing-md, 1rem);
     height: 100%; /* Fill parent height */
+    width: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box; /* Include padding in height calculation */
