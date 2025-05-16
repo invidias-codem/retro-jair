@@ -108,8 +108,8 @@ function Projects() {
 
   {/* Download Button */}
   <a
-    href="JJ's_Resume(2025).pdf"
-    download="JJ's_Resume(2025).pdf"
+    href="Jair's_Resume(2025).pdf"
+    download="Jair's_Resume(2025).pdf"
     className="download-resume-button"
     style={{ display: 'inline-block', marginTop: '20px' }}
   >
