@@ -94,7 +94,7 @@ function Projects() {
   {/* PDF Preview */}
   <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto', height: '600px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
     <embed
-      src="JJ's_Resume(2025).pdf"
+      src="Jair's_Resume(2025).pdf"
       type="application/pdf"
       width="100%"
       height="100%"
