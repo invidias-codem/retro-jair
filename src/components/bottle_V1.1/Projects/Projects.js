@@ -100,10 +100,7 @@ function Projects() {
       height="100%"
       title="Resume Preview"
     />
-    {/* 
-      Alternatively, you can use <iframe> or <object>:
-      <iframe src="JJ's_Resume(2025).pdf" width="100%" height="100%" style={{ border: 'none' }} title="Resume Preview"></iframe>
-    */}
+    {}
   </div>
 
   {/* Download Button */}

@@ -1,8 +1,9 @@
+/* General Game Styles */
 .skill-game {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.92); /* Slightly deeper black */
   padding: 1.25rem;
   border: 3px solid rgba(0, 255, 0, 0.7);
-  box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.5), 0 0 12px rgba(0, 255, 0, 0.3) inset; /* Added inset shadow */
   font-family: 'VT323', monospace;
   color: rgba(0, 255, 0, 0.9);
   text-align: center;
@@ -17,22 +18,25 @@
   width: 100%;
   height: 100%;
   touch-action: none;
+  transition: border-color 0.5s ease-out, box-shadow 0.5s ease-out; /* Smooth transitions for event changes */
 }
 
 .game-canvas {
-  background-color: #000;
+  background-color: #050505; /* Darker canvas bg */
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   width: 100%;
   height: 100%;
+  /* Add a subtle pattern or noise if desired, though this can affect canvas readability */
+  /* background-image: url('data:image/svg+xml,...'); */
 }
 
 .skill-game h2 {
-  font-size: 2.25rem;
+  font-size: 2.35rem; /* Slightly larger */
   margin-bottom: 0.75rem;
-  text-shadow: 1px 1px rgba(0, 255, 255, 0.6);
+  text-shadow: 1px 1px rgba(0, 255, 255, 0.7), 0 0 5px rgba(0, 255, 255, 0.4); /* Enhanced glow */
   letter-spacing: 0.05em;
 }
 
@@ -46,13 +50,13 @@
 .canvas-container {
   width: 100%;
   height: 60vh;
-  max-height: 400px;
+  max-height: 450px; /* Slightly increased max-height */
   margin: 1rem auto;
   position: relative;
   overflow: hidden;
   border: 2px solid rgba(0, 255, 0, 0.6);
-  box-shadow: 0 0 8px rgba(0, 255, 0, 0.4) inset;
-  background-color: rgba(0, 0, 0, 0.95);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5) inset, 0 0 5px rgba(0, 255, 0, 0.3); /* Enhanced inset shadow */
+  background-color: rgba(0, 0, 0, 0.97); /* Darker */
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -69,37 +73,93 @@
   image-rendering: pixelated;
 }
 
+/* --- Game Event Modifier Styling --- */
+/* These classes would be added to .skill-game via JavaScript */
+
+/* Frenzy Mode: Rapid pulsing, slight red tint */
+.skill-game.event-frenzy-mode {
+  border-color: rgba(255, 100, 0, 0.8);
+  box-shadow: 0 0 15px rgba(255, 100, 0, 0.7), 0 0 20px rgba(255, 100, 0, 0.4) inset, 0 0 30px rgba(255, 0, 0, 0.5);
+  animation: pulse-frenzy 0.5s infinite alternate;
+}
+@keyframes pulse-frenzy {
+  from { opacity: 0.8; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.01); }
+}
+
+/* High Stakes: Intense gold/red border, subtle glow */
+.skill-game.event-high-stakes {
+  border-color: rgba(255, 215, 0, 0.9); /* Gold */
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 25px rgba(255, 69, 0, 0.5) inset, 0 0 40px rgba(255, 0, 0, 0.6); /* Gold and red glow */
+}
+.skill-game.event-high-stakes::before { /* Add a subtle animated gradient overlay */
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(45deg, rgba(255,0,0,0.1), rgba(255,215,0,0.1), rgba(255,0,0,0.1));
+  background-size: 200% 200%;
+  animation: gradient-flow 3s ease infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Safe Zone: Calming cyan/blue border */
+.skill-game.event-safe-zone {
+  border-color: rgba(0, 200, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.6), 0 0 20px rgba(0, 150, 255, 0.4) inset;
+}
+
+/* Specific Skill Bonus: Pulsing targeted color (e.g., magenta if not used elsewhere) */
+.skill-game.event-skill-bonus {
+  border-color: rgba(255, 0, 255, 0.8); /* Magenta */
+  animation: pulse-bonus 0.7s infinite alternate;
+}
+@keyframes pulse-bonus {
+  from { box-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 15px rgba(255, 0, 255, 0.3) inset; }
+  to { box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 25px rgba(255, 0, 255, 0.5) inset; }
+}
+
+
+/* --- Message Styling --- */
 .win-message,
 .lose-message {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.75rem;
-  padding: 1.25rem;
-  border-radius: 8px;
+  font-size: 1.85rem; /* Slightly larger */
+  padding: 1.5rem;  /* More padding */
+  border-radius: 10px; /* More rounded */
   z-index: 10;
-  backdrop-filter: blur(3px);
-  border: 2px solid;
+  backdrop-filter: blur(4px); /* Stronger blur */
+  border: 3px solid; /* Thicker border */
+  animation: fadeInMessage 0.5s ease-out;
+  width: 80%;
+  max-width: 500px;
+}
+
+@keyframes fadeInMessage {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 .win-message {
-  color: rgba(255, 255, 0, 0.9);
-  border-color: rgba(255, 255, 0, 0.6);
-  text-shadow: 1px 1px rgba(255, 0, 255, 0.6);
-  background-color: rgba(0, 0, 0, 0.85);
-  box-shadow: 0 0 12px rgba(255, 255, 0, 0.3);
+  color: rgba(255, 255, 50, 0.95); /* Brighter yellow */
+  border-color: rgba(255, 255, 100, 0.7);
+  text-shadow: 1px 1px rgba(255, 100, 255, 0.7), 0 0 8px rgba(255,255,0,0.5); /* More prominent shadow */
+  background-color: rgba(10, 20, 10, 0.9); /* Darker, slightly green background */
+  box-shadow: 0 0 15px rgba(255, 255, 0, 0.4), 0 0 5px rgba(255,255,255,0.2) inset;
 }
 
 .lose-message {
-  color: rgba(255, 0, 0, 0.9);
-  border-color: rgba(255, 0, 0, 0.6);
-  text-shadow: 1px 1px rgba(255, 0, 255, 0.6);
-  background-color: rgba(0, 0, 0, 0.85);
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.3);
+  color: rgba(255, 50, 50, 0.95); /* Brighter red */
+  border-color: rgba(255, 100, 100, 0.7);
+  text-shadow: 1px 1px rgba(100, 0, 0, 0.7), 0 0 8px rgba(255,0,0,0.5);
+  background-color: rgba(30, 10, 10, 0.9); /* Darker, slightly red background */
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), 0 0 5px rgba(100,0,0,0.2) inset;
 }
 
-/* CRT effect with reduced intensity */
+/* CRT effect */
 .skill-game::after {
   content: " ";
   display: block;
@@ -110,19 +170,30 @@
   right: 0;
   background: linear-gradient(
       rgba(18, 16, 16, 0) 50%,
-      rgba(0, 0, 0, 0.15) 50%
+      rgba(0, 0, 0, 0.18) 50%  /* Slightly more visible scanlines */
   ),
   linear-gradient(
       90deg,
-      rgba(255, 0, 0, 0.03),
-      rgba(0, 255, 0, 0.01),
-      rgba(0, 0, 255, 0.03)
+      rgba(255, 0, 0, 0.04), /* More pronounced color aberration */
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.04)
   );
-  z-index: 2;
-  background-size: 100% 2px, 3px 100%;
+  z-index: 2; /* Ensure it's above background, below messages */
+  background-size: 100% 2px, 4px 100%; /* Thicker color aberration lines */
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.75;
+  animation: flickerCRT 0.05s infinite alternate; /* Subtle flicker */
 }
+@keyframes flickerCRT {
+    from { opacity: 0.72; }
+    to { opacity: 0.78; }
+}
+@keyframes gradient-flow { /* For high-stakes background */
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -130,23 +201,19 @@
       padding: 0.75rem;
       border-width: 2px;
   }
-
   .skill-game h2 {
-      font-size: 1.75rem;
+      font-size: 1.85rem; /* Adjusted */
   }
-
   .skill-game p {
       font-size: 1rem;
   }
-
   .canvas-container {
-      height: 50vh;
+      height: 55vh; /* Adjusted */
       margin: 0.75rem auto;
   }
-
   .win-message,
   .lose-message {
-      font-size: 1.25rem;
+      font-size: 1.35rem; /* Adjusted */
       padding: 1rem;
   }
 }
@@ -154,26 +221,20 @@
 /* Game focus states */
 .canvas-container canvas:focus {
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.4), 0 0 15px rgba(0, 255, 255, 0.3) inset; /* Enhanced focus */
 }
 
-.start-button {
-  color: rgba(0, 255, 255, 0.9);
-  border-color: rgba(0, 255, 255, 0.6);
-  font-size: 1.5rem;
-  padding: 1rem 2rem;
-  position: relative;
-  overflow: hidden;
+/* --- Button Styling --- */
+.start-button { /* This specific class for start button if it needs unique styling from .control-button */
+  /* The existing .control-button and its shine effect already apply */
+  /* If additional unique styles are needed, add them here */
 }
 
 .start-button:hover {
-  background-color: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-  transform: scale(1.05);
-  transition: all 0.3s ease;
+  /* Existing hover from .control-button is good. Can add more here if needed. */
 }
 
-.start-button::after {
+.start-button::after { /* Shine animation, already defined */
   content: '';
   position: absolute;
   top: -50%;
@@ -191,59 +252,75 @@
 }
 
 @keyframes shine {
-  0% {
-      transform: translateX(-100%) rotate(45deg);
-  }
-  100% {
-      transform: translateX(100%) rotate(45deg);
-  }
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
 }
 
 .skill-game.idle .canvas-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.85); /* Slightly darker */
 }
 
 @media (max-width: 768px) {
-  .start-button {
+  .start-button { /* This will also affect other .control-buttons due to cascade */
       font-size: 1.25rem;
       padding: 0.75rem 1.5rem;
   }
 }
 
 .control-button {
-  background-color: #000; /* Black background */
-  color: #0f0; /* Green text */
-  border: 2px solid #0f0; /* Green border */
-  padding: 10px 20px;
-  font-family: 'Press Start 2P', cursive; /* Retro font */
+  background-color: #080808; /* Darker black */
+  color: #00ff00; /* Bright green */
+  border: 2px solid #00dd00; /* Slightly darker green border */
+  padding: 12px 24px; /* Slightly larger padding */
+  font-family: 'Press Start 2P', cursive;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease; /* Add a transition effect */
-  box-shadow: 0px 4px 0px #000; /* Initial shadow */
+  transition: all 0.15s ease-in-out; /* Faster transition */
+  box-shadow: 0px 4px 0px #008000, 0px 6px 0px #000; /* Double shadow for depth */
+  text-transform: uppercase; /* common for retro games */
+  letter-spacing: 1px;
+  outline: none; /* Remove default browser outline */
+}
+.control-button .difficulty-level { /* Class for the (Level X) span */
+    font-size: 0.8em;
+    color: #00cc00; /* Slightly different green */
+    margin-left: 5px;
+    opacity: 0.8;
 }
 
 .control-button:hover {
-  background-color: #0f0; /* Green background on hover */
-  color: #000; /* Black text on hover */
-  border-color: #000; /* Black border on hover */
-  box-shadow: 0px 2px 0px #000; /* Shifted shadow on hover */
-  transform: translateY(2px); /* Slight upward shift on hover */
+  background-color: #00ff00;
+  color: #000;
+  border-color: #000;
+  box-shadow: 0px 2px 0px #009900, 0px 4px 0px #000; /* Adjust shadow on hover */
+  transform: translateY(2px);
+  text-shadow: 0 0 3px #000; /* Add text shadow on hover for black text */
 }
-
 .control-button:active {
-  box-shadow: none; /* Remove shadow on click */
-  transform: translateY(4px); /* More pronounced upward shift on click */
+  background-color: #00cc00; /* Slightly darker green for active state */
+  box-shadow: 0px 0px 0px #006600, 0px 2px 0px #000; /* Further adjust shadow */
+  transform: translateY(4px);
 }
 
 .replay-button { 
-  margin-right: 10px; /* Add spacing between buttons */
+  margin-right: 15px; /* Increased spacing */
+  /* Existing glow is fine */
 }
 
-/* Optional: Add a glowing effect to the replay button */
-.replay-button {
-  text-shadow: 0 0 10px #0f0; /* Green glow */
+.exit-button {
+    border-color: #cc0000; /* Reddish border for exit */
+    color: #ff3333; /* Reddish text */
 }
-
+.exit-button:hover {
+    background-color: #ff3333;
+    color: #000;
+    border-color: #000;
+    box-shadow: 0px 2px 0px #990000, 0px 4px 0px #000;
+}
+.exit-button:active {
+    background-color: #cc0000;
+    box-shadow: 0px 0px 0px #660000, 0px 2px 0px #000;
+}
