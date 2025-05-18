@@ -149,8 +149,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1.5rem;
-  background: rgba(31, 41, 55, 0.7); /* More transparent background */
+  padding: 0.05rem;
+  background: #000080; /* More transparent background */
   border-radius: 0.5rem;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -165,10 +165,7 @@
 .terminal-item::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
   background: linear-gradient(135deg, 
     rgba(79, 209, 197, 0.2),
     rgba(147, 51, 234, 0.2)
@@ -180,7 +177,8 @@
 /* Glowing border effect */
 .terminal-item::after {
   content: '';
-  position: absolute;
+  position: center;
+  margin-left: 0rem;
   top: -2px;
   left: -2px;
   right: -2px;

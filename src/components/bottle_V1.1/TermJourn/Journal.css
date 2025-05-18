@@ -1,213 +1,46 @@
-/* TerminalJournal.css - Optimized for modern and future devices */
-
-:root {
-  /* Custom properties for easy theme management */
-  --primary-color: #22c55e;
-  --accent-color: #fbbf24;
-  --bg-color: #000;
-  --text-color: #22c55e;
-  --border-radius: max(0.25rem, 4px);
-  --transition-speed: 0.3s;
-  
-  /* Modern viewport units for better compatibility */
-  --dynamic-spacing: clamp(0.5rem, 2vw, 2rem);
-  --container-width: min(90vw, 800px);
-}
-
-/* Reset and base styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Base Journal Entry Styles with modern CSS features */
-.journal-entry {
-  margin-block-end: var(--dynamic-spacing);
-  color: var(--text-color);
-  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+.journal-entry-list-item { /* This is the className we expect Terminal.js to pass */
+  display: flex; /* For basic alignment of ID, Date, Title */
+  justify-content: space-between; /* Example alignment */
+  padding: 3px 5px; /* Minimal padding */
+  margin-bottom: 2px;
   cursor: pointer;
-  transition: transform var(--transition-speed) ease;
-  container-type: inline-size;
-  position: relative;
-  
-  /* Support for high contrast mode */
-  @media (forced-colors: active) {
-    border: 2px solid CanvasText;
-  }
+  font-family: var(--as400-font, 'Courier New', monospace); /* Use AS/400 font */
+  color: var(--as400-fg, #00FF41); /* Use AS/400 text color */
+  /* Add any other default styles if this component is used in other contexts */
 }
 
-.journal-entry.selected {
-  transform: scale(1.02);
-  border: 2px solid var(--accent-color);
+.journal-entry-list-item:hover {
+  background-color: var(--as400-fg-dim, #00A32A); /* Use AS/400 hover color */
+  color: var(--as400-bg, #00001A);
 }
 
-/* Modern responsive layout using container queries */
-@container (min-width: 768px) {
-  .journal-entry {
-    margin-block-end: calc(var(--dynamic-spacing) * 2);
-  }
+.journal-entry-list-item.selected { /* If Terminal.js adds 'selected' class */
+  background-color: var(--as400-fg, #00FF41);
+  color: var(--as400-bg, #00001A);
+  font-weight: bold;
 }
 
-/* Entry Header with modern grid layout */
-.entry-header {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.5rem;
-  margin-block-end: 0.5rem;
-  font-size: clamp(0.875rem, 1.5vw, 1.25rem);
+.journal-entry-list-item.error {
+  color: var(--tech-error, #dc2626); /* Use an error color from App.css or define locally */
+  font-style: italic;
 }
 
-@container (min-width: 768px) {
-  .entry-header {
-    grid-template-columns: repeat(2, 1fr);
-    align-items: center;
-  }
+/* Spacing for elements within the list item if using the <span> structure */
+.journal-entry-list-item .entry-id {
+  flex-basis: 80px; /* Fixed width for ID */
+  flex-shrink: 0;
+  white-space: nowrap;
 }
-
-/* Content container with modern styling */
-.entry-content-container {
-  white-space: pre-line;
-  background-color: rgb(0 0 0 / 0.5);
-  padding: var(--dynamic-spacing);
-  border: 1px solid;
-  border-radius: var(--border-radius);
-  
-  /* Add support for backdrop-filter if available */
-  @supports (backdrop-filter: blur(4px)) {
-    backdrop-filter: blur(4px);
-    background-color: rgb(0 0 0 / 0.3);
-  }
+.journal-entry-list-item .entry-date-summary {
+  flex-basis: 120px; /* Fixed width for Date */
+  flex-shrink: 0;
+  white-space: nowrap;
+  text-align: center; /* Example alignment */
 }
-
-/* Modern button styling */
-.read-more-button {
-  position: relative;
-  padding: clamp(0.5rem, 2vw, 1rem);
-  color: var(--text-color);
-  background: linear-gradient(to bottom right, var(--primary-color), color-mix(in srgb, var(--primary-color) 80%, black));
-  border: 1px solid var(--primary-color);
-  border-radius: var(--border-radius);
-  font-family: inherit;
-  
-  /* Improve touch targets */
-  min-height: 44px;
-  min-width: 44px;
-  touch-action: manipulation;
-  
-  /* Modern transitions */
-  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Remove button styles for high contrast mode */
-  @media (forced-colors: active) {
-    border: 2px solid ButtonText;
-  }
-}
-
-/* Modal styles with modern layout */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgb(0 0 0 / 0.85);
-  display: grid;
-  place-items: center;
-  padding: var(--dynamic-spacing);
-  z-index: 110;
-  
-  /* Modern blur effect with fallback */
-  @supports (backdrop-filter: blur(8px)) {
-    backdrop-filter: blur(8px);
-    background-color: rgb(0 0 0 / 0.6);
-  }
-}
-
-.modal-content {
-  width: var(--container-width);
-  max-height: 95dvh;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  border: 2px solid var(--primary-color);
-  border-radius: var(--border-radius);
-  padding: var(--dynamic-spacing);
-  overflow-y: scroll;
-  overscroll-behavior: contain;
-  
-  /* Smooth scrolling with reduced motion preference */
-  @media (prefers-reduced-motion: no-preference) {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Modern scrollbar styling */
-.modal-content {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-color) transparent;
-}
-
-.modal-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal-content::-webkit-scrollbar-track {
-  background: rgb(34 197 94 / 0.1);
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 4px;
-}
-
-/* Responsive layout adjustments */
-@media (max-width: 768px) {
-  .modal-overlay {
-    align-items: flex-start;
-  }
-
-  .modal-content {
-    margin-block-start: 1rem;
-  }
-}
-
-/* Support for foldable devices */
-@media (screen-spanning: single-fold-vertical) {
-  .modal-content {
-    width: env(fold-left);
-    margin-inline-end: env(fold-width);
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: #000;
-    --text-color: #22c55e;
-  }
-}
-
-/* Reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Print styles */
-@media print {
-  .modal-overlay {
-    position: relative;
-    background: none;
-  }
-  
-  .modal-content {
-    box-shadow: none;
-    border: 1px solid #000;
-  }
-  
-  .read-more-button {
-    display: none;
-  }
+.journal-entry-list-item .entry-title-summary {
+  flex-grow: 1; /* Title takes remaining space */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 10px; /* Space after date */
 }

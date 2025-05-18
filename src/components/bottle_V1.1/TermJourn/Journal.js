@@ -1,221 +1,101 @@
-import React, { useState, useCallback, memo } from 'react';
-import { ChevronRight, X } from 'lucide-react';
-import journalLogs from './journalLogs';
+// Journal.js - Refined for list display
+import React, { useCallback, memo } from 'react';
+// journalLogs import is not strictly needed here if Terminal.js handles data fetching/passing
+// import journalLogs from './journalLogs'; // Can be removed if entry is always passed as prop
 
-// Console log to verify data is imported correctly
-console.log('Imported Journal Logs:', journalLogs);
+// We are removing the Modal component and its direct usage from this file.
+// The typing effect will be handled by Terminal.js using the TypingText component.
 
 /**
  * @typedef {Object} JournalEntryType
  * @property {string} id - Unique identifier
  * @property {string} date - Entry date
  * @property {string} title - Entry title
- * @property {string} initialStatus - System status
- * @property {string} content - Main content
- * @property {string} details - Additional details
- * @property {string[]} alerts - System alerts
+ * @property {string} initialStatus - System status (optional, if used in list)
+ * @property {string} content - Main content (used by Terminal.js for typing)
+ * @property {string} details - Additional details (used by Terminal.js for typing)
+ * @property {string[]} alerts - System alerts (used by Terminal.js for typing)
  */
 
 /**
- * Modal component for displaying full journal entry details
- * @param {{ entry: JournalEntryType, onClose: () => void }} props
- */
-const Modal = memo(({ entry, onClose }) => {
-  // Move hooks to the top level
-  const handleOverlayClick = useCallback((e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  }, [onClose]);
-
-  if (!entry) return null;
-
-  const {
-    id = '',
-    date = '',
-    title = '',
-    initialStatus = '',
-    content = '',
-    details = '',
-    alerts = []
-  } = entry;
-
-  return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <button 
-          className="modal-close-button" 
-          onClick={onClose} 
-          aria-label="Close modal"
-        >
-          <X size={24} />
-        </button>
-        
-        <div className="modal-header">
-          <div className="terminal-line">JAIR ENTERPRISES UNIFIED OPERATING SYSTEM</div>
-          <div className="terminal-line">ENTRY #{id} - {date}</div>
-          <div className="terminal-title">{title}</div>
-        </div>
-
-        {initialStatus && (
-          <div className="status-section">
-            <div className="terminal-line">STATUS: {initialStatus}</div>
-          </div>
-        )}
-
-        <div className="content-section">
-          <div className="terminal-content">
-            {content || 'No content available'}
-          </div>
-        </div>
-
-        {details && (
-          <div className="details-section">
-            <div className="section-header">ADDITIONAL DETAILS</div>
-            <div className="terminal-content">{details}</div>
-          </div>
-        )}
-
-        {Array.isArray(alerts) && alerts.length > 0 && (
-          <div className="alerts-section">
-            <div className="section-header">SYSTEM ALERTS</div>
-            {alerts.map((alert, index) => (
-              <div 
-                key={`alert-${id}-${index}`} 
-                className="alert-item"
-                role="alert"
-              >
-                {`>${alert}`}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-});
-
-Modal.displayName = 'Modal';
-
-/**
- * Journal Entry component displaying a collapsible entry with modal view
- * @param {{ 
- *   entry: JournalEntryType, 
- *   isSelected?: boolean, 
- *   onClick?: () => void 
+ * Journal Entry component for displaying an item in a list.
+ * The actual typing out of content will be handled by a different component
+ * managed by the parent (e.g., Terminal.js).
+ *
+ * @param {{
+ * entry: JournalEntryType,
+ * isSelected?: boolean,
+ * onClick?: (entry: JournalEntryType) => void, // onClick now passes the entry
+ * className?: string // To be used by Terminal.js for AS/400 list item styling
  * }} props
  */
-const JournalEntry = ({ 
-  entry, 
-  isSelected = false, 
-  onClick = () => {} 
+const JournalEntry = ({
+  entry,
+  isSelected = false, // isSelected might not be used directly by this component anymore for styling if parent handles it via className
+  onClick = () => {},
+  className = "" // Default className to empty string
 }) => {
-  // All hooks at the top level
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const handleModalClose = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
-
-  const handleReadMoreClick = useCallback((e) => {
-    e.stopPropagation();
-    setIsModalOpen(true);
-  }, []);
-
   const handleKeyPress = useCallback((e) => {
     if (e.key === 'Enter' || e.key === ' ') {
-      onClick();
+      e.preventDefault(); // Prevent default space scroll
+      onClick(entry); // Pass the entry data on click
     }
-  }, [onClick]);
+  }, [onClick, entry]);
+
+  const handleClick = useCallback(() => {
+    onClick(entry); // Pass the entry data on click
+  }, [onClick, entry]);
 
   // Handle invalid entry data
-  if (!entry || typeof entry !== 'object') {
+  if (!entry || typeof entry !== 'object' || !entry.id) {
+    // Simple fallback for invalid entry data, can be styled further in Journal.css if needed
     return (
-      <div className="journal-entry error" role="alert">
-        <div className="entry-header">
-          <span className="entry-title">Invalid Entry Data</span>
-        </div>
+      <div className={`${className} journal-entry-list-item error`} role="alert">
+        <span>INVALID ENTRY DATA</span>
       </div>
     );
   }
 
-  // Destructure with defaults for type safety
+  // Destructure with defaults for type safety in list display
   const {
-    date = '',
-    title = '',
-    content = ''
+    id = 'N/A',
+    date = 'Unknown Date',
+    title = 'Untitled Entry'
   } = entry;
 
-  return (
-    <div className="journal-entry-wrapper">
-      <div  
-        className={`journal-entry ${isSelected ? 'selected' : ''}`}
-        onClick={onClick}
-        role="button"
-        tabIndex={0}
-        onKeyPress={handleKeyPress}
-      >
-        <div className="entry-header">
-          <span className="entry-date">{date}</span>
-          <span className="entry-title">{title}</span>
-        </div>
-        <div className={`entry-content-container ${isSelected ? 'selected' : ''}`}>
-          <div className="content-layout">
-            <div className="content-text">
-              {content 
-                ? `${content.slice(0, 100)}${content.length > 100 ? '...' : ''}`
-                : 'No content available'
-              }
-            </div>
-            <button 
-              className="read-more-button" 
-              onClick={handleReadMoreClick} 
-              aria-label="Read more"
-            >
-              <ChevronRight className="chevron-icon" />
-            </button>
-          </div>
-        </div>
-      </div>
+  // Formatting for display in the list (AS/400 style)
+  // Example: "JE001   02.17.2025   Foundation Day - Jair Enterprises Launch"
+  // The styling of this will be primarily handled by Terminal.css's .journal-entry-list-item
+  const displayDate = new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  });
 
-      {isModalOpen && (
-        <Modal 
-          entry={entry} 
-          onClose={handleModalClose} 
-        />
-      )}
+  return (
+    // The className prop will be provided by Terminal.js (e.g., "journal-entry-list-item selected")
+    <div
+      className={className} // Use the className passed from Terminal.js
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyPress={handleKeyPress}
+      aria-label={`Journal entry: ${title}, dated ${displayDate}`}
+      title={`Select to view: ${title}`} // Tooltip
+    >
+      {/* Structure for AS/400 style list item: ID, Date, Title */}
+      {/* These spans can be targeted by Terminal.css for specific column-like alignment if needed */}
+      <span className="entry-id">{id}</span>
+      <span className="entry-date-summary">{displayDate}</span>
+      <span className="entry-title-summary">{title}</span>
     </div>
   );
 };
 
-// Example usage with journal logs data
-const JournalList = () => {
-  const [selectedEntryId, setSelectedEntryId] = useState(null);
-
-  return (
-    <div className="journal-container">
-      <h1>Jair Enterprises Journal</h1>
-      <div className="entries-list">
-        {journalLogs.map(entry => (
-          <JournalEntry
-            key={entry.id}
-            entry={entry}
-            isSelected={selectedEntryId === entry.id}
-            onClick={() => setSelectedEntryId(entry.id)}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Memoize the components to prevent unnecessary re-renders
+// Memoize the component
 const MemoizedJournalEntry = memo(JournalEntry);
-const MemoizedJournalList = memo(JournalList);
+MemoizedJournalEntry.displayName = 'MemoizedJournalEntry'; // Corrected displayName
 
-// Add display names for debugging
-MemoizedJournalEntry.displayName = 'JournalEntry';
-MemoizedJournalList.displayName = 'JournalList';
+// We are removing JournalList from here as Terminal.js will handle the list rendering.
+// If JournalList is used elsewhere, it would need to be adapted or this file becomes solely for MemoizedJournalEntry.
+// For the purpose of integrating with Terminal.js, we only need to export MemoizedJournalEntry.
 
-export { MemoizedJournalList as JournalList };
 export default MemoizedJournalEntry;

@@ -1,0 +1,50 @@
+/* TypingText.css */
+.typing-text-container {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  width: 100%; /* Ensure it takes available width */
+}
+
+.typed-output {
+  white-space: pre-wrap; /* Respects spaces and newlines from text input */
+  line-height: 1.4;
+  color: var(--as400-fg, #00FF41); /* Use variable from Terminal.css */
+  font-family: var(--as400-font, 'Courier New', monospace);
+}
+
+.typing-effect-cursor {
+  background-color: var(--as400-fg-highlight, #FFFF00);
+  color: var(--as400-bg, #00001A);
+  animation: blinkCursor 1s steps(2, start) infinite;
+  display: inline-block; /* Allows it to sit next to text */
+  width: 0.6em;  /* Width of a typical character */
+  height: 1.2em; /* Approximate height of a line */
+  vertical-align: bottom; /* Aligns cursor with text baseline */
+  margin-left: 1px;
+}
+
+/* Ensure blinkCursor animation is defined (can be in Terminal.css or here if global) */
+/* If not already in Terminal.css:
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+*/
+
+.complete-typing-button {
+  background-color: var(--as400-bg, #00001A);
+  color: var(--as400-fg-dim, #00A32A);
+  border: 1px solid var(--as400-fg-dim, #00A32A);
+  padding: 6px 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-family: var(--as400-font, 'Courier New', monospace);
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.complete-typing-button:hover {
+  background-color: var(--as400-fg-dim, #00A32A);
+  color: var(--as400-bg, #00001A);
+}
