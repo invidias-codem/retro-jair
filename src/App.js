@@ -93,7 +93,7 @@ function App() {
 
           <main id="appMain">
             {isMobile ? (
-              <>
+              <div>
                 <div id="appSidebar" className={`mobile-sidebar ${showMenu ? 'show' : ''}`}> {/* Added class */}
                   <Menu onItemClick={() => setShowMenu(false)} />
                 </div>
@@ -101,7 +101,7 @@ function App() {
                    {/* Use more descriptive icons/text if possible */}
                    {showMenu ? '✕' : '☰'}
                 </button>
-              </>
+              </div>
             ) : (
               <div id="appSidebar">
                 <Menu />

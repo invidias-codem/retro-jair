@@ -6,6 +6,9 @@ const reportWebVitals = onPerfEntry => {
       getFCP(onPerfEntry);
       getLCP(onPerfEntry);
       getTTFB(onPerfEntry);
+    }).catch(err => {
+      // Optional: Add error handling for the dynamic import itself
+      console.error('Failed to load web-vitals', err);
     });
   }
 };
