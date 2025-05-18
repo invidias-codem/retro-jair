@@ -91,27 +91,46 @@
 }
 
 .chat-button-wrapper {
-  grid-column: span 2;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #1E1E3F, #2D2B55);
-  border-radius: 0.75rem;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 
-    0 0 20px rgba(89, 86, 213, 0.2),
-    inset 0 0 15px rgba(147, 143, 238, 0.1);
-  /* Add these properties */
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
-}
+    /* Overriding desktop styles to match mobile menu items */
+    width: 90%; /* Width of the button, relative to its parent grid cell */
+    max-width: 350px; /* Maximum width for the button */
+    padding: 15px 20px; /* Consistent padding with mobile menu items */
+    margin-left: 0rem; /* To center it within the grid cell */
+    margin-right: auto; /* To center it */
+    margin-bottom: 15px; /* Consistent margin if it's part of a list */
+    /* margin-top: 10px; */ /* Optional: add top margin if needed for spacing */
 
-.chat-button-wrapper:hover {
-  transform: translateY(-3px);
-  box-shadow: 
-    0 0 30px rgba(89, 86, 213, 0.4),
-    inset 0 0 20px rgba(147, 143, 238, 0.2);
-}
+    /* New button colors from MindfulMate theme */
+    background: var(--mindful-primary, #5B9AA0); /* Teal blue - solid color, remove gradient */
+    color: var(--mindful-bright-bg, #FFFFFF); /* White text */
+    
+    border-radius: 10px; /* Consistent border-radius */
+    text-align: center;
+    text-decoration: none; /* Ensure no underline if it's a link */
+    box-sizing: border-box;
+    border: none; /* No border, rely on shadow */
+    font-weight: 600; /* Consistent font weight */
+    font-size: 1.05em; /* Consistent font size */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Consistent shadow */
+    cursor: pointer;
+    
+    /* Updated transition for hover effects */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    
+    /* Ensure display is appropriate if it wasn't block already on mobile */
+    display: block; /* Or 'inline-block' if preferred, but 'block' with auto margins centers well */
+    overflow: hidden; /* Retain this from original style */
+  }
+
+  .chat-button-wrapper:hover,
+  .chat-button-wrapper:focus {
+    /* Consistent hover/focus style */
+    background-color: var(--mindful-secondary, #457B9D); /* Darker teal blue */
+    color: var(--mindful-bright-bg, #FFFFFF); /* Keep text white */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Consistent hover shadow */
+    transform: translateY(-2px); /* Subtle lift, consistent with other potential hovers */
+    outline: none;
+  }
 
 .terminal-container {
   grid-column: span 2;
@@ -126,6 +145,7 @@
 
 .terminal-item {
   display: flex;
+  width: 90%;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -315,7 +335,8 @@
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin: 0 auto;
+  margin-left: 0 rem;
+  width:90%
 }
 
 .start-game-button:hover {

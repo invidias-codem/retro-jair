@@ -49,13 +49,13 @@ const MENU_ITEMS = [
   }
 ];
 
-// Memoized menu item component for better performance
+// MenuItem component (remains the same)
 const MenuItem = memo(({ item, isActive, onClick }) => (
   <Link
     to={item.path}
     className="menu-item"
     style={isActive ? { boxShadow: SHADOW_COLORS[item.color] } : {}}
-    onClick={onClick}
+    onClick={onClick} // Existing onClick to close menu
     aria-label={item.label}
   >
     <div className="menu-icon-wrapper">
@@ -65,10 +65,15 @@ const MenuItem = memo(({ item, isActive, onClick }) => (
   </Link>
 ));
 
-// Memoized chat button component
-const ChatButton = memo(() => (
-  <Link to="/chat" className="chat-button-wrapper" aria-label="Open TechGenie Chat">
-    <div className="genie-container">
+// Memoized chat button component - MODIFIED
+const ChatButton = memo(({ onClick }) => ( // <-- Added onClick prop
+  <Link
+    to="/chat"
+    className="chat-button-wrapper"
+    aria-label="Open GenAIe Chat"
+    onClick={onClick} // <-- Use the onClick prop here
+  >
+    <div className="genie-container"> {/* Assuming .genie-container is from your Menu.css for styling */}
       <div className="genie-icon-container">
         <FontAwesomeIcon icon={faRobot} className="genie-icon" />
         <div className="energy-ring" />
@@ -81,12 +86,16 @@ const ChatButton = memo(() => (
     </div>
     <span>GenAIe</span>
   </Link>
-
 ));
 
-// Memoized terminal component
-const Terminal = memo(({ isUnlocked }) => (
-  <Link to="/terminal" className="terminal-item" aria-label="Open Terminal">
+// Memoized terminal component - MODIFIED to also accept and use onClick
+const Terminal = memo(({ isUnlocked, onClick }) => ( // <-- Added onClick prop
+  <Link
+    to="/terminal"
+    className={`terminal-item ${isUnlocked ? 'unlocked' : ''}`} // Added unlocked class dynamically
+    aria-label="Open Terminal"
+    onClick={onClick} // <-- Use the onClick prop here
+  >
     <div className="terminal-icon-container">
       <FontAwesomeIcon icon={faTerminal} className="terminal-icon" />
     </div>
@@ -99,7 +108,7 @@ const Terminal = memo(({ isUnlocked }) => (
   </Link>
 ));
 
-const Menu = ({ onItemClick }) => {
+const Menu = ({ onItemClick }) => { // onItemClick is passed from App.js
   const [gameState, setGameState] = useState({
     pattern: [],
     currentStep: 0,
@@ -112,14 +121,14 @@ const Menu = ({ onItemClick }) => {
   });
 
   const generatePattern = useCallback(() => (
-    Array(4).fill(null).map(() => 
+    Array(4).fill(null).map(() =>
       MENU_ITEMS[Math.floor(Math.random() * MENU_ITEMS.length)].color
     )
   ), []);
 
   const showPattern = useCallback(async (patternToShow) => {
     setGameState(prev => ({ ...prev, canAcceptInput: false }));
-    
+
     for (const color of patternToShow) {
       setGameState(prev => ({ ...prev, activeButton: color }));
       await new Promise(resolve => setTimeout(resolve, 800));
@@ -150,18 +159,18 @@ const Menu = ({ onItemClick }) => {
       pattern: newPattern,
       countdown: null
     }));
-    
+
     await showPattern(newPattern);
   }, [generatePattern, showPattern]);
 
   const handleGameClick = useCallback((e, color) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent navigation during game
     const { isPlaying, canAcceptInput, pattern, currentStep } = gameState;
 
     if (!isPlaying || !canAcceptInput) return;
 
     setGameState(prev => ({ ...prev, activeButton: color }));
-    setTimeout(() => 
+    setTimeout(() =>
       setGameState(prev => ({ ...prev, activeButton: null })), 300
     );
 
@@ -175,6 +184,8 @@ const Menu = ({ onItemClick }) => {
           isUnlocked: true,
           showSuccess: true
         }));
+        // If onItemClick is available, call it to close menu, game won't interfere
+        onItemClick?.();
       } else {
         setGameState(prev => ({ ...prev, currentStep: newStep }));
       }
@@ -185,13 +196,14 @@ const Menu = ({ onItemClick }) => {
         canAcceptInput: false,
         currentStep: 0
       }));
+      // If onItemClick is available, call it to close menu
+      onItemClick?.();
     }
-  }, [gameState]);
+  }, [gameState, onItemClick]); // Added onItemClick to dependency array
 
-  // Cleanup effect
+  // Cleanup effect (remains the same)
   useEffect(() => {
     return () => {
-      // Clear any pending timeouts when component unmounts
       const cleanup = () => {
         setGameState(prev => ({
           ...prev,
@@ -203,6 +215,16 @@ const Menu = ({ onItemClick }) => {
     };
   }, []);
 
+  // Centralized click handler for menu items that should close the menu
+  // And are not part of the memory game.
+  const handleStandardItemClick = () => {
+    if (!gameState.isPlaying) {
+      onItemClick?.();
+    }
+    // If it is playing, the game logic will handle closing or not.
+  };
+
+
   return (
     <div className="menu-container">
       {gameState.countdown && (
@@ -210,7 +232,7 @@ const Menu = ({ onItemClick }) => {
           {gameState.countdown}
         </div>
       )}
-      
+
       {gameState.showSuccess && (
         <div className="success-message" role="alert">
           Sequence complete! Terminal unlocked.
@@ -223,20 +245,25 @@ const Menu = ({ onItemClick }) => {
             key={item.id}
             item={item}
             isActive={gameState.activeButton === item.color}
-            onClick={(e) => gameState.isPlaying 
-              ? handleGameClick(e, item.color)
-              : onItemClick?.()
-            }
+            onClick={(e) => { // Modified onClick for MenuItem
+              if (gameState.isPlaying) {
+                handleGameClick(e, item.color);
+              } else {
+                onItemClick?.(); // Directly call onItemClick if not playing game
+              }
+            }}
           />
         ))}
-        
-        <ChatButton />
-        
+
+        {/* Pass onItemClick to ChatButton */}
+        <ChatButton onClick={handleStandardItemClick} />
+
         {gameState.isUnlocked ? (
-          <Terminal isUnlocked={gameState.isUnlocked} />
+          // Pass onItemClick to Terminal as well
+          <Terminal isUnlocked={gameState.isUnlocked} onClick={handleStandardItemClick} />
         ) : (
           !gameState.isPlaying && (
-            <button 
+            <button
               className="start-game-button"
               onClick={startGame}
               aria-label="Start Memory Game"

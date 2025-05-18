@@ -166,16 +166,137 @@ a:focus, button:focus {
   }
 
   #appSidebar {
+    width: 94%;
+    /* Removed direct padding from sidebar to allow menu list to control it */
+    margin-left: 0.75rem;
     border-right: none;
-    border-bottom: 5px solid var(--menu-red);
-    display: none;
-    transition: transform 0.3s ease-in-out;
+    /* Changed border-bottom to be more subtle with the new color scheme */
+    border-bottom: 3px solid var(--mindful-secondary, #457B9D); /* Darker teal blue */
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* New background color for the sidebar */
+    background-color: var(--mindful-bright-surface, #F8F9FA); /* Very light grey/off-white */
+    z-index: 999;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    /* Slower transition for the sidebar itself */
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                visibility 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow-y: auto; /* Allow scrolling if menu items exceed screen height */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
+
+    /* Flexbox for centering the menu list vertically and horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center menu list vertically */
+    align-items: center; /* Center menu list horizontally */
+    box-sizing: border-box;
+    /* Add some padding inside the sidebar, especially at the top if menu toggle overlaps */
+    padding-top: 60px; /* Adjust if your menu toggle is fixed and overlays */
+    padding-bottom: 20px;
   }
 
   #appSidebar.show {
-    display: block;
     transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
   }
+
+  /* --- Styles for centering the list of menu items (e.g., a UL or NAV inside #appSidebar) --- */
+  /* Adjust selector if your Menu component renders a different container for items */
+  #appSidebar > ul,
+  #appSidebar > nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Takes full width to allow items to be centered within */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers the <li> or .menu-item elements */
+  }
+
+  /* --- Styles for individual menu items (route buttons/links) --- */
+  /* Ensure your route links/buttons have the class "menu-item" or adjust selector */
+  #appSidebar .menu-item {
+    display: block;
+    width: 90%; /* Width of the buttons, relative to the ul/nav container */
+    max-width: 350px; /* Maximum width for the buttons */
+    padding: 15px 20px; /* Increased padding for a taller button */
+    margin-bottom: 15px; /* Space between buttons */
+    /* New button colors */
+    background-color: var(--mindful-primary, #5B9AA0); /* Teal blue */
+    color: var(--mindful-bright-bg, #FFFFFF); /* White text */
+    text-decoration: none;
+    border-radius: 10px; /* Slightly more rounded corners */
+    text-align: center;
+    box-sizing: border-box;
+    border: none; /* Removed border, using shadow for depth */
+    font-weight: 600; /* Slightly bolder font */
+    font-size: 1.05em; /* Slightly larger font */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+
+    /* Animation: Initial state (off-screen and transparent) */
+    opacity: 0;
+    /* Slower transition for items, with a smooth easing function */
+    transition-property: transform, opacity, box-shadow, background-color;
+    transition-duration: 0.5s; /* Item's own slide-in duration */
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform, opacity;
+  }
+
+  #appSidebar .menu-item:hover,
+  #appSidebar .menu-item:focus {
+    /* Darker teal blue for hover/focus */
+    background-color: var(--mindful-secondary, #457B9D);
+    color: var(--mindful-bright-bg, #FFFFFF); /* Keep text white */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    outline: none;
+    /* transform: scale(1.03); // Optional: keep or remove zoom */
+  }
+
+  /* --- Alternating slide-in animations for menu items --- */
+  /* Initial off-screen positions */
+  #appSidebar .menu-item:nth-child(odd) {
+    transform: translateX(-110%);
+  }
+
+  #appSidebar .menu-item:nth-child(even) {
+    transform: translateX(110%);
+  }
+
+  /* When sidebar.show is active, animate items into view */
+  #appSidebar.show .menu-item {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Slower and adjusted staggered transition delays for items */
+  /* These delays start after .show is added. Sidebar animation is 0.5s */
+  #appSidebar.show .menu-item:nth-child(1) { transition-delay: 0.20s; }
+  #appSidebar.show .menu-item:nth-child(2) { transition-delay: 0.30s; }
+  #appSidebar.show .menu-item:nth-child(3) { transition-delay: 0.40s; }
+  #appSidebar.show .menu-item:nth-child(4) { transition-delay: 0.50s; }
+  #appSidebar.show .menu-item:nth-child(5) { transition-delay: 0.60s; }
+  /* Adjust as needed. This makes items appear sequentially as sidebar is fully open. */
+
+
+  /* --- Ensure Menu Toggle is on top --- */
+  #menuToggle {
+    /* ... (existing styles from App.css) ... */
+    /* Ensure these original styles are maintained for positioning and appearance */
+    /* background-color: var(--menu-yellow); */
+    /* color: var(--menu-red); */
+    /* For new theme, let's adjust menu toggle too for consistency */
+    background-color: var(--mindful-primary, #5B9AA0);
+    color: var(--mindful-bright-bg, #FFFFFF);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+  }
+}
 
   #menuToggle {
     display: block;
@@ -192,7 +313,6 @@ a:focus, button:focus {
     z-index: 1000;
     touch-action: manipulation;
   }
-}
 
 /* Additional breakpoints */
 @media (max-width: 480px) {
