@@ -315,131 +315,432 @@
   /* =========================================
      COMMON MESSAGES AREA STYLES
      ========================================= */
-  .tech-messages, .mindful-messages,
-  .stem-messages, .bishop-messages {
-    flex: 1 1 auto; /* Allow growing and shrinking, set basis to auto */
-    overflow-y: auto; overflow-x: hidden; padding: var(--spacing-md);
-    scroll-behavior: smooth; display: flex; flex-direction: column;
-    gap: var(--spacing-sm); /* Space between message groups */
-    position: relative; /* For scroll-to-bottom positioning */
-    min-height: 0; /* Prevent flexbox overflow issues */
-  }
+  /* Ensure .tech-messages, .mindful-messages, etc. are defined as before */
+.tech-messages, .mindful-messages,
+.stem-messages, .bishop-messages { /* */
+  flex: 1 1 auto; /* */
+  overflow-y: auto; /* */
+  overflow-x: hidden; /* */
+  padding: var(--spacing-md); /* */
+  scroll-behavior: smooth; /* */
+  display: flex; /* */
+  flex-direction: column; /* */
+  gap: var(--spacing-sm); /* */
+  position: relative; /* */
+  min-height: 0; /* */
+}
 
-  /* Common Message container */
-  .tech-message, .mindful-message,
-  .stem-message, .bishop-message {
-    display: flex; max-width: 80%; position: relative;
-  }
+/* Common Message container */
+/* Ensure .tech-message, .mindful-message, etc. are defined */
+.tech-message, .mindful-message,
+.stem-message, .bishop-message { /* */
+  display: flex; /* */
+  max-width: 80%; /* */
+  position: relative; /* */
+}
 
-  /* Common Message bubble - contains text and actions */
-  .tech-message-bubble, .mindful-message-bubble,
-  .stem-message-bubble, .bishop-message-bubble {
-    padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius);
-    line-height: 1.6; word-wrap: break-word; position: relative;
-    box-shadow: 0 1px 2px var(--shadow-color); transition: background-color 0.2s ease;
-  }
+/* Common Message bubble - classes should match `messageBubbleClass` in modeConfig */
+.tech-message-bubble, .mindful-message-bubble,
+.stem-message-bubble, .bishop-message-bubble { /* */
+  padding: var(--spacing-sm) var(--spacing-md); /* */
+  border-radius: var(--border-radius); /* */
+  word-wrap: break-word; /* */
+  position: relative; /* */
+  box-shadow: 0 1px 2px var(--shadow-color); /* */
+  transition: background-color 0.2s ease; /* */
+  /* line-height is handled by .message-text and its children */
+}
 
-  /* User Message Alignment & Style (Common) */
-  .tech-message.user, .mindful-message.user,
-  .stem-message.user, .bishop-message.user {
-    align-self: flex-end; margin-left: auto;
-  }
-  .tech-message.user .tech-message-bubble, .mindful-message.user .mindful-message-bubble,
-  .stem-message.user .stem-message-bubble, .bishop-message.user .bishop-message-bubble {
-    background-color: var(--bg-tertiary); color: var(--text-primary); /* Default user bg */
-    border-bottom-right-radius: var(--border-radius-small);
-    /* Specific override for user accent color if needed by theme */
-    /* Example: .bishop-chat-container .bishop-message.user .bishop-message-bubble { background-color: var(--bg-accent); color: var(--text-accent); } */
-  }
-  /* Example specific user bubble override for Bishop */
-  .bishop-chat-container .bishop-message.user .bishop-message-bubble { /* Scope to bishop container */
-      background-color: var(--bg-accent); /* Use theme accent for user */
-      color: var(--text-accent);
-  }
-
-
-  /* Model Message Alignment & Style (Common) */
-  .tech-message.model, .mindful-message.model,
-  .stem-message.model, .bishop-message.model {
-    align-self: flex-start; margin-right: auto;
-  }
-  .tech-message.model .tech-message-bubble, .mindful-message.model .mindful-message-bubble,
-  .stem-message.model .stem-message-bubble, .bishop-message.model .bishop-message-bubble {
-    background-color: var(--bg-secondary); color: var(--text-primary);
-    border-bottom-left-radius: var(--border-radius-small);
-    /* Add padding for icon IF icon is visible */
-    /* padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em); Default space for icon */
-  }
-   /* Conditionally add padding if icon exists and is visible */
-   .tech-message.model .tech-message-bubble:has(.message-icon.model-icon),
-   .mindful-message.model .mindful-message-bubble:has(.message-icon.model-icon),
-   .stem-message.model .stem-message-bubble:has(.message-icon.model-icon),
-   .bishop-message.model .bishop-message-bubble:has(.message-icon.model-icon) {
-       padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em);
-   }
+/* User Message Alignment & Style (Common) */
+.tech-message.user, .mindful-message.user,
+.stem-message.user, .bishop-message.user { /* */
+  align-self: flex-end; /* */
+  margin-left: auto; /* */
+}
+.tech-message.user .tech-message-bubble,
+.mindful-message.user .mindful-message-bubble,
+.stem-message.user .stem-message-bubble,
+.bishop-message.user .bishop-message-bubble { /* */
+  background-color: var(--bg-tertiary); /* */
+  color: var(--text-primary); /* */
+  border-bottom-right-radius: var(--border-radius-small); /* */
+}
+/* Specific overrides like .bishop-chat-container .bishop-message.user .bishop-message-bubble should be kept if needed */
+.bishop-chat-container .bishop-message.user .bishop-message-bubble { /* */
+    background-color: var(--bg-accent); /* */
+    color: var(--text-accent); /* */
+}
 
 
-  /* Message Icon (Model only - Common) */
-  .message-icon.model-icon { /* Target using common class + model-icon */
-    position: absolute; left: var(--spacing-md); top: var(--spacing-sm);
-    font-size: 1em; color: var(--text-secondary);
-    display: block; /* Ensure it's displayed by default */
-  }
+/* Model Message Alignment & Style (Common) */
+.tech-message.model, .mindful-message.model,
+.stem-message.model, .bishop-message.model { /* */
+  align-self: flex-start; /* */
+  margin-right: auto; /* */
+}
+.tech-message.model .tech-message-bubble,
+.mindful-message.model .mindful-message-bubble,
+.stem-message.model .stem-message-bubble,
+.bishop-message.model .bishop-message-bubble { /* */
+  background-color: var(--bg-secondary); /* */
+  color: var(--text-primary); /* */
+  border-bottom-left-radius: var(--border-radius-small); /* */
+}
+/* Padding for icon IF icon is visible (using :has pseudo-class) */
+.tech-message.model .tech-message-bubble:has(.message-icon.model-icon),
+.mindful-message.model .mindful-message-bubble:has(.message-icon.model-icon),
+.stem-message.model .stem-message-bubble:has(.message-icon.model-icon),
+.bishop-message.model .bishop-message-bubble:has(.message-icon.model-icon) { /* */
+    padding-left: calc(var(--spacing-md) + var(--spacing-sm) + 1em); /* */
+}
 
-  /* Message Text (Common Structure) */
-  .message-text { margin: 0; }
-  .message-text p:first-child { margin-top: 0; }
-  .message-text p:last-child { margin-bottom: 0; }
-  .message-text em { font-style: italic; }
-  .message-text strong { font-weight: bold; }
-  .message-text blockquote {
-      border-left: 3px solid var(--border-color); padding-left: var(--spacing-sm);
-      margin-left: var(--spacing-xs); color: var(--text-secondary); font-style: italic;
-  }
-  .message-text pre { /* Code Blocks */
-    background-color: color-mix(in srgb, var(--bg-primary) 85%, black);
-    border: 1px solid var(--border-color); border-radius: var(--border-radius-small);
-    padding: var(--spacing-sm) var(--spacing-md); margin: var(--spacing-sm) 0;
-    overflow-x: auto; font-family: var(--font-family-mono); font-size: 0.85rem;
-    line-height: 1.4; color: var(--text-primary); white-space: pre;
-  }
-  .message-text code:not(pre code) { /* Inline code */
-    background-color: var(--bg-hover); padding: 0.1em 0.3em;
-    border-radius: var(--border-radius-small); font-family: var(--font-family-mono);
-    font-size: 0.85em;
-  }
-  .message-text a { color: var(--link-color); text-decoration: none; }
-  .message-text a:hover { text-decoration: underline; }
 
-  /* Message Action Button (Common) */
-  .message-action-button { /* Common class */
-    position: absolute; bottom: var(--spacing-xs); right: var(--spacing-xs);
-    background-color: var(--bg-primary); border: 1px solid var(--border-color);
-    color: var(--text-secondary); padding: var(--spacing-xs); font-size: 0.8rem;
-    border-radius: var(--border-radius-small); cursor: pointer; opacity: 0;
-    transition: opacity 0.2s ease, background-color 0.2s ease; line-height: 1;
-    z-index: 1; /* Ensure above bubble background */
-  }
-  /* Show on hover for any message bubble */
-  .tech-message-bubble:hover .message-action-button,
-  .mindful-message-bubble:hover .message-action-button,
-  .stem-message-bubble:hover .message-action-button,
-  .bishop-message-bubble:hover .message-action-button {
-    opacity: 1;
-  }
-  .message-action-button:hover {
-    background-color: var(--bg-hover); color: var(--text-primary);
-  }
+/* Message Icon (Model only - Common) */
+.message-icon.model-icon { /* */
+  position: absolute; /* */
+  left: var(--spacing-md); /* */
+  top: var(--spacing-sm); /* */
+  font-size: 1em; /* */
+  color: var(--text-secondary); /* */
+  display: block; /* */
+}
 
-  /* Special Mood Update Messages (MindfulMate only) */
-  .mindful-chat-container .mindful-message.mood-update { /* Scope to mindful agent */
-      align-self: center; max-width: 60%; font-style: italic; text-align: center;
-  }
-  .mindful-chat-container .mindful-message.mood-update .mindful-message-bubble {
-      background-color: transparent; color: var(--text-secondary); box-shadow: none;
-      font-size: 0.9rem; padding: var(--spacing-xs) var(--spacing-md);
-  }
+/*
+   STYLES FOR MARKDOWN CONTENT WRAPPED BY .message-text
+   This div now wraps the <ReactMarkdown> output.
+*/
+.message-text { /* */
+  margin: 0; /* */
+  line-height: 1.6; /* */
+  color: var(--text-primary); /* Ensures text color is applied from theme */
+}
 
+.message-text > *:first-child { margin-top: 0; } /* Remove top margin from the very first element output by Markdown */
+.message-text > *:last-child { margin-bottom: 0; } /* Remove bottom margin from the very last element */
+
+.message-text p { /* */
+    margin-top: 0; /* */
+    margin-bottom: var(--spacing-sm); /* */
+}
+/* If a p is the last child, its bottom margin is handled by .message-text > *:last-child */
+
+.message-text em { font-style: italic; } /* */
+.message-text strong { font-weight: bold; } /* */
+
+.message-text hr {
+    border: 0; /* */
+    height: 1px; /* */
+    background-color: var(--border-color); /* */
+    margin: var(--spacing-md) 0; /* */
+}
+
+/* Headings */
+.message-text h1, .message-text h2, .message-text h3,
+.message-text h4, .message-text h5, .message-text h6 { /* */
+  margin-top: var(--spacing-md); /* */
+  margin-bottom: var(--spacing-sm); /* */
+  line-height: 1.3; /* */
+  font-weight: 600; /* */
+  color: var(--text-primary); /* */
+}
+.message-text h1 { font-size: 1.8rem; } /* */
+.message-text h2 { font-size: 1.5rem; } /* */
+.message-text h3 { font-size: 1.25rem; } /* */
+.message-text h4 { font-size: 1.1rem; }
+.message-text h5 { font-size: 1rem; }
+.message-text h6 { font-size: 0.9rem; }
+
+
+/* Lists (UL, OL, LI) */
+.message-text ul,
+.message-text ol { /* */
+  padding-left: var(--spacing-lg); /* */
+  margin-top: var(--spacing-sm); /* */
+  margin-bottom: var(--spacing-sm); /* */
+  list-style-position: outside; /* */
+}
+.message-text ul { list-style-type: disc; } /* */
+.message-text ol { list-style-type: decimal; } /* */
+
+.message-text li { /* */
+  margin-bottom: var(--spacing-xs); /* */
+  line-height: 1.5; /* */
+}
+
+.message-text ul ul, .message-text ol ol,
+.message-text ul ol, .message-text ol ul { /* */
+  margin-top: var(--spacing-xs); /* */
+  margin-bottom: var(--spacing-xs); /* */
+  padding-left: var(--spacing-md); /* */
+}
+.message-text ul li::marker { color: var(--text-secondary); } /* */
+.message-text ol li::marker { color: var(--text-secondary); } /* */
+
+/* Blockquotes */
+.message-text blockquote { /* */
+  border-left: 4px solid var(--bg-accent); /* */
+  padding-left: var(--spacing-md); /* */
+  margin-left: 0; /* Remove default browser margin if any */
+  margin-right: 0;
+  margin-top: var(--spacing-sm); /* */
+  margin-bottom: var(--spacing-sm); /* */
+  color: var(--text-secondary); /* */
+  font-style: italic; /* */
+  background-color: var(--bg-tertiary); /* */
+  border-radius: var(--border-radius-small); /* */
+  padding-top: var(--spacing-sm); /* Adjust padding for better spacing */
+  padding-bottom: var(--spacing-sm); /* Adjust padding */
+  padding-right: var(--spacing-sm); /* */
+}
+.message-text blockquote > *:first-child { margin-top: 0; }
+.message-text blockquote > *:last-child { margin-bottom: 0; } /* */
+
+
+/* Code Blocks (pre > code) */
+.message-text pre { /* */
+  background-color: color-mix(in srgb, var(--bg-primary) 85%, black); /* */ /* Fallback for older browsers */
+  background-color: color-mix(in srgb, var(--bg-secondary, #f0f4f8) 90%, #000000); /* Ensure bg-secondary is defined or provide a hard fallback */
+  border: 1px solid var(--border-color); /* */
+  border-radius: var(--border-radius-small); /* */
+  padding: var(--spacing-sm) var(--spacing-md); /* */
+  margin: var(--spacing-sm) 0; /* */
+  overflow-x: auto; /* */
+  font-family: var(--font-family-mono); /* */
+  font-size: 0.9rem; /* */
+  line-height: 1.6; /* */
+  color: var(--text-primary); /* */
+  white-space: pre; /* */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* */
+}
+.message-text pre code { /* */
+    background-color: transparent !important; /* */ /* Ensure no nested background */
+    padding: 0 !important; /* */
+    margin: 0 !important; /* */
+    border-radius: 0 !important; /* */
+    font-size: inherit !important; /* */
+    font-family: inherit !important; /* */
+    color: inherit !important; /* Inherit color from pre */
+    border: none !important;
+}
+
+/* Inline code (code not in pre) */
+.message-text code:not(pre > code) { /* */
+  background-color: var(--bg-hover); /* */
+  padding: 0.2em 0.4em; /* */
+  border-radius: var(--border-radius-small); /* */
+  font-family: var(--font-family-mono); /* */
+  font-size: 0.875em; /* */
+  color: var(--text-primary); /* Default to primary text, adjust if needed */
+  /* For themes where --bg-hover is very light, --text-primary might be fine.
+     If --bg-hover is darker, you might need a lighter color for the code text.
+     Example: color: var(--text-accent); if it provides good contrast */
+  word-break: break-word; /* */
+}
+/* Example: Specific color for inline code in dark theme if needed for contrast */
+.dark .message-text code:not(pre > code) { /* */
+    color: var(--link-color); /* Or var(--bg-accent) if that offers better contrast */
+    background-color: color-mix(in srgb, var(--bg-primary) 70%, white);
+}
+.light .message-text code:not(pre > code),
+.calm .message-text code:not(pre > code),
+.bright .message-text code:not(pre > code) {
+    color: var(--text-accent); /* Often white or light for these themes */
+    background-color: color-mix(in srgb, var(--bg-primary) 70%, black);
+}
+
+
+/* Links */
+.message-text a { /* */
+  color: var(--link-color); /* */
+  text-decoration: none; /* */
+  font-weight: 500; /* */
+}
+.message-text a:hover { /* */
+  text-decoration: underline; /* */
+  filter: brightness(85%); /* */
+}
+
+
+/* Message Action Button (Common) - ensure styles are applied as before */
+.message-action-button { /* */
+  position: absolute; /* */
+  bottom: var(--spacing-xs); /* */
+  right: var(--spacing-xs); /* */
+  background-color: var(--bg-primary); /* */
+  border: 1px solid var(--border-color); /* */
+  color: var(--text-secondary); /* */
+  padding: var(--spacing-xs); /* */
+  font-size: 0.8rem; /* */
+  border-radius: var(--border-radius-small); /* */
+  cursor: pointer; /* */
+  opacity: 0; /* */
+  transition: opacity 0.2s ease, background-color 0.2s ease; /* */
+  line-height: 1; /* */
+  z-index: 1; /* */
+}
+.tech-message-bubble:hover .message-action-button,
+.mindful-message-bubble:hover .message-action-button,
+.stem-message-bubble:hover .message-action-button,
+.bishop-message-bubble:hover .message-action-button { /* */
+  opacity: 1; /* */
+}
+.message-action-button:hover { /* */
+  background-color: var(--bg-hover); /* */
+  color: var(--text-primary); /* */
+}
+
+/* Mood Update Messages for MindfulMate - ensure styles are applied as before */
+.mindful-chat-container .mindful-message.mood-update .mindful-message-bubble { /* */
+    background-color: transparent; /* */
+    color: var(--text-secondary); /* */
+    box-shadow: none; /* */
+    font-size: 0.9rem; /* */
+    padding: var(--spacing-xs) var(--spacing-md); /* */
+}
+.mindful-chat-container .mindful-message.mood-update { /* */
+    align-self: center; /* */
+    max-width: 60%; /* */
+    font-style: italic; /* */
+    text-align: center; /* */
+}
+
+
+/* Scroll to Bottom Button - ensure .visible class is styled */
+.scroll-to-bottom { /* */
+  position: absolute; /* */
+  bottom: var(--spacing-md); /* */
+  left: 50%; /* */
+  transform: translateX(-50%); /* */
+  background-color: var(--bg-secondary); /* */
+  color: var(--text-primary); /* */
+  border: 1px solid var(--border-color); /* */
+  border-radius: 50%; /* */
+  width: 36px; /* */
+  height: 36px; /* */
+  display: flex; /* */
+  align-items: center; /* */
+  justify-content: center; /* */
+  cursor: pointer; /* */
+  box-shadow: 0 2px 5px var(--shadow-color); /* */
+  z-index: 5; /* */
+  opacity: 0; /* */
+  visibility: hidden; /* */
+  transition: background-color 0.2s ease, opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s; /* */ /* Delay visibility transition */
+}
+.scroll-to-bottom.visible { /* */
+    opacity: 0.9; /* */
+    visibility: visible; /* */
+    transition-delay: 0s; /* */ /* Make visible immediately when class is added */
+}
+.scroll-to-bottom:hover { background-color: var(--bg-hover); opacity: 1; } /* */
+
+/* KaTeX specific styling within message bubbles */
+.stem-message-bubble .message-text .katex {
+  font-size: 1.1em; /* Adjust as needed for math readability */
+  color: var(--text-primary); /* Ensure it matches text color and theme */
+  /* KaTeX generally handles its own layout, but you can override if necessary */
+}
+
+.stem-message-bubble .message-text .katex-display {
+  /* For block-level math (e.g., $$...$$) */
+  display: block;
+  overflow-x: auto; /* Allow scrolling for very wide formulas */
+  overflow-y: hidden;
+  padding: var(--spacing-sm) 0; /* Add some vertical spacing around block math */
+}
+
+/* Ensure image containers within messages are styled */
+.message-image-container {
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  text-align: center; /* Or left, as preferred */
+}
+
+.generated-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius-small);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary); /* Placeholder if image is transparent */
+}
+
+/* File attachment name display in footer */
+.file-attachment-name {
+    margin-left: var(--spacing-sm);
+    font-style: italic;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px; /* Adjust as needed */
+    display: inline-block; /* To respect max-width */
+    vertical-align: middle; /* Align with textarea/buttons */
+}
+
+/* =========================================
+   SCROLL TO PAGE TOP BUTTON
+   ========================================= */
+
+.scroll-to-page-top-button {
+  position: fixed;
+  bottom: 77px;
+  right: -1px;
+  background-color: var(--bg-accent, #007bff); /* Use a theme variable or a default */
+  color: var(--text-accent, #ffffff); /* Use a theme variable or a default */
+  border: none;
+  border-radius: 50%;
+  width: 48px;  /* Consistent with other footer buttons */
+  height: 48px; /* Consistent with other footer buttons */
+  font-size: 1.2rem; /* Adjust icon size as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s linear 0.3s; /* Smooth transitions */
+  z-index: 1050; /* Ensure it's above most other content */
+}
+
+.scroll-to-page-top-button.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.scroll-to-page-top-button:hover {
+  filter: brightness(90%); /* Slight darken on hover */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-to-page-top-button:active {
+  transform: scale(0.95); /* Slight shrink on click */
+}
+
+/* Ensure it uses theme colors correctly if your theme variables are set up */
+.dark .scroll-to-page-top-button {
+  background-color: var(--bg-accent, #8ab4f8); /* Example for dark theme */
+  color: var(--text-accent, #131314);
+}
+
+.light .scroll-to-page-top-button {
+  background-color: var(--bg-accent, #1a73e8); /* Example for light theme */
+  color: var(--text-accent, #ffffff);
+}
+
+.calm .scroll-to-page-top-button {
+  background-color: var(--bg-accent, #6fa8dc); /* Example for calm theme */
+  color: var(--text-accent, #ffffff);
+}
+
+.bright .scroll-to-page-top-button {
+  background-color: var(--bg-accent, #f9ab00); /* Example for bright theme */
+  color: var(--text-accent, #4d4129);
+}
 
   /* =========================================
      COMMON FOOTER / INPUT AREA STYLES

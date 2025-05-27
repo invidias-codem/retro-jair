@@ -1,3 +1,6 @@
+/* =========================================
+   MENU CONTAINER & GRID (Default Page Layout)
+   ========================================= */
 #menuContainer {
   position: relative;
   display: flex;
@@ -13,12 +16,21 @@
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1);
   gap: 2rem;
-  width: 100%;
-  margin: 1rem;
+  width: 120%;
+  height: 110%;
+  margin: 0rem;
+  background-color: var(--mindful-bright-surface, #F8F9FA);
+  align-content: stretch;
+  justify-content: center;
+  align-items: stretch;
+  justify-items: center;
 }
 
+/* =========================================
+   GAME ELEMENTS (Countdown, Success)
+   ========================================= */
 #gameCountdown {
   position: absolute;
   top: 50%;
@@ -26,34 +38,34 @@
   transform: translate(-50%, -50%);
   font-size: 3.75rem;
   font-weight: bold;
-  color: #3B82F6;
-  animation: pulse 1s infinite;
-  z-index: 1000; /* Ensures it stays on top of other elements */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Optional: adds depth */
+  color: #3B82F6; /* Consider using a CSS variable */
+  animation: pulse-countdown 1s infinite; /* Renamed pulse to avoid conflict */
+  z-index: 1000;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes pulse {
-  0% { 
-    opacity: 1; 
-    transform: translate(-50%, -50%) scale(1); 
-  }
-  50% { 
-    opacity: 0.5; 
-    transform: translate(-50%, -50%) scale(1.1); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: translate(-50%, -50%) scale(1); 
-  }
+.success-message {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem;
+  background-color: #059669; /* Consider using a CSS variable */
+  color: white;
+  border-radius: 0.5rem;
+  animation: fadeIn 0.5s ease-out;
 }
 
-.menu-item {
+/* =========================================
+   MENU ITEM (Default Page Layout)
+   ========================================= */
+.menu-item { /* Default styling for items in the grid */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 1.5rem;
-  background-color: rgb(31, 41, 55);
+  background-color: rgb(31, 41, 55); /* Consider var(--surface) or similar */
   border-radius: 0.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
@@ -67,72 +79,69 @@
   transform: translateY(-4px);
   background-color: rgb(55, 65, 81);
   outline: none;
-  box-shadow: 0 0 0 2px rgb(59, 130, 246);
+  box-shadow: 0 0 0 2px rgb(59, 130, 246); /* Consider var(--accent) */
 }
 
-.menu-icon-wrapper {
+.menu-icon-wrapper { /* Used by default menu items */
   margin-bottom: 0.5rem;
 }
 
-.menu-icon {
+.menu-icon { /* Used by default menu items */
   font-size: 2rem;
-  color: paleturquoise;
+  color: paleturquoise; /* Consider var(--accent) or theme color */
   transform-style: preserve-3d;
 }
 
-.menu-text {
-  color: #696958;
+.menu-text { /* Used by default menu items */
+  color: #696958; /* Consider var(--text-secondary) */
   font-weight: bold;
   transition: color 0.3s ease;
 }
 
 .menu-item:hover .menu-text {
-  color: darkorchid;
+  color: darkorchid; /* Consider var(--primary) or var(--accent) */
 }
 
+/* =========================================
+   CHAT BUTTON WRAPPER (Default Page Layout)
+   ========================================= */
 .chat-button-wrapper {
-    /* Overriding desktop styles to match mobile menu items */
-    width: 90%; /* Width of the button, relative to its parent grid cell */
-    max-width: 350px; /* Maximum width for the button */
-    padding: 15px 20px; /* Consistent padding with mobile menu items */
-    margin-left: 0rem; /* To center it within the grid cell */
-    margin-right: auto; /* To center it */
-    margin-bottom: 15px; /* Consistent margin if it's part of a list */
-    /* margin-top: 10px; */ /* Optional: add top margin if needed for spacing */
+  /* These styles are for when chat button is in the menu grid, not sidebar */
+  width: 90%;
+  max-width: 350px;
+  padding: 15px 20px;
+  margin-left: auto; /* Auto margins for centering in grid cell */
+  margin-right: auto;
+  margin-bottom: 15px;
+  background: var(--mindful-primary, #5B9AA0);
+  color: var(--mindful-bright-bg, #FFFFFF);
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  border: none;
+  font-weight: 600;
+  font-size: 1.05em;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  display: block; /* Or inline-block */
+  overflow: hidden;
+}
 
-    /* New button colors from MindfulMate theme */
-    background: var(--mindful-primary, #5B9AA0); /* Teal blue - solid color, remove gradient */
-    color: var(--mindful-bright-bg, #FFFFFF); /* White text */
-    
-    border-radius: 10px; /* Consistent border-radius */
-    text-align: center;
-    text-decoration: none; /* Ensure no underline if it's a link */
-    box-sizing: border-box;
-    border: none; /* No border, rely on shadow */
-    font-weight: 600; /* Consistent font weight */
-    font-size: 1.05em; /* Consistent font size */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Consistent shadow */
-    cursor: pointer;
-    
-    /* Updated transition for hover effects */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-    
-    /* Ensure display is appropriate if it wasn't block already on mobile */
-    display: block; /* Or 'inline-block' if preferred, but 'block' with auto margins centers well */
-    overflow: hidden; /* Retain this from original style */
-  }
+.chat-button-wrapper:hover,
+.chat-button-wrapper:focus {
+  background-color: var(--mindful-secondary, #457B9D);
+  color: var(--mindful-bright-bg, #FFFFFF);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  outline: none;
+}
 
-  .chat-button-wrapper:hover,
-  .chat-button-wrapper:focus {
-    /* Consistent hover/focus style */
-    background-color: var(--mindful-secondary, #457B9D); /* Darker teal blue */
-    color: var(--mindful-bright-bg, #FFFFFF); /* Keep text white */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Consistent hover shadow */
-    transform: translateY(-2px); /* Subtle lift, consistent with other potential hovers */
-    outline: none;
-  }
-
-.terminal-container {
+/* =========================================
+   TERMINAL ITEM & CONTAINER (Default Page Layout)
+   ========================================= */
+.terminal-container { /* Wrapper for the terminal item in the grid */
   grid-column: span 2;
   display: flex;
   flex-direction: column;
@@ -140,17 +149,17 @@
   padding: 1.5rem;
   background-color: rgb(31, 41, 55);
   border-radius: 0.5rem;
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.5s ease-out; /* Ensure fadeIn is defined */
 }
 
-.terminal-item {
+.terminal-item { /* Actual terminal link/button */
   display: flex;
   width: 90%;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0.05rem;
-  background: #000080; /* More transparent background */
+  padding: 0.05rem; /* This is very small, review if intended */
+  background: #000080; /* Consider var(--menu-black) or similar */
   border-radius: 0.5rem;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -158,11 +167,10 @@
   overflow: hidden;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  animation: float 3s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite; /* Ensure float is defined */
 }
 
-/* Morse code for "love": .-.. --- ...- . */
-.terminal-item::before {
+.terminal-item::before { /* Morse code effect */
   content: '';
   position: absolute;
   width: 100%;
@@ -171,26 +179,18 @@
     rgba(147, 51, 234, 0.2)
   );
   opacity: 0;
-  animation: morseCode 5s infinite;
+  animation: morseCode 5s infinite; /* Ensure morseCode is defined */
 }
 
-/* Glowing border effect */
-.terminal-item::after {
+.terminal-item::after { /* Glowing border effect */
   content: '';
-  position: center;
+  position: absolute; /* Was 'center', should be 'absolute' */
   margin-left: 0rem;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    #4FD1C5, 
-    #9333EA, 
-    #4FD1C5
-  );
-  border-radius: 0.6rem;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(45deg, #4FD1C5, #9333EA, #4FD1C5);
+  border-radius: 0.6rem; /* Slightly larger than item for border effect */
   z-index: -1;
-  animation: borderGlow 3s linear infinite;
+  animation: borderGlow 3s linear infinite; /* Ensure borderGlow is defined */
   opacity: 0.5;
 }
 
@@ -202,7 +202,7 @@
     0 0 15px rgba(79, 209, 197, 0.5);
 }
 
-.terminal-item .terminal-icon {
+.terminal-item .terminal-icon { /* Assuming you have a .terminal-icon class */
   font-size: 2rem;
   color: paleturquoise;
   margin-bottom: 0.5rem;
@@ -217,7 +217,7 @@
   text-shadow: 0 0 10px rgba(79, 209, 197, 0.8);
 }
 
-.terminal-item span {
+.terminal-item span { /* Text inside terminal item */
   color: #E5E7EB;
   font-weight: bold;
   transition: all 0.3s ease;
@@ -231,80 +231,23 @@
   transform: scale(1.05);
 }
 
-/* Floating animation */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Morse code animation for "love" */
-@keyframes morseCode {
-  /* L: .-.. */
-  0%, 5% { opacity: 1; } /* . */
-  6%, 10% { opacity: 0; }
-  11%, 20% { opacity: 1; } /* - */
-  21%, 25% { opacity: 0; }
-  26%, 30% { opacity: 1; } /* . */
-  31%, 35% { opacity: 0; }
-  36%, 40% { opacity: 1; } /* . */
-  
-  /* O: --- */
-  41%, 50% { opacity: 1; } /* - */
-  51%, 55% { opacity: 0; }
-  56%, 65% { opacity: 1; } /* - */
-  66%, 70% { opacity: 0; }
-  71%, 80% { opacity: 1; } /* - */
-  
-  /* V: ...- */
-  81%, 85% { opacity: 1; } /* . */
-  86%, 90% { opacity: 0; }
-  91%, 95% { opacity: 1; } /* . */
-  96%, 100% { opacity: 0; }
-}
-
-/* Glowing border animation */
-@keyframes borderGlow {
-  0% {
-    opacity: 0.3;
-    transform: rotate(0deg);
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 0.3;
-    transform: rotate(360deg);
-  }
-}
-
-/* Special unlocked state styling */
-.terminal-item.unlocked::before {
+.terminal-item.unlocked::before { /* Special styling for unlocked terminal */
   background: linear-gradient(135deg,
     rgba(79, 209, 197, 0.3),
     rgba(147, 51, 234, 0.3)
   );
-  animation: morseCode 5s infinite, unlocked 3s ease-in-out infinite;
+  animation: morseCode 5s infinite, unlocked-anim 3s ease-in-out infinite; /* Renamed unlocked to unlocked-anim */
 }
 
-@keyframes unlocked {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
+/* =========================================
+   CUBE & START GAME BUTTON (Default Page Layout)
+   ========================================= */
 .cube {
   width: 40px;
   height: 40px;
   position: relative;
   transform-style: preserve-3d;
-  animation: rotateCube 5s infinite linear;
+  animation: rotateCube 5s infinite linear; /* Ensure rotateCube is defined */
 }
 
 .cube__face {
@@ -318,201 +261,136 @@
     0 2px 5px rgba(255, 255, 255, 0.2);
 }
 
-@keyframes rotateCube {
-  from { transform: rotateY(0deg); }
-  to { transform: rotateY(360deg); }
-}
-
 .start-game-button {
-  grid-column: span 2;
+  grid-column: span 2; /* For .menu-grid layout */
   padding: 0.75rem 1.5rem;
-  background-color: #7C3AED;
+  background-color: #7C3AED; /* Consider var(--primary) or var(--accent) */
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-left: 0 rem;
-  width:90%
+  /* margin-left: 0 rem; /* Typo, should be 0rem or just 0 */
+  margin-left: 0;
+  width: 90%; /* Relative to its grid cell */
+  margin-right: auto; /* Centering in grid cell if display block/inline-block */
+  margin-left: auto;
 }
 
 .start-game-button:hover {
   background-color: #6D28D9;
 }
 
-.success-message {
-  position: absolute;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 1rem;
-  background-color: #059669;
-  color: white;
-  border-radius: 0.5rem;
-  animation: fadeIn 0.5s ease-out;
+/* =========================================
+   MINDFULMATE BUTTON SPECIFIC STYLES (Default Page Layout)
+   These are highly custom and might need significant overrides for sidebar.
+   ========================================= */
+.mindful-button-wrapper { /* This is a top-level item, similar to .chat-button-wrapper */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Or 90% like chat-button-wrapper if in grid */
+  height: 100%; /* Usually determined by content or grid row height */
+  border-radius: 15px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--mindful-primary, #5B9AA0), var(--mindful-secondary, #457B9D));
+  text-decoration: none;
+  color: var(--mindful-bright-text, #F8F9FA); /* Corrected from --mindful-bright-bg */
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(91, 154, 160, 0.3);
+  padding: 15px; /* Added some padding */
+  box-sizing: border-box;
 }
+/* ... rest of your mindful button styles ... */
+.mindful-button-wrapper:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(91, 154, 160, 0.5); }
+.mindful-container { position: relative; display: flex; align-items: center; justify-content: center; width: 80px; height: 80px; margin-bottom: 10px; }
+.mindful-icon-container { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 10px rgba(91, 154, 160, 0.5); }
+.mindful-icon { font-size: 28px; color: #457B9D; }
+.mindful-energy-ring { position: absolute; width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(168, 218, 220, 0.5); animation: pulse-mindful 2s infinite ease-in-out; /* Renamed pulse */ }
+.mindful-power-core { position: absolute; width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.mindful-core-inner { position: absolute; width: 25px; height: 25px; border-radius: 50%; background: rgba(168, 218, 220, 0.7); animation: breathe 4s infinite ease-in-out; }
+.mindful-core-outer { position: absolute; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(168, 218, 220, 0.5); animation: rotate 8s infinite linear; }
+.mindful-core-glow { position: absolute; width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, rgba(168, 218, 220, 0.5) 0%, rgba(69, 123, 157, 0) 70%); animation: glow 3s infinite alternate; }
 
-@media (max-width: 768px) {
-  .menu-container {
-    width: 90%;
-  }
-  
-  .menu-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .chat-button-wrapper,
-  .terminal-container,
-  .start-game-button {
-    grid-column: span 1;
-  }
+
+/* =========================================
+   KEYFRAME ANIMATIONS (Ensure all used @keyframes are defined)
+   ========================================= */
+@keyframes pulse-countdown { /* Renamed from 'pulse' */
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes pulse-mindful { /* Renamed from 'pulse' for mindful button */
+  0% { transform: scale(0.9); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(0.9); opacity: 0.5; }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-/* MindfulMate button styles */
-.mindful-button-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #5B9AA0, #457B9D);
-  text-decoration: none;
-  color: #F8F9FA;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(91, 154, 160, 0.3);
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
-
-.mindful-button-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(91, 154, 160, 0.5);
+@keyframes morseCode {
+  0%, 5% { opacity: 1; } 6%, 10% { opacity: 0; } 11%, 20% { opacity: 1; } 21%, 25% { opacity: 0; }
+  26%, 30% { opacity: 1; } 31%, 35% { opacity: 0; } 36%, 40% { opacity: 1; }
+  41%, 50% { opacity: 1; } 51%, 55% { opacity: 0; } 56%, 65% { opacity: 1; } 66%, 70% { opacity: 0; }
+  71%, 80% { opacity: 1; }
+  81%, 85% { opacity: 1; } 86%, 90% { opacity: 0; } 91%, 95% { opacity: 1; } 96%, 100% { opacity: 0; }
 }
-
-.mindful-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
+@keyframes borderGlow {
+  0% { opacity: 0.3; transform: rotate(0deg); }
+  50% { opacity: 0.7; }
+  100% { opacity: 0.3; transform: rotate(360deg); }
 }
-
-.mindful-icon-container {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 10px rgba(91, 154, 160, 0.5);
+@keyframes unlocked-anim { /* Renamed from 'unlocked' */
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
-
-.mindful-icon {
-  font-size: 28px;
-  color: #457B9D;
+@keyframes rotateCube {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
 }
-
-.mindful-energy-ring {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 3px solid rgba(168, 218, 220, 0.5);
-  animation: pulse 2s infinite ease-in-out;
-}
-
-.mindful-power-core {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mindful-core-inner {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: rgba(168, 218, 220, 0.7);
-  animation: breathe 4s infinite ease-in-out;
-}
-
-.mindful-core-outer {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid rgba(168, 218, 220, 0.5);
-  animation: rotate 8s infinite linear;
-}
-
-.mindful-core-glow {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(168, 218, 220, 0.5) 0%, rgba(69, 123, 157, 0) 70%);
-  animation: glow 3s infinite alternate;
-}
-
 @keyframes breathe {
-  0%, 100% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.8;
-  }
+  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
 }
-
 @keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
-
 @keyframes glow {
-  from {
-    opacity: 0.3;
-  }
-  to {
-    opacity: 0.7;
-  }
+  from { opacity: 0.3; }
+  to { opacity: 0.7; }
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.5;
+/* =========================================
+   RESPONSIVE STYLES (for Menu.css specific elements)
+   ========================================= */
+@media (max-width: 768px) {
+  #menuContainer { /* This is when Menu is used as a main page component */
+    width: 90%;
   }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.8;
+  .menu-grid { /* For main page menu on mobile */
+    grid-template-columns: 1fr; /* Stack items */
+    gap: 1rem;
+    background-color: var(--mindful-bright-surface, #F8F9FA);
   }
-  100% {
-    transform: scale(0.9);
-    opacity: 0.5;
+  .chat-button-wrapper,
+  .terminal-container, /* Ensure .terminal-container spans full grid width on mobile */
+  .mindful-button-wrapper, /* Ensure it spans full width if used in this grid */
+  .start-game-button {
+    grid-column: span 1; /* Each takes full width of the single column grid */
+    width: 100%; /* Ensure they fill the grid cell */
+    margin-left: auto;
+    margin-right: auto;
   }
 }

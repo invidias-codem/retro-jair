@@ -1,5 +1,6 @@
 // ./components/bottle_V1.1/AI_components/ChatInterface.js
 import React, { useState } from 'react';
+import ScrollToPageTopButton from './ScrollTopBtn';
 
 // Import the specific chat agent components
 import TechChat from './agents/TechChat';
@@ -46,6 +47,9 @@ const ChatInterface = () => {
         {/* 3. Add the conditional rendering for BishopChat */}
         {activeAgent === 'bishop' && <BishopChat />}
       </div>
+
+      <ScrollToPageTopButton scrollThreshold={400} />
+
     </div>
   );
 };

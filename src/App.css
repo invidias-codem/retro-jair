@@ -1,1202 +1,1228 @@
+/* App.css - Cleaned Up */
 :root {
-  --menu-yellow: #FFC72C;
-  --menu-red: #DA291C;
-  --menu-black: #27251F;
-  
-  /* TechGenie Theme Colors */
-  --tech-primary: #2563eb;     /* Royal Blue */
-  --tech-secondary: #1e40af;   /* Darker Blue */
-  --tech-accent: #22c55e;      /* Success Green */
-  --tech-warning: #eab308;     /* Warning Yellow */
-  --tech-error: #dc2626;       /* Error Red */
-  
-  /* TechGenie Light/Dark Variables */
+  /* === Retro Drive-Thru Theme Base (Light Mode Default) === */
+  --dt-bg-cream: #FAF0E6;
+  --dt-accent-red: #D83A3A;
+  --dt-text-dark: #3D2B1F;
+  --dt-accent-teal: #008080;
+  --dt-accent-mustard: #FFDB58;
+  --dt-border-color: #B74141;
+  --dt-header-bg: var(--dt-accent-red);
+  --dt-header-text: var(--dt-bg-cream);
+  --dt-sidebar-bg: #FCE2D4;
+  --dt-sidebar-bg-hover: #F8CFAF;
+  --dt-sidebar-text: var(--dt-text-dark);
+  --dt-sidebar-border: var(--dt-border-color);
+  --dt-body-bg: #E0E0E0;
+
+  /* RGB versions for light mode rgba() */
+  --dt-bg-cream-rgb: 250, 240, 230;
+  --dt-text-dark-rgb: 61, 43, 31;
+  --dt-mustard-rgb-actual: 255, 219, 88;
+  --dt-accent-teal-rgb: 0, 128, 128;
+  --dt-accent-red-rgb: 216, 58, 58;
+  --dt-sidebar-bg-rgb: 252, 226, 212;
+
+  /* General link & flicker shadow for light mode */
+  --link-color: var(--dt-accent-teal);
+  --link-hover-color: var(--dt-accent-red);
+  --flicker-offset-shadow-color: #271C16;
+
+  /* --- Mapping to original general variables for broader application --- */
+  --menu-yellow: var(--dt-bg-cream);
+  --menu-red: var(--dt-accent-red);
+  --menu-black: var(--dt-text-dark);
+
+  /* Other shared variables */
+  --border-radius: 10px;
+  --transition-speed: 0.3s;
+
+  /* Desktop Sidebar Specific Variables */
+  --desktop-sidebar-expanded-width: 260px;
+  --desktop-sidebar-collapsed-width: 75px;
+  --desktop-sidebar-transition-duration: 0.3s;
+
+  /* --- Fallback/Original Theme Variables (TechGenie, MindfulMate etc.) --- */
+  --tech-primary: #2563eb;
+  --tech-secondary: #1e40af;
+  --tech-accent: #22c55e;
+  --tech-warning: #eab308;
+  --tech-error: #dc2626;
   --tech-light-bg: #ffffff;
   --tech-light-surface: #f8fafc;
   --tech-light-text: #1e293b;
-  
   --tech-dark-bg: #0f172a;
   --tech-dark-surface: #1e293b;
   --tech-dark-text: #f8fafc;
-  
-  /* MindfulMate Theme Colors */
-  --mindful-primary: #5B9AA0;     /* Teal Blue */
-  --mindful-secondary: #457B9D;   /* Darker Blue */
-  --mindful-accent: #A8DADC;      /* Light Teal */
-  --mindful-warning: #F8961E;     /* Warm Orange */
-  --mindful-error: #E63946;       /* Soft Red */
-  
-  /* MindfulMate Bright/Calm Variables */
+
+  --mindful-primary: #5B9AA0;
+  --mindful-secondary: #457B9D;
+  --mindful-accent: #A8DADC;
+  --mindful-warning: #F8961E;
+  --mindful-error: #E63946;
   --mindful-bright-bg: #ffffff;
   --mindful-bright-surface: #F8F9FA;
   --mindful-bright-text: #1D3557;
-  
   --mindful-calm-bg: #1D3557;
   --mindful-calm-surface: #2A4A73;
   --mindful-calm-text: #F1FAEE;
-  
-  /* Shared Variables */
-  --border-radius: 12px;
-  --transition-speed: 0.3s;
+
+  /* Default Theme Fallbacks for generic components (used if no specific .tech-theme etc. is applied) */
+  --primary: var(--dt-accent-teal); /* Drive-thru's default primary accent */
+  --secondary: var(--dt-accent-red);/* Drive-thru's default secondary accent */
+  --accent: var(--dt-accent-mustard);/* Drive-thru's default general accent */
+  --warning: var(--tech-warning);    /* Fallback to tech for these */
+  --error: var(--tech-error);        /* Fallback to tech for these */
+  --bg: var(--dt-bg-cream);          /* Drive-thru's default background */
+  --surface: var(--dt-sidebar-bg);   /* Drive-thru's default surface color */
+  --text: var(--dt-text-dark);       /* Drive-thru's default text color */
+  --scrollbar-thumb: rgba(var(--dt-text-dark-rgb), 0.4); /* Themed scrollbar */
+  --scrollbar-track: rgba(var(--dt-text-dark-rgb), 0.1); /* Themed scrollbar track */
+
+  /* Generic RGB variables for components, mapped to current theme's text/primary etc. */
+  --text-rgb: var(--dt-text-dark-rgb);
+  --primary-rgb: var(--dt-accent-teal-rgb);
+  --secondary-rgb: var(--dt-accent-red-rgb);
+  --accent-rgb: var(--dt-mustard-rgb-actual);
+  --bg-rgb: var(--dt-bg-cream-rgb);
+
+
+  /* Subscription Badge Colors */
+  --free-tier-bg: #e5e7eb;
+  --free-tier-text: #374151;
+  --basic-tier-bg: var(--dt-accent-teal);
+  --basic-tier-text: var(--dt-bg-cream);
+  --pro-tier-bg: var(--dt-accent-mustard);
+  --pro-tier-text: var(--dt-text-dark);
+  --premium-tier-bg: linear-gradient(135deg, var(--dt-accent-red), var(--dt-accent-mustard));
+  --premium-tier-text: var(--dt-text-dark);
 }
 
+body.dark-mode {
+  /* === Retro Drive-Thru DARK MODE overrides === */
+  --dt-bg-cream: #2A2623;
+  --dt-accent-red: #FF6B6B;
+  --dt-text-dark: #EAE6E1;
+  --dt-accent-teal: #48D1CC;
+  --dt-accent-mustard: #FFD700;
+  --dt-border-color: #872323;
+  --dt-header-bg: var(--dt-accent-red);
+  --dt-header-text: #1A1A1A;
+  --dt-sidebar-bg: #3D352F;
+  --dt-sidebar-bg-hover: #4D433B;
+  --dt-sidebar-text: var(--dt-text-dark);
+  --dt-sidebar-border: var(--dt-border-color);
+  --dt-body-bg: #1C1A19;
+
+  /* RGB versions for dark mode rgba() */
+  --dt-bg-cream-rgb: 42, 38, 35;
+  --dt-text-dark-rgb: 234, 230, 225;
+  /* --dt-mustard-rgb-actual: 255, 219, 88; (can remain same, check contrast) */
+  --dt-accent-teal-rgb: 72, 209, 204;
+  --dt-accent-red-rgb: 255, 107, 107;
+  --dt-sidebar-bg-rgb: 61, 53, 47;
+
+  /* General link & flicker shadow for dark mode */
+  --link-color: var(--dt-accent-teal);
+  --link-hover-color: var(--dt-accent-mustard);
+  --flicker-offset-shadow-color: #110E0C;
+
+  /* --- Mapping to original general variables for dark mode --- */
+  --menu-yellow: var(--dt-bg-cream);
+  --menu-red: var(--dt-accent-red);
+  --menu-black: var(--dt-text-dark);
+
+  /* Default Theme Fallbacks for components in dark mode */
+  --primary: var(--dt-accent-teal);
+  --secondary: var(--dt-accent-red);
+  --accent: var(--dt-accent-mustard);
+  --bg: var(--dt-bg-cream);
+  --surface: var(--dt-sidebar-bg);
+  --text: var(--dt-text-dark);
+  --scrollbar-thumb: rgba(var(--dt-text-dark-rgb), 0.3);
+  --scrollbar-track: rgba(var(--dt-text-dark-rgb), 0.05);
+
+  /* Generic RGB variables for dark mode */
+  --text-rgb: var(--dt-text-dark-rgb);
+  --primary-rgb: var(--dt-accent-teal-rgb);
+  --secondary-rgb: var(--dt-accent-red-rgb);
+  --accent-rgb: var(--dt-mustard-rgb-actual);
+  --bg-rgb: var(--dt-bg-cream-rgb);
+
+  /* Subscription badges for dark mode */
+  --basic-tier-bg: var(--dt-accent-teal);
+  --basic-tier-text: #1A1A1A;
+  --pro-tier-bg: var(--dt-accent-mustard);
+  --pro-tier-text: #1A1A1A;
+  --premium-tier-bg: linear-gradient(135deg, var(--dt-accent-red), var(--dt-accent-mustard));
+  --premium-tier-text: #1A1A1A;
+}
+
+/* Global Resets & Base Styles */
 * {
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box; /* Added for more consistent box model behavior */
 }
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px; /* Base font size */
 }
 
 body {
-  background-color: var(--menu-black);
-  font-family: 'Arial', sans-serif;
-  color: var(--menu-yellow);
+  background-color: var(--dt-body-bg);
+  font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  color: var(--dt-text-dark);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  line-height: 1.5; /* Base line height for readability */
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
-#appContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: var(--menu-red);
-  border: 10px solid var(--menu-yellow);
-  border-radius: 20px;
-  box-shadow: 0 0 20px rgba(255, 199, 44, 0.5);
-  overflow: hidden;
-}
-
-#appHeader {
-  background-color: var(--menu-yellow);
-  padding: 20px;
-  border-radius: 10px 10px 0 0;
-  text-align: center;
-}
-
-#appHeaderLink {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: var(--menu-red);
+a {
+  color: var(--link-color);
   text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 0 var(--menu-black);
-  animation: flicker 2s infinite;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
 }
 
-#appMain {
-  display: flex;
-  background-color: var(--menu-black);
-  border-radius: 0 0 10px 10px;
+a:focus, button:focus {
+  outline: 2px solid var(--dt-accent-mustard);
+  outline-offset: 2px;
+}
+body.dark-mode a:focus, body.dark-mode button:focus {
+  outline-color: var(--dt-accent-teal); /* Ensure focus outline has good contrast in dark mode */
 }
 
-#appSidebar {
-  width: auto;
-  height: auto;
-  padding: 35px;
-  background-color: var(--menu-yellow);
-  border-right: 5px solid var(--menu-red);
-  touch-action: manipulation;
-  margin: 0rem;
-  padding-left: 0rem;
-}
-
-#appContent {
-  width: 135%;
-  padding: 45px;
-  background-color: var(--menu-black);
-}
 
 img {
   max-width: 100%;
   height: auto;
+  display: block; /* Removes bottom space under images */
+  border-radius: 4px;
+}
+body.dark-mode img {
+  /* filter: brightness(0.9) contrast(0.95); /* Optional: slightly desaturate/darken images */
 }
 
-a:focus, button:focus {
-  outline: 2px solid var(--menu-yellow);
+/* Main Application Layout */
+#appContainer {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0;
+  background-color: var(--menu-yellow);
+  border: 15px solid var(--menu-red);
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25), inset 0 0 0 5px var(--dt-border-color);
+  overflow: hidden;
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+body.dark-mode #appContainer {
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4), inset 0 0 0 5px var(--dt-border-color);
 }
 
-/* Add some retro-style effects */
+#appHeader {
+  background-color: var(--dt-header-bg);
+  color: var(--dt-header-text);
+  padding: 15px 20px;
+  width: 100%; /* Ensure header spans full width of container */
+  border-radius: 0;
+  text-align: center;
+  border-bottom: 4px dashed var(--dt-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align items to start */
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+#appHeaderLink {
+  font-size: 2.2em;
+  font-weight: bold;
+  color: var(--dt-header-text);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 2px 2px 0px var(--flicker-offset-shadow-color); /* Uses adaptive shadow color */
+  animation: flicker 2.5s infinite alternate;
+  margin-right: auto; /* Pushes other items (like dark mode toggle) to the right */
+  transition: color var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+}
+
+.dark-mode-toggle-button {
+  background: none;
+  border: 2px solid var(--dt-header-text);
+  color: var(--dt-header-text);
+  padding: 6px 10px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1.3em;
+  left: 15px;
+  margin-right: -1rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s ease;
+  order: 3; /* Ensures it's to the right if header has other items */
+}
+.dark-mode-toggle-button:hover {
+  background-color: var(--dt-header-text);
+  color: var(--dt-header-bg);
+}
+
+
 @keyframes flicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow:
+      0 0 4px var(--dt-header-text),
+      0 0 10px var(--dt-header-text),
+      0 0 18px var(--dt-header-text),
+      0 0 38px var(--dt-accent-mustard),
+      0 0 70px var(--dt-accent-mustard),
+      2px 2px 0px var(--flicker-offset-shadow-color);
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: 2px 2px 0px var(--flicker-offset-shadow-color);
+    opacity: 0.7;
+  }
 }
 
-#appContainer::before {
+#appMain {
+  display: flex;
+  border-radius: 0;
+  min-height: calc(100vh - 240px); /* Adjusted based on typical header/footer */
+}
+
+/* Desktop Sidebar (Hover-to-expand) */
+#appSidebar {
+  width: var(--desktop-sidebar-collapsed-width);
+  padding: 20px 10px;
+  background-color: var(--dt-sidebar-bg);
+  color: var(--dt-sidebar-text);
+  border-right: 3px solid var(--dt-sidebar-border);
+  flex-shrink: 0;
+  transition: width var(--desktop-sidebar-transition-duration) ease-in-out, 
+              padding var(--desktop-sidebar-transition-duration) ease-in-out,
+              background-color var(--desktop-sidebar-transition-duration) ease,
+              color var(--desktop-sidebar-transition-duration) ease,
+              border-color var(--desktop-sidebar-transition-duration) ease;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 200; /* Above appContent if it ever needed to overlap slightly */
+}
+#appSidebar:hover {
+  width: var(--desktop-sidebar-expanded-width);
+  padding: 20px;
+  background-color: var(--dt-sidebar-bg-hover);
+  box-shadow: 3px 0 8px rgba(0,0,0,0.1);
+}
+body.dark-mode #appSidebar:hover {
+    box-shadow: 3px 0 10px rgba(0,0,0,0.3);
+}
+
+#appSidebar .menu-item-text {
+  display: inline-block;
+  opacity: 0;
+  visibility: hidden;
+  margin-left: -15px; 
+  white-space: nowrap;
+  transition: opacity 0.2s ease,
+              visibility 0s linear 0.2s,
+              margin-left 0.2s ease;
+  pointer-events: none;
+  font-weight: bold;
+  color: var(--dt-sidebar-text);
+}
+#appSidebar:hover .menu-item-text {
+  opacity: 1;
+  visibility: visible;
+  margin-left: 12px;
+  transition: opacity 0.25s ease calc(var(--desktop-sidebar-transition-duration) * 0.4),
+              visibility 0s linear calc(var(--desktop-sidebar-transition-duration) * 0.4),
+              margin-left 0.25s ease calc(var(--desktop-sidebar-transition-duration) * 0.35);
+  pointer-events: auto;
+}
+
+#appContent {
+  flex-grow: 1;
+  padding: 25px 30px;
+  background-color: var(--menu-yellow);
+  color: var(--menu-black);
+  overflow-y: auto;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+#appContainer::before { /* Subtle sheen effect */
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    45deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.03) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(45deg, transparent 0%, rgba(var(--dt-bg-cream-rgb), 0.03) 50%, transparent 100%);
   pointer-events: none;
+  border-radius: inherit;
+  transition: background var(--transition-speed) ease;
+}
+body.dark-mode #appContainer::before {
+  background: linear-gradient(45deg, transparent 0%, rgba(var(--dt-text-dark-rgb), 0.04) 50%, transparent 100%);
 }
 
-/* Mobile-specific styles */
+/* Mobile-Specific Styles */
 @media (max-width: 768px) {
   #appContainer {
-    padding: 10px;
-    border-width: 5px;
+    margin: 0;
+    border-width: 8px;
+    border-radius: 0;
+    min-height: 100vh;
+    box-shadow: none, inset 0 0 0 3px var(--dt-border-color);
+  }
+  body.dark-mode #appContainer {
+      box-shadow: none, inset 0 0 0 3px var(--dt-border-color);
   }
 
   #appHeader {
-    padding: 10px;
+    padding: 10px 15px;
+    border-bottom-width: 3px;
   }
-
   #appHeaderLink {
-    font-size: 1.8em;
+    font-size: 1.6em;
+    letter-spacing: 1px;
   }
-
   #appMain {
     flex-direction: column;
   }
 
-  #appSidebar, #appContent {
-    width: 94%;
-    padding: 10px;
-    margin-left: 0rem;
-  }
-
+  /* Mobile Sidebar (Fly-out) */
   #appSidebar {
-    width: 94%;
-    /* Removed direct padding from sidebar to allow menu list to control it */
-    margin-left: 0.75rem;
-    border-right: none;
-    /* Changed border-bottom to be more subtle with the new color scheme */
-    border-bottom: 3px solid var(--mindful-secondary, #457B9D); /* Darker teal blue */
-    position: absolute;
-    top: 0;
+    position: fixed !important;
+    top: -58px;
     left: 0;
-    /* New background color for the sidebar */
-    background-color: var(--mindful-bright-surface, #F8F9FA); /* Very light grey/off-white */
-    z-index: 999;
-    transform: translateY(-100%);
-    opacity: 0;
-    visibility: hidden;
-    /* Slower transition for the sidebar itself */
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-                opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-                visibility 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    overflow-y: auto; /* Allow scrolling if menu items exceed screen height */
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
-
-    /* Flexbox for centering the menu list vertically and horizontally */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center menu list vertically */
-    align-items: center; /* Center menu list horizontally */
-    box-sizing: border-box;
-    /* Add some padding inside the sidebar, especially at the top if menu toggle overlaps */
-    padding-top: 60px; /* Adjust if your menu toggle is fixed and overlays */
-    padding-bottom: 20px;
+    z-index: 1000; /* Ensure mobile menu is on top */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 90% !important;
+    max-width: 300px !important;
+    height: 77vh !important;
+    padding: 0 !important; 
+    padding-top: 50px !important; 
+    padding-bottom: 20px !important;
+    margin-left: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    background-color: var(--dt-sidebar-bg) !important;
+    color: var(--dt-sidebar-text) !important;
+    border-right: 3px solid var(--dt-sidebar-border) !important;
+    border-bottom: none !important;
+    box-shadow: 5px 0px 10px rgba(0,0,0,0.2) !important;
+    transform: translateX(-100%) !important;
+    
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                visibility 0s linear 0.4s !important;
+                background-color: var(--transition-speed) ease !important;
+                color: var(--transition-speed) ease !important;
+                border-color: var(--transition-speed) ease !important;
+  }
+  body.dark-mode #appSidebar {
+    box-shadow: 5px 0px 12px rgba(0,0,0,0.35) !important;
   }
 
-  #appSidebar.show {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
+  /* Prevent desktop hover from affecting mobile sidebar's hidden state */
+  #appSidebar:not(.show):hover {
+    transform: translateX(-100%) !important;
+  }
+  #appSidebar.show:hover { 
+    transform: translateX(0) !important; /* Keep it shown if .show is active */
   }
 
-  /* --- Styles for centering the list of menu items (e.g., a UL or NAV inside #appSidebar) --- */
-  /* Adjust selector if your Menu component renders a different container for items */
+   #appSidebar.show {
+    transform: translateX(0) !important; /* Slides in from left */
+    opacity: 1 !important;
+    visibility: visible !important;
+    /* The transition for when it becomes visible (enters) */
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                visibility 0s linear 0s !important; /* Visibility changes immediately */
+  }
+  
+  #appSidebar .menu-item-text { /* Text within mobile menu items */
+    opacity: 1 !important;
+    margin-left: 10px !important; /* Adjust as needed for mobile menu item layout */
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: none !important;
+    font-weight: normal !important; /* Different from desktop bold */
+    /* Color should be inherited from .menu-item or set specifically if needed */
+     color: var(--dt-bg-cream) !important; /* If menu-item has dark bg */
+  }
+
+  #appContent { 
+    width: 100%; 
+    padding: 15px;
+    margin-left: 0;
+    flex-grow: 1;
+  }
+
   #appSidebar > ul,
   #appSidebar > nav {
     list-style: none;
-    padding: 0;
+    padding: 20px 0;
     margin: 0;
-    width: 100%; /* Takes full width to allow items to be centered within */
+    width: 100%; 
     display: flex;
     flex-direction: column;
-    align-items: center; /* This centers the <li> or .menu-item elements */
+    align-items: center;
   }
 
-  /* --- Styles for individual menu items (route buttons/links) --- */
-  /* Ensure your route links/buttons have the class "menu-item" or adjust selector */
   #appSidebar .menu-item {
     display: block;
-    width: 90%; /* Width of the buttons, relative to the ul/nav container */
-    max-width: 350px; /* Maximum width for the buttons */
-    padding: 15px 20px; /* Increased padding for a taller button */
-    margin-bottom: 15px; /* Space between buttons */
-    /* New button colors */
-    background-color: var(--mindful-primary, #5B9AA0); /* Teal blue */
-    color: var(--mindful-bright-bg, #FFFFFF); /* White text */
+    width: 85%; 
+    max-width: 280px; 
+    padding: 12px 18px; 
+    margin-bottom: 10px; 
+    background-color: var(--dt-accent-red); 
+    color: var(--dt-bg-cream); 
     text-decoration: none;
-    border-radius: 10px; /* Slightly more rounded corners */
-    text-align: center;
+    border-radius: 6px;
+    text-align: left;
     box-sizing: border-box;
-    border: none; /* Removed border, using shadow for depth */
-    font-weight: 600; /* Slightly bolder font */
-    font-size: 1.05em; /* Slightly larger font */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-
-    /* Animation: Initial state (off-screen and transparent) */
-    opacity: 0;
-    /* Slower transition for items, with a smooth easing function */
-    transition-property: transform, opacity, box-shadow, background-color;
-    transition-duration: 0.5s; /* Item's own slide-in duration */
+    border: 1px solid var(--dt-border-color);
+    font-weight: bold; 
+    font-size: 1em; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0; /* For animation */
+    transition-property: transform, opacity, box-shadow, background-color, color, border-color;
+    transition-duration: 0.4s; 
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change: transform, opacity;
+  }
+  body.dark-mode #appSidebar .menu-item {
+    border-color: var(--dt-sidebar-border);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
   }
 
   #appSidebar .menu-item:hover,
   #appSidebar .menu-item:focus {
-    /* Darker teal blue for hover/focus */
-    background-color: var(--mindful-secondary, #457B9D);
-    color: var(--mindful-bright-bg, #FFFFFF); /* Keep text white */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    outline: none;
-    /* transform: scale(1.03); // Optional: keep or remove zoom */
+    background-color: var(--dt-border-color); 
+    color: var(--dt-bg-cream); 
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  }
+  body.dark-mode #appSidebar .menu-item:hover,
+  body.dark-mode #appSidebar .menu-item:focus {
+    background-color: var(--dt-accent-red); /* Brighter red for hover in dark mode */
+    border-color: var(--dt-accent-red);     /* Match border to bg on hover */
   }
 
-  /* --- Alternating slide-in animations for menu items --- */
-  /* Initial off-screen positions */
-  #appSidebar .menu-item:nth-child(odd) {
-    transform: translateX(-110%);
-  }
-
-  #appSidebar .menu-item:nth-child(even) {
-    transform: translateX(110%);
-  }
-
-  /* When sidebar.show is active, animate items into view */
-  #appSidebar.show .menu-item {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  /* Slower and adjusted staggered transition delays for items */
-  /* These delays start after .show is added. Sidebar animation is 0.5s */
-  #appSidebar.show .menu-item:nth-child(1) { transition-delay: 0.20s; }
-  #appSidebar.show .menu-item:nth-child(2) { transition-delay: 0.30s; }
-  #appSidebar.show .menu-item:nth-child(3) { transition-delay: 0.40s; }
-  #appSidebar.show .menu-item:nth-child(4) { transition-delay: 0.50s; }
-  #appSidebar.show .menu-item:nth-child(5) { transition-delay: 0.60s; }
-  /* Adjust as needed. This makes items appear sequentially as sidebar is fully open. */
-
-
-  /* --- Ensure Menu Toggle is on top --- */
-  #menuToggle {
-    /* ... (existing styles from App.css) ... */
-    /* Ensure these original styles are maintained for positioning and appearance */
-    /* background-color: var(--menu-yellow); */
-    /* color: var(--menu-red); */
-    /* For new theme, let's adjust menu toggle too for consistency */
-    background-color: var(--mindful-primary, #5B9AA0);
-    color: var(--mindful-bright-bg, #FFFFFF);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    z-index: 1000;
-  }
-}
+  #appSidebar .menu-item:nth-child(odd) { transform: translateX(-110%); }
+  #appSidebar .menu-item:nth-child(even) { transform: translateX(110%); }
+  #appSidebar.show .menu-item { opacity: 1; transform: translateX(0); }
+  #appSidebar.show .menu-item:nth-child(1) { transition-delay: 0.15s; }
+  #appSidebar.show .menu-item:nth-child(2) { transition-delay: 0.25s; }
+  #appSidebar.show .menu-item:nth-child(3) { transition-delay: 0.35s; }
+  #appSidebar.show .menu-item:nth-child(4) { transition-delay: 0.45s; }
+  #appSidebar.show .menu-item:nth-child(5) { transition-delay: 0.55s; }
 
   #menuToggle {
-    display: block;
+    display: block; 
     position: fixed;
-    top: 10px;
-    right: 10px;
-    background-color: var(--menu-yellow);
-    color: var(--menu-red);
-    padding: 10px;
+    top: 94px;
+    right: 20px;
+    background-color: var(--dt-accent-red);
+    color: var(--dt-bg-cream);
+    padding: 8px;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 22px;
     text-align: center;
     line-height: 1;
-    z-index: 1000;
+    z-index: 1001; /* Above mobile sidebar background */
     touch-action: manipulation;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 2px solid var(--dt-bg-cream);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease;
   }
-
-/* Additional breakpoints */
-@media (max-width: 480px) {
-  #appHeaderLink {
-    font-size: 1.5em;
+  body.dark-mode #menuToggle {
+    border-color: var(--dt-accent-mustard);
+    box-shadow: 0 2px 7px rgba(0,0,0,0.3);
   }
+  
+  /* End @media (max-width: 768px) */
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (max-width: 480px) {
+  #appHeaderLink { font-size: 1.4em; }
+  #appContent { padding: 10px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) { /* Tablet */
   #appContainer {
-    max-width: 90%;
+    max-width: 95%;
+    margin: 15px auto;
+    border-width: 12px;
   }
 }
 
 /* Page transition effect */
-.page-transition {
-  transition: opacity 0.3s ease-in-out;
-}
+.page-transition { transition: opacity 0.3s ease-in-out; }
+.page-transition.hide { opacity: 0; }
 
-.page-transition.hide {
-  opacity: 0;
-}
-
+/* Terminal Menu Item */
 #menuItemTerminal {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 1rem;
-  background-color: rgb(0, 0, 0);
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
+  background-color: var(--dt-text-dark); /* In light mode, this is dark. In dark mode, this is light. */
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  color: var(--dt-bg-cream); /* In light mode, this is light. In dark mode, this is dark. */
 }
-
+body.dark-mode #menuItemTerminal {
+  background-color: var(--dt-sidebar-bg); /* A distinct dark surface */
+  color: var(--dt-text-dark); /* Light text */
+}
 #menuItemTerminal:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--dt-accent-teal); 
+  color: var(--dt-bg-cream);
   transform: translateY(-5px);
+}
+body.dark-mode #menuItemTerminal:hover {
+  color: var(--dt-text-dark); /* Keep text light on teal hover */
 }
 
 #menuItemIconWrapperTerminal {
   perspective: 1000px;
   margin-bottom: 0.5rem;
 }
-
 #menuItemIconTerminal {
   font-size: 2rem;
-  color: paleturquoise;
+  color: var(--dt-accent-mustard); 
   animation: rotate 5s infinite linear;
   transform-style: preserve-3d;
 }
-
 #menuItemTerminal span {
-  color: #696958;
+  color: inherit; /* Inherit from #menuItemTerminal */
   font-weight: bold;
 }
+#menuItemTerminal:hover #menuItemIconTerminal { animation-play-state: paused; }
+#menuItemTerminal:hover span { color: var(--dt-accent-mustard); }
+body.dark-mode #menuItemTerminal:hover span { color: var(--dt-accent-mustard); }
 
-#menuItemTerminal:hover .icon {
+@keyframes rotate {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+/* Component Theme Application Classes */
+.tech-theme.light {
+  --primary: var(--tech-primary); --secondary: var(--tech-secondary); --accent: var(--tech-accent);
+  --warning: var(--tech-warning); --error: var(--tech-error); --bg: var(--tech-light-bg);
+  --surface: var(--tech-light-surface); --text: var(--tech-light-text);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2); --scrollbar-track: var(--tech-light-surface);
+  --text-rgb: var(--tech-light-text-rgb, 30, 41, 59); /* Define if not globally available */
+  --primary-rgb: var(--tech-primary-rgb, 37, 99, 235);
+  --secondary-rgb: var(--tech-secondary-rgb, 30, 64, 175);
+  --accent-rgb: var(--tech-accent-rgb, 34, 197, 94);
+}
+.tech-theme.dark {
+  --primary: var(--tech-primary); --secondary: var(--tech-secondary); --accent: var(--tech-accent);
+  --warning: var(--tech-warning); --error: var(--tech-error); --bg: var(--tech-dark-bg);
+  --surface: var(--tech-dark-surface); --text: var(--tech-dark-text);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2); --scrollbar-track: var(--tech-dark-surface);
+  --text-rgb: var(--tech-dark-text-rgb, 248, 250, 252); /* Define if not globally available */
+  --primary-rgb: var(--tech-primary-rgb, 37, 99, 235); /* Assuming primary hex is same for dark */
+  --secondary-rgb: var(--tech-secondary-rgb, 30, 64, 175);
+  --accent-rgb: var(--tech-accent-rgb, 34, 197, 94);
+}
+.mindful-theme.bright {
+  --primary: var(--mindful-primary); --secondary: var(--mindful-secondary); --accent: var(--mindful-accent);
+  --warning: var(--mindful-warning); --error: var(--mindful-error); --bg: var(--mindful-bright-bg);
+  --surface: var(--mindful-bright-surface); --text: var(--mindful-bright-text);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2); --scrollbar-track: var(--mindful-bright-surface);
+  --text-rgb: var(--mindful-bright-text-rgb, 29, 53, 87);  /* Define */
+  --primary-rgb: var(--mindful-primary-rgb, 91, 154, 160);
+  --secondary-rgb: var(--mindful-secondary-rgb, 69, 123, 157);
+  --accent-rgb: var(--mindful-accent-rgb, 168, 218, 220);
+}
+.mindful-theme.calm {
+  --primary: var(--mindful-primary); --secondary: var(--mindful-secondary); --accent: var(--mindful-accent);
+  --warning: var(--mindful-warning); --error: var(--mindful-error); --bg: var(--mindful-calm-bg);
+  --surface: var(--mindful-calm-surface); --text: var(--mindful-calm-text);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2); --scrollbar-track: var(--mindful-calm-surface);
+  --text-rgb: var(--mindful-calm-text-rgb, 241, 250, 238); /* Define */
+  --primary-rgb: var(--mindful-primary-rgb, 91, 154, 160);
+  --secondary-rgb: var(--mindful-secondary-rgb, 69, 123, 157);
+  --accent-rgb: var(--mindful-accent-rgb, 168, 218, 220);
+}
+
+/* AI Agent Section */
+.ai-agents-container {
+  margin: 1rem 0;
+  padding: 1.5rem;
+  background-color: var(--surface);
+  border: 3px dashed var(--primary);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0,0,0, 0.1);
+  animation: fadeUp 0.6s ease-out;
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+.ai-agents-container h2 {
+  color: var(--primary);
+  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 0px var(--bg);
+  transition: color var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+}
+.ai-agents-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* Chat Buttons */
+.chat-button {
+  padding: 1rem 1.5rem;
+  border-radius: calc(var(--border-radius) / 2);
+  font-size: clamp(1rem, 3vw, 1.1rem);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  border: 2px solid var(--text);
+  min-width: 180px;
+  box-shadow: 2px 2px 0px var(--text);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background-color: var(--primary);
+  color: var(--bg);
+}
+.chat-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(var(--bg-rgb), 0.3), transparent); /* Use --bg-rgb */
+  transition: left 0.6s ease;
+}
+.chat-button:hover::before { left: 100%; }
+.chat-button:hover {
+  transform: translateY(-2px) translateX(-2px);
+  box-shadow: 4px 4px 0px var(--text);
+  background-color: var(--secondary);
+  color: var(--bg);
+  border-color: var(--bg);
+}
+.chat-button:active {
+  transform: translateY(0px) translateX(0px);
+  box-shadow: 1px 1px 0px var(--text);
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 1050;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(var(--text-rgb), 0.6); /* Overlay based on current text color */
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-out;
+  transition: background-color var(--transition-speed) ease;
+}
+body.dark-mode .modal {
+  background-color: rgba(var(--text-rgb), 0.2); /* Lighter overlay as text is light */
+}
+.modal-content {
+  width: 100%;
+  max-width: 900px;
+  height: 85vh;
+  max-height: 650px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.4s ease-out;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 4px solid var(--primary);
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+body.dark-mode .modal-content {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+.close-button:hover,
+.close-button:focus {
+  background-color: var(--primary);
+  color: var(--bg);
+  outline: none;
+}
+
+/* Modal Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 3px dashed var(--secondary);
+  flex-shrink: 0;
+  background-color: var(--surface);
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+.logo { display: flex; align-items: center; gap: 0.75rem; }
+.logo-icon {
+  width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center;
+  justify-content: center; font-size: 1.2rem; color: var(--bg);
+  background: var(--primary);
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+.logo-text {
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem); font-weight: bold; color: var(--primary);
+  transition: color var(--transition-speed) ease;
+}
+.controls { display: flex; gap: 0.5rem; }
+/* Modal Subscription Badge uses themed vars from :root */
+.button { /* General button style in Modal */
+  padding: 0.5rem 1rem; border-radius: calc(var(--border-radius) / 2); border: 2px solid var(--text);
+  font-weight: bold; cursor: pointer; transition: all var(--transition-speed) ease;
+  display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem;
+  background-color: var(--primary); color: var(--bg); box-shadow: 1px 1px 0px var(--text);
+}
+.button:hover:not(:disabled) {
+  transform: translateY(-1px) translateX(-1px); box-shadow: 2px 2px 0px var(--text);
+  background-color: var(--secondary); color: var(--bg); border-color: var(--bg);
+}
+.button:active:not(:disabled) { transform: translateY(0) translateX(0); box-shadow: none; }
+.button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+.button--icon { padding: 0.5rem; border-radius: 50%; width: 36px; height: 36px; justify-content: center; font-size: 1rem; }
+
+/* Messages Area */
+.messages {
+  flex: 1 1 auto; overflow-y: auto; padding: 1rem 1.5rem; scroll-behavior: smooth;
+  background-color: rgba(var(--text-rgb), 0.03); /* Subtle bg based on current text color's lightness/darkness */
+  transition: background-color var(--transition-speed) ease;
+}
+.messages::-webkit-scrollbar { width: 8px; }
+.messages::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+.messages::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 4px; border: 2px solid var(--scrollbar-track); }
+
+.message {
+  padding: 0.75rem 1.25rem; margin-bottom: 1rem; border-radius: var(--border-radius);
+  max-width: 80%; position: relative; animation: messageAppear 0.3s ease-out;
+  line-height: 1.6; word-wrap: break-word; box-shadow: 0 2px 3px rgba(0,0,0,0.08);
+  border-width: 2px; border-style: solid;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+body.dark-mode .message { box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+.message.user { margin-left: auto; border-bottom-right-radius: 4px; background-color: var(--primary); color: var(--bg); border-color: var(--primary); }
+.message.model, .message.bot { margin-right: auto; border-bottom-left-radius: 4px; background-color: var(--surface); color: var(--text); border-color: var(--secondary); }
+.message-content p { margin-bottom: 0.5em; }
+.message-content p:last-child { margin-bottom: 0; }
+.message-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; margin-top: 0.5rem; opacity: 0.8; }
+.message-copy { background: transparent; border: none; color: inherit; cursor: pointer; opacity: 0.6; transition: opacity var(--transition-speed) ease; padding: 0.25rem; }
+.message-copy:hover { opacity: 1; }
+.code-block {
+  background-color: var(--text); border-radius: calc(var(--border-radius) / 2); margin: 0.75rem 0;
+  overflow-x: auto; max-width: 100%; border: 1px solid var(--surface);
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+.code-block pre {
+  padding: 1rem; margin: 0; color: var(--bg); font-family: "Consolas", "Monaco", monospace;
+  font-size: 0.875rem; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;
+  transition: color var(--transition-speed) ease;
+}
+
+/* Input Area */
+.input-container {
+  padding: 1rem 1.25rem; border-top: 3px dashed var(--secondary); display: flex;
+  gap: 0.75rem; align-items: flex-end; flex-shrink: 0; background-color: var(--surface);
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+.input-wrapper { flex: 1; position: relative; }
+.input {
+  width: 100%; min-height: 50px; max-height: 150px; padding: 0.85rem 1rem;
+  border-radius: calc(var(--border-radius) / 2); font-size: 1rem; resize: none;
+  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  font-family: inherit; line-height: 1.5; border: 2px solid var(--secondary);
+  background-color: var(--bg); color: var(--text);
+}
+.input:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.3);
+}
+.send-button-wrapper { display: flex; flex-direction: column; gap: 0.4rem; align-items: center; }
+.send-button-wrapper .button { padding: 0.75rem 1.25rem; }
+
+/* Loading & Counter */
+.loading { display: flex; justify-content: flex-start; gap: 6px; padding: 1rem; margin-left: 1.5rem; }
+.loading-dot {
+  width: 9px; height: 9px; border-radius: 50%; animation: dot-pulse 1.4s infinite ease-in-out;
+  background-color: var(--primary); transition: background-color var(--transition-speed) ease;
+}
+.loading-dot:nth-child(1) { animation-delay: 0s; }
+.loading-dot:nth-child(2) { animation-delay: 0.18s; }
+.loading-dot:nth-child(3) { animation-delay: 0.36s; }
+@keyframes dot-pulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+.counter-wrapper { font-size: 0.75rem; text-align: center; color: var(--text); opacity: 0.9; transition: color var(--transition-speed) ease; }
+.counter-number { font-weight: bold; font-size: 0.9rem; color: var(--error); margin-left: 0.25rem; transition: color var(--transition-speed) ease; }
+
+/* Mindful Mate Specific (Default styling if not in .mindful-theme context) */
+.mood-selector {
+  background-color: rgba(var(--primary-rgb), 0.08); border-radius: var(--border-radius);
+  padding: 1rem; margin: 0 1.5rem 1rem; text-align: center; border: 1px dashed var(--primary);
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+.mood-selector p { margin-bottom: 0.75rem; font-size: 0.9rem; opacity: 0.9; color: var(--text); transition: color var(--transition-speed) ease; }
+.mood-buttons { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; }
+.mood-button {
+  display: flex; flex-direction: column; align-items: center; padding: 0.6rem 0.85rem;
+  border-radius: calc(var(--border-radius) / 1.5); border: 2px solid var(--primary);
+  background-color: transparent; cursor: pointer; transition: all var(--transition-speed) ease;
+  color: var(--primary); font-size: 0.8rem;
+}
+.mood-button span[role="img"] { font-size: 1.4rem; margin-bottom: 0.25rem; }
+.mood-button:hover { background-color: var(--primary); color: var(--bg); transform: translateY(-2px); }
+.mood-button.active { background-color: var(--secondary); color: var(--bg); border-color: var(--secondary); }
+
+.wellness-resources {
+  margin: 1rem 1.5rem; padding: 1rem; border-radius: var(--border-radius);
+  border: 2px dashed var(--secondary); background-color: rgba(var(--secondary-rgb), 0.05);
+  font-size: 0.85rem;
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+.wellness-resources h3 { color: var(--secondary); display: flex; align-items: center; gap: 0.5rem; margin-top: 0; margin-bottom: 0.75rem; font-size: 1rem; transition: color var(--transition-speed) ease; }
+.wellness-resources ul { padding-left: 1.25rem; margin: 0; list-style-type: '🍔 '; }
+.wellness-resources li { margin-bottom: 0.4rem; line-height: 1.4; color: var(--text); transition: color var(--transition-speed) ease; }
+
+/* Accessibility & Animations */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+.keyboard-user *:focus-visible { outline: 3px solid var(--accent) !important; outline-offset: 2px !important; box-shadow: none !important; }
+.high-contrast { /* High contrast theme would need specific variable overrides */
+  --primary: #0078d7; --accent: #00cc66; --bg: #000; --text: #fff; --surface: #111; border-width: 2px !important;
+}
+.skip-to-content {
+  position: absolute; top: -60px; left: 10px; background: var(--primary); color: var(--bg);
+  padding: 0.6rem 1.2rem; z-index: 1100; transition: top 0.3s ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  border-radius: 0 0 var(--border-radius) var(--border-radius); font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.skip-to-content:focus { top: 0; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } } 
+
+/* Responsive Adjustments for Larger Screens (Modals/Chat etc.) */
+@media (min-width: 769px) {
+   .ai-agents-wrapper { gap: 2rem; }
+  .chat-button { padding: 1.1rem 1.8rem; min-width: 190px; }
+  .modal-content { max-width: 950px; height: 80vh; max-height: 700px; }
+  .header { padding: 1rem 1.75rem; } /* Modal header */
+  .messages { padding: 1.25rem 1.75rem; }
+  .message { max-width: 75%; }
+  .input-container { padding: 1.25rem 1.75rem; }
+   .send-button-wrapper .button { padding: 0.85rem 1.5rem; }
+  .mood-buttons { gap: 0.75rem; }
+  .mood-button { padding: 0.7rem 1.1rem; }
+  .wellness-resources { margin: 1.25rem 1.75rem; font-size: 0.9rem; }
+}
+
+@media (min-width: 1200px) {
+    .modal-content { max-width: 1050px; height: 75vh; }
+    .messages { padding: 1.5rem 2rem; }
+    .input-container { padding: 1.5rem 2rem; }
+}
+
+/* Agent Selector Styles */
+.agent-selector {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  padding: 15px;
+  background-color: rgba(var(--dt-text-dark-rgb), 0.05); /* Subtle background for the container */
+  border-radius: var(--border-radius);
+  margin-bottom: 20px; /* Space below the selector */
+  justify-content: center; /* Center the buttons if they don't fill the width */
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+.selector-button {
+  padding: 10px 20px;
+  font-size: 0.95em;
+  font-weight: bold;
+  color: var(--dt-text-dark);
+  background-color: var(--dt-bg-cream);
+  border: 2px solid var(--dt-border-color);
+  border-radius: calc(var(--border-radius) * 0.8); /* Slightly sharper than main border-radius */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 2px 2px 0px var(--dt-border-color); /* Retro offset shadow */
+  text-align: center;
+}
+
+.selector-button:hover {
+  background-color: var(--dt-sidebar-bg-hover); /* Use a light peach for hover */
+  color: var(--dt-text-dark);
+  box-shadow: 3px 3px 0px var(--dt-border-color);
+  transform: translateY(-1px) translateX(-1px); /* Slight lift */
+}
+
+.selector-button.active {
+  background-color: var(--dt-accent-red); /* Active button - main red */
+  color: var(--dt-bg-cream); /* Cream text for active */
+  border-color: var(--dt-text-dark); /* Dark border for active state */
+  box-shadow: 1px 1px 0px var(--dt-text-dark); /* Slightly inset shadow when active */
+  transform: translateY(1px) translateX(1px); /* Pressed effect */
+}
+
+.selector-button.active:hover {
+  background-color: var(--dt-border-color); /* Darker red for active hover */
+  color: var(--dt-bg-cream);
+}
+
+/* Dark Mode Adjustments for Agent Selector */
+body.dark-mode .agent-selector {
+  background-color: rgba(var(--dt-text-dark-rgb), 0.1); /* Dark mode subtle background */
+}
+
+body.dark-mode .selector-button {
+  color: var(--dt-text-dark); /* Light text */
+  background-color: var(--dt-sidebar-bg); /* Darker cream/peach for button bg */
+  border-color: var(--dt-border-color); /* Dark red border */
+  box-shadow: 2px 2px 0px var(--dt-border-color);
+}
+
+body.dark-mode .selector-button:hover {
+  background-color: var(--dt-sidebar-bg-hover); /* Dark mode hover */
+  color: var(--dt-text-dark);
+  box-shadow: 3px 3px 0px var(--dt-border-color);
+}
+
+body.dark-mode .selector-button.active {
+  background-color: var(--dt-accent-red); /* Bright "neon" red for active */
+  color: #1A1A1A; /* Very dark text on bright red for high contrast */
+  border-color: var(--dt-text-dark); /* Light border for active state */
+  box-shadow: 1px 1px 0px var(--dt-text-dark);
+}
+
+body.dark-mode .selector-button.active:hover {
+  background-color: var(--dt-border-color); /* Darker red for active hover */
+  color: #1A1A1A;
+}
+
+/* Chat Open Button Flare Styles */
+.active-chat-agent {
+  display: flex;
+  justify-content: center; /* Example: centers the button if its container allows */
+  /* Or: position: fixed; bottom: 20px; right: 20px; for a FAB style */
+  padding: 15px 0; /* Add some spacing around the button's typical placement */
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0); /* Initial position */
+  transition: opacity 0.3s ease-in-out,
+              visibility 0s linear 0s, /* Show immediately */
+              transform 0.3s ease-in-out;
+  display: flex; /* Keep this if you had it from previous styling */
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.active-chat-agent.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none; /* Prevent interaction when hidden */
+  transform: translateY(30px); /* Example: button slides down and fades out */
+  transition: opacity 0.3s ease-in-out,
+              visibility 0s linear 0.3s, /* Delay hiding visibility until opacity transition is done */
+              transform 0.3s ease-in-out;
+}
+
+.chat-open-button {
+  display: inline-flex; /* Align icon and text nicely */
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px; /* Slightly adjusted padding */
+  font-size: 1.05em;   /* Good size for a call to action */
+  font-weight: bold;
+  text-transform: uppercase; /* Classic button style */
+  letter-spacing: 0.5px;
+  color: var(--dt-bg-cream); /* Light text on dark button */
+  background-color: var(--dt-accent-red); /* Main red from your theme */
+  border: 2px solid var(--dt-text-dark); /* Dark border for definition */
+  border-radius: calc(var(--border-radius) * 0.8); /* Slightly sharper than main border-radius */
+  box-shadow: 3px 3px 0px var(--dt-text-dark); /* Retro hard/offset shadow */
+  cursor: pointer;
+  position: relative; /* Needed for pseudo-elements like the shimmer */
+  overflow: hidden;   /* Keep shimmer contained */
+  transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Snappy transition */
+
+  /* Subtle pulse animation to draw attention */
+  animation: chatButtonPulse 2.8s infinite ease-in-out;
+}
+
+/* Keyframe for the button pulse */
+@keyframes chatButtonPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 3px 3px 0px var(--dt-text-dark);
+  }
+  50% {
+    transform: scale(1.025); /* Subtle scale */
+    box-shadow: 4px 4px 2px var(--dt-text-dark); /* Shadow enhances pulse */
+  }
+}
+
+/* Shimmer effect on hover */
+.chat-open-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%; /* Start further off-screen */
+  width: 50%;  /* Width of the shimmer highlight */
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--dt-bg-cream-rgb), 0.35), /* Use cream color for shimmer on red button */
+    transparent
+  );
+  transform: skewX(-25deg); /* Angled highlight */
+  transition: left 0.8s cubic-bezier(0.23, 1, 0.32, 1); /* Smooth shimmer movement */
+}
+
+.chat-open-button:hover::before {
+  left: 150%; /* Move completely across */
+}
+
+.chat-open-button:hover {
+  background-color: var(--dt-border-color); /* Darker red on hover for depth */
+  color: var(--dt-accent-mustard); /* Mustard yellow text on hover - classic combo */
+  box-shadow: 4px 4px 0px var(--dt-text-dark); /* Shadow appears to lift button */
+  transform: translateY(-2px) translateX(-2px); /* Slight lift */
+  animation-play-state: paused; /* Pause pulse animation on hover to prevent jitter */
+}
+
+.chat-open-button:active {
+  background-color: var(--dt-accent-red); /* Revert to base red or slightly darker */
+  color: var(--dt-bg-cream);
+  box-shadow: 1px 1px 0px var(--dt-text-dark); /* "Pressed in" shadow */
+  transform: translateY(1px) translateX(1px); /* "Pressed in" movement */
   animation-play-state: paused;
+  transition-duration: 0.05s; /* Make active state feel immediate */
 }
 
-#menuItemTerminal:hover span {
-  color: darkorchid;
+/* SVG Icon Styling within the button */
+.chat-open-button svg {
+  /* fill="currentColor" in SVG will make it use the button's text color */
+  width: 1.2em; /* Adjust size relative to button font size */
+  height: 1.2em;
+  margin-right: 10px; /* Space between icon and text (was inline, good to standardize) */
+  transition: transform 0.25s ease-in-out;
 }
 
-/* =========================================
-   BASE VARIABLES & SETUP
-   ========================================= */
-   :root {
-    /* Define common variables */
-    --border-radius: 12px;
-    --transition-speed: 0.3s;
-  
-    /* Default Theme (Fallback) - Tech Light */
-    --primary: var(--tech-primary, #2563eb);
-    --secondary: var(--tech-secondary, #1e40af);
-    --accent: var(--tech-accent, #22c55e);
-    --warning: var(--tech-warning, #eab308);
-    --error: var(--tech-error, #dc2626);
-    --bg: var(--tech-light-bg, #ffffff);
-    --surface: var(--tech-light-surface, #f8fafc);
-    --text: var(--tech-light-text, #1e293b);
-    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
-  
-    /* Specific colors if needed */
-    --menu-black: #000; /* Assuming from original context */
-    --menu-yellow: #ffc72c; /* Assuming from original context */
-    --menu-red: #da291c; /* Assuming from original context */
-  
-    /* Tech Theme Variables */
-    --tech-primary: #2563eb;
-    --tech-secondary: #1e40af;
-    --tech-accent: #22c55e;
-    --tech-warning: #eab308;
-    --tech-error: #dc2626;
-    --tech-light-bg: #ffffff;
-    --tech-light-surface: #f8fafc;
-    --tech-light-text: #1e293b;
-    --tech-dark-bg: #0f172a;
-    --tech-dark-surface: #1e293b;
-    --tech-dark-text: #f8fafc;
-  
-    /* Mindful Theme Variables */
-    --mindful-primary: #5B9AA0;
-    --mindful-secondary: #457B9D;
-    --mindful-accent: #A8DADC;
-    --mindful-warning: #F8961E;
-    --mindful-error: #E63946;
-    --mindful-bright-bg: #ffffff;
-    --mindful-bright-surface: #F8F9FA;
-    --mindful-bright-text: #1D3557;
-    --mindful-calm-bg: #1D3557;
-    --mindful-calm-surface: #2A4A73;
-    --mindful-calm-text: #F1FAEE;
-  
-    /* Subscription Badge Colors */
-    --free-tier-bg: #e5e7eb;
-    --free-tier-text: #374151;
-    --basic-tier-bg: var(--tech-primary); /* Example */
-    --basic-tier-text: white;
-    --pro-tier-bg: var(--tech-accent); /* Example */
-    --pro-tier-text: white;
-    --premium-tier-bg: linear-gradient(135deg, var(--tech-primary), var(--tech-accent)); /* Example */
-    --premium-tier-text: white;
-  }
-  
-  /* Theme application classes */
-  .tech-theme.light {
-    --primary: var(--tech-primary);
-    --secondary: var(--tech-secondary);
-    --accent: var(--tech-accent);
-    --warning: var(--tech-warning);
-    --error: var(--tech-error);
-    --bg: var(--tech-light-bg);
-    --surface: var(--tech-light-surface);
-    --text: var(--tech-light-text);
-    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
-  }
-  
-  .tech-theme.dark {
-    --primary: var(--tech-primary);
-    --secondary: var(--tech-secondary);
-    --accent: var(--tech-accent);
-    --warning: var(--tech-warning);
-    --error: var(--tech-error);
-    --bg: var(--tech-dark-bg);
-    --surface: var(--tech-dark-surface);
-    --text: var(--tech-dark-text);
-    --scrollbar-thumb: rgba(255, 255, 255, 0.2);
-  }
-  
-  .mindful-theme.bright {
-    --primary: var(--mindful-primary);
-    --secondary: var(--mindful-secondary);
-    --accent: var(--mindful-accent);
-    --warning: var(--mindful-warning);
-    --error: var(--mindful-error);
-    --bg: var(--mindful-bright-bg);
-    --surface: var(--mindful-bright-surface);
-    --text: var(--mindful-bright-text);
-    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
-  }
-  
-  .mindful-theme.calm {
-    --primary: var(--mindful-primary);
-    --secondary: var(--mindful-secondary);
-    --accent: var(--mindful-accent);
-    --warning: var(--mindful-warning);
-    --error: var(--mindful-error);
-    --bg: var(--mindful-calm-bg);
-    --surface: var(--mindful-calm-surface);
-    --text: var(--mindful-calm-text);
-    --scrollbar-thumb: rgba(255, 255, 255, 0.2);
-  }
-  
-  /* =========================================
-     AI AGENT SECTION
-     ========================================= */
-  .ai-agents-container {
-    margin: 1rem 0; /* Adjusted margin */
-    padding: 1.5rem; /* Slightly larger padding */
-    background-color: var(--menu-black, #1a1a1a); /* Use variable with fallback */
-    border: 3px solid var(--menu-yellow, #ffc72c);
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 12px rgba(255, 199, 44, 0.3);
-    animation: fadeUp 0.6s ease-out; /* Added from original */
-  }
-  
-  .ai-agents-container h2 {
-    color: var(--menu-yellow, #ffc72c);
-    text-align: center;
-    font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive font size */
-    margin-bottom: 1.5rem; /* Increased margin */
-    text-shadow: 1px 1px 2px rgba(218, 41, 28, 0.7); /* Use variable */
-  }
-  
-  .ai-agents-wrapper {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-  
-  /* =========================================
-     CHAT BUTTONS (Agent Selection)
-     ========================================= */
-  .chat-button {
-    padding: 1rem 1.5rem; /* Adjusted padding */
-    border-radius: var(--border-radius);
-    font-size: clamp(1rem, 3vw, 1.2rem); /* Responsive font size */
-    font-weight: bold;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease; /* Simplified transition */
-    border: none;
-    min-width: 180px; /* Slightly smaller min-width */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    animation: pulse 2s infinite; /* Added from original */
-  }
-  
-  /* Shimmer Effect */
-  .chat-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transition: left 0.7s ease; /* Adjusted timing */
-  }
-  
-  .chat-button:hover::before {
-    left: 100%;
-  }
-  
-  .chat-button:hover {
-    transform: translateY(-4px); /* Slightly less lift */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .chat-button:active {
-    transform: translateY(-1px); /* Slightly less press */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* TechGenie Button Theme */
-  .chat-button.tech-theme {
-    background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary));
-    color: white;
-    border: 2px solid transparent; /* Default transparent border */
-  }
-  .tech-theme .chat-button:hover,
-  .tech-theme .chat-button:focus {
-    border-color: var(--tech-accent); /* Add border on hover/focus */
-  }
-  .tech-theme.dark .chat-button { /* Use combined class for theme+mode */
-    background: linear-gradient(135deg, var(--tech-secondary), var(--tech-dark-bg));
-  }
-  .tech-theme.dark .chat-button:hover,
-  .tech-theme.dark .chat-button:focus {
-    border-color: var(--tech-primary);
-  }
-  
-  /* MindfulMate Button Theme */
-  .chat-button.mindful-theme {
-    background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary));
-    color: white;
-    border: 2px solid transparent;
-  }
-  .mindful-theme .chat-button:hover,
-  .mindful-theme .chat-button:focus {
-    border-color: var(--mindful-accent);
-  }
-  .mindful-theme.calm .chat-button {
-    background: linear-gradient(135deg, var(--mindful-secondary), var(--mindful-calm-bg));
-  }
-  .mindful-theme.calm .chat-button:hover,
-  .mindful-theme.calm .chat-button:focus {
-     border-color: var(--mindful-primary);
-  }
-  
-  
-  /* =========================================
-     MODAL STYLES
-     ========================================= */
-  .modal {
-    /* display: block; */ /* Handled by React state */
-    position: fixed;
-    z-index: 1000;
-    inset: 0; /* Replaces top, left, right, bottom */
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* Prevent body scroll when modal is open */
-    background-color: rgba(0, 0, 0, 0.7); /* Slightly darker overlay */
-    backdrop-filter: blur(5px);
-    display: flex; /* Use flex to center content */
-    align-items: center;
-    justify-content: center;
-    padding: 1rem; /* Add padding for small screens */
-    animation: fadeIn 0.3s ease-out;
-  }
-  
-  .modal-content {
-    /* margin: 5% auto; */ /* Removed, centering handled by flex on .modal */
-    width: 100%; /* Start with full width */
-    max-width: 1000px; /* Max width for larger screens */
-    height: 90vh; /* Use viewport height */
-    max-height: 700px; /* Max height */
-    border-radius: var(--border-radius);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    position: relative;
-    overflow: hidden; /* Content scrolling handled by .messages */
-    display: flex;
-    flex-direction: column;
-    animation: slideUp 0.4s ease-out;
-    background-color: var(--bg); /* Base background */
-    color: var(--text); /* Base text color */
-    border: 2px solid var(--primary); /* Base border color */
-  }
-  
-  /* Modal Themes (Applied to modal-content) */
-  .tech-genie-modal .modal-content.dark {
-    background-color: var(--tech-dark-bg);
-    color: var(--tech-dark-text);
-    border: 2px solid var(--tech-primary);
-  }
-  .tech-genie-modal .modal-content.light {
-    background-color: var(--tech-light-bg);
-    color: var(--tech-light-text);
-    border: 2px solid var(--tech-primary);
-  }
-  .mindful-mate-modal .modal-content.calm {
-    background-color: var(--mindful-calm-bg);
-    color: var(--mindful-calm-text);
-    border: 2px solid var(--mindful-primary);
-  }
-  .mindful-mate-modal .modal-content.bright {
-    background-color: var(--mindful-bright-bg);
-    color: var(--mindful-bright-text);
-    border: 2px solid var(--mindful-primary);
-  }
-  
-  .close-button {
-    position: absolute;
-    top: 10px; /* Closer to edge */
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: inherit; /* Inherit color from modal content */
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 10;
-    width: 40px; /* Larger touch target */
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color var(--transition-speed) ease; /* Smooth transition */
-  }
-  
-  .close-button:hover,
-  .close-button:focus {
-    background-color: rgba(128, 128, 128, 0.2); /* Subtle hover/focus */
-    outline: none;
-  }
-  
-  
-  /* =========================================
-     MODAL HEADER
-     ========================================= */
-  .header { /* Renamed from original to avoid conflict if used elsewhere */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.2); /* Subtle border */
-    flex-shrink: 0; /* Prevent header from shrinking */
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  
-  .logo-icon {
-    width: 36px; /* Slightly smaller icon */
-    height: 36px;
-    border-radius: 8px; /* Consistent border radius */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem; /* Adjusted size */
-    color: white; /* Icon color */
-  }
-  .tech-theme .logo-icon { background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary)); }
-  .mindful-theme .logo-icon { background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary)); }
-  
-  .logo-text {
-    font-size: clamp(1.2rem, 4vw, 1.5rem); /* Responsive font size */
-    font-weight: bold;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-  .tech-theme .logo-text { background-image: linear-gradient(135deg, var(--tech-primary), var(--tech-accent)); }
-  .mindful-theme .logo-text { background-image: linear-gradient(135deg, var(--mindful-primary), var(--mindful-accent)); }
-  
-  .controls {
-    display: flex;
-    gap: 0.5rem; /* Reduced gap */
-  }
-  
-  /* Subscription Badge */
-  .subscription-badge {
-    margin-left: 0.75rem;
-    padding: 0.25rem 0.6rem; /* Adjusted padding */
-    border-radius: 999px;
-    font-size: 0.7rem; /* Smaller font */
-    font-weight: bold;
-    text-transform: uppercase;
-    line-height: 1.2; /* Ensure text fits */
-  }
-  /* Badge Theme Colors */
-  .subscription-badge.free { background-color: var(--free-tier-bg); color: var(--free-tier-text); }
-  .subscription-badge.basic { background-color: var(--basic-tier-bg); color: var(--basic-tier-text); }
-  .subscription-badge.pro { background-color: var(--pro-tier-bg); color: var(--pro-tier-text); }
-  .subscription-badge.premium { background: var(--premium-tier-bg); color: var(--premium-tier-text); }
-  
-  /* Header Buttons */
-  .button { /* General button style within header/modal */
-    padding: 0.5rem 0.8rem; /* Adjusted padding */
-    border-radius: var(--border-radius);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    display: inline-flex; /* Use inline-flex */
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem; /* Slightly smaller font */
-  }
-  .button:hover:not(:disabled) { transform: translateY(-2px); }
-  .button:active:not(:disabled) { transform: translateY(0); }
-  .button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-  
-  .button--icon {
-    padding: 0.5rem;
-    border-radius: 50%;
-    width: 32px; /* Smaller icon buttons */
-    height: 32px;
-    justify-content: center;
-    font-size: 1rem; /* Adjust icon size if needed */
-  }
-  
-  /* Button Themes */
-  .tech-theme .button { background-color: var(--tech-primary); color: white; }
-  .tech-theme .button:hover:not(:disabled) { background-color: var(--tech-secondary); }
-  .tech-theme .button--settings { background-color: transparent; border: 1px solid var(--tech-primary); color: var(--tech-primary); }
-  .tech-theme.dark .button--settings { border-color: var(--tech-accent); color: var(--tech-accent); }
-  .tech-theme .button--theme { background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary)); }
-  
-  .mindful-theme .button { background-color: var(--mindful-primary); color: white; }
-  .mindful-theme .button:hover:not(:disabled) { background-color: var(--mindful-secondary); }
-  .mindful-theme .button--settings { background-color: transparent; border: 1px solid var(--mindful-primary); color: var(--mindful-primary); }
-  .mindful-theme.calm .button--settings { border-color: var(--mindful-accent); color: var(--mindful-accent); }
-  .mindful-theme .button--theme { background: linear-gradient(135deg, var(--mindful-primary), var(--mindful-secondary)); }
-  
-  /* =========================================
-     MESSAGES AREA
-     ========================================= */
-  .messages {
-    flex: 1 1 auto; /* Allow messages to grow and shrink, base size auto */
-    overflow-y: auto;
-    padding: 1rem 1.5rem; /* Consistent padding */
-    scroll-behavior: smooth;
-    /* max-height calculation removed - height managed by modal-content and flexbox */
-  }
-  
-  /* Custom Scrollbar */
-  .messages::-webkit-scrollbar { width: 6px; }
-  .messages::-webkit-scrollbar-track { background: transparent; }
-  .messages::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; }
-  
-  /* Message Bubbles */
-  .message {
-    padding: 0.75rem 1rem; /* Adjusted padding */
-    margin-bottom: 1rem;
-    border-radius: var(--border-radius);
-    max-width: 85%; /* Slightly wider max width */
-    position: relative;
-    animation: messageAppear 0.3s ease-out;
-    line-height: 1.5; /* Improve readability */
-    word-wrap: break-word; /* Ensure long words break */
-  }
-  
-  .message.user {
-    margin-left: auto;
-    border-bottom-right-radius: 4px; /* Subtle point */
-  }
-  .message.model, .message.bot {
-    margin-right: auto;
-    border-bottom-left-radius: 4px; /* Subtle point */
-  }
-  
-  /* Message Themes */
-  .tech-theme .message.user { background-color: var(--tech-primary); color: white; }
-  .tech-theme .message.model, .tech-theme .message.bot { background-color: var(--surface); border: 1px solid rgba(128, 128, 128, 0.1); color: var(--text); }
-  
-  .mindful-theme .message.user { background-color: var(--mindful-primary); color: white; }
-  .mindful-theme .message.model, .mindful-theme .message.bot { background-color: var(--surface); border: 1px solid rgba(128, 128, 128, 0.1); color: var(--text); }
-  
-  /* Mood Update Specific Style */
-  .mindful-theme .message.mood-update {
-    background: rgba(91, 154, 160, 0.1) !important;
-    border: 1px dashed var(--mindful-primary) !important;
-    font-style: italic;
-    color: var(--text); /* Ensure text color is readable */
-  }
-  
-  .message-content p { /* Add margin between paragraphs within a message */
-      margin-bottom: 0.5em;
-  }
-  .message-content p:last-child {
-      margin-bottom: 0;
-  }
-  
-  .message-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.75rem; /* Smaller meta text */
-    margin-top: 0.5rem; /* Reduced margin */
-    opacity: 0.7; /* Slightly less opacity */
-  }
-  
-  .message-copy {
-    background: transparent;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: opacity var(--transition-speed) ease;
-    padding: 0.25rem; /* Add some padding */
-  }
-  .message-copy:hover { opacity: 1; }
-  
-  /* Code Block Styling */
-  .code-block {
-    background-color: #282c34; /* Standard dark code bg */
-    border-radius: 8px;
-    margin: 0.75rem 0;
-    overflow-x: auto;
-    max-width: 100%;
-  }
-  .code-block pre {
-    padding: 1rem;
-    margin: 0;
-    color: #abb2bf; /* Common light text color for dark code */
-    font-family: "Fira Code", "Consolas", monospace;
-    font-size: 0.875rem; /* Slightly smaller code font */
-    line-height: 1.6;
-    white-space: pre-wrap; /* Allow wrapping */
-    word-wrap: break-word;
-  }
-  
-  /* =========================================
-     INPUT AREA
-     ========================================= */
-  .input-container {
-    padding: 1rem;
-    border-top: 1px solid rgba(128, 128, 128, 0.2); /* Subtle separator */
-    display: flex;
-    gap: 0.75rem; /* Reduced gap */
-    align-items: flex-end; /* Align items to bottom */
-    flex-shrink: 0; /* Prevent input area from shrinking */
-  }
-  
-  .input-wrapper {
-    flex: 1; /* Take remaining space */
-    position: relative;
-  }
-  
-  .input { /* Textarea */
-    width: 100%;
-    min-height: 50px; /* Adjusted min-height */
-    max-height: 150px; /* Limit growth */
-    padding: 0.75rem 1rem; /* Adjusted padding */
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    resize: none; /* Disable manual resize */
-    transition: border-color var(--transition-speed) ease;
-    font-family: inherit;
-    line-height: 1.5;
-    border: 1px solid rgba(128, 128, 128, 0.2); /* Default border */
-    background-color: var(--surface); /* Use surface color */
-    color: var(--text);
-  }
-  
-  .input:focus {
-    outline: none;
-    border-color: var(--primary); /* Use theme primary color */
-    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 37, 99, 235), 0.2); /* Add focus ring */
-  }
-  /* Helper for focus ring RGB */
-  .tech-theme { --primary-rgb: 37, 99, 235; }
-  .mindful-theme { --primary-rgb: 91, 154, 160; }
-  
-  .send-button-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem; /* Reduced gap */
-    align-items: center;
-  }
-  
-  .send-button-wrapper .button { /* Style the send button specifically */
-      padding: 0.75rem 1.25rem; /* Make send button slightly larger */
-  }
-  
-  /* =========================================
-     LOADING & COUNTER
-     ========================================= */
-  .loading {
-    display: flex;
-    justify-content: flex-start; /* Align to start like messages */
-    gap: 6px;
-    padding: 1rem;
-    margin-left: 1rem; /* Indent slightly */
-  }
-  
-  .loading-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    animation: dot-pulse 1.5s infinite ease-in-out;
-    background-color: var(--primary); /* Use theme primary */
-  }
-  .loading-dot:nth-child(1) { animation-delay: 0s; }
-  .loading-dot:nth-child(2) { animation-delay: 0.15s; } /* Adjusted delay */
-  .loading-dot:nth-child(3) { animation-delay: 0.3s; }
-  
-  @keyframes dot-pulse {
-    0%, 100% { transform: scale(0.8); opacity: 0.6; }
-    50% { transform: scale(1.2); opacity: 1; }
-  }
-  
-  /* Interaction Counter */
-  .counter-wrapper {
-    font-size: 0.7rem; /* Smaller counter text */
-    text-align: center;
-    color: var(--text);
-    opacity: 0.8;
-  }
-  .counter-number {
-    font-weight: bold;
-    font-size: 0.9rem; /* Smaller number */
-    color: var(--accent); /* Use theme accent */
-    margin-left: 0.25rem; /* Space between label and number */
-  }
-  
-  
-  /* =========================================
-     MINDFUL MATE SPECIFIC
-     ========================================= */
-  .mood-selector {
-    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.05); /* Use theme color */
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    margin: 0 1.5rem 1rem;
-    text-align: center;
-  }
-  .mindful-theme { --primary-rgb: 91, 154, 160; } /* Define RGB for mindful theme */
-  
-  .mood-selector p { /* Added style for the prompt text */
-      margin-bottom: 0.75rem;
-      font-size: 0.9rem;
-      opacity: 0.9;
-  }
-  
-  .mood-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem; /* Space between buttons */
-    flex-wrap: wrap;
-  }
-  
-  .mood-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.5rem 0.75rem; /* Adjust padding */
-    border-radius: var(--border-radius);
-    border: 1px solid var(--accent); /* Use theme accent */
-    background-color: transparent;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    color: var(--text); /* Use theme text color */
-    font-size: 0.8rem;
-  }
-  
-  .mood-button span[role="img"] {
-    font-size: 1.3rem; /* Adjust emoji size */
-    margin-bottom: 0.2rem;
-  }
-  
-  .mood-button:hover {
-    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.1);
-    transform: translateY(-2px);
-  }
-  
-  .mood-button.active {
-    background-color: var(--primary); /* Use theme primary */
-    color: white;
-    border-color: var(--primary);
-  }
-  
-  .wellness-resources {
-    margin: 1rem 1.5rem; /* Match messages padding */
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    border: 1px dashed var(--primary); /* Dashed border */
-    background-color: rgba(var(--primary-rgb, 91, 154, 160), 0.05);
-    font-size: 0.85rem; /* Adjust font size */
-  }
-  .wellness-resources h3 {
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0;
-    margin-bottom: 0.75rem; /* Add space below header */
-    font-size: 1rem; /* Adjust header size */
-  }
-  .wellness-resources ul {
-    padding-left: 1.25rem; /* Adjust list indent */
-    margin: 0; /* Remove default list margin */
-  }
-  .wellness-resources li {
-    margin-bottom: 0.4rem; /* Adjust spacing */
-    line-height: 1.4;
-  }
-  
-  /* =========================================
-     ACCESSIBILITY & ANIMATIONS
-     ========================================= */
-  /* Screen Reader Only */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-  
-  /* Focus Visible Styling */
-  .keyboard-user *:focus-visible { /* Use :focus-visible */
-    outline: 3px solid var(--primary) !important;
-    outline-offset: 2px !important;
-    box-shadow: none !important; /* Remove other focus shadows if needed */
-  }
-  
-  /* High Contrast (Example - Needs specific implementation) */
-  .high-contrast {
-    /* Define high contrast overrides */
-    --primary: #0078d7;
-    --accent: #00cc66;
-    --bg: #000;
-    --text: #fff;
-    --surface: #111;
-    border-width: 2px !important;
-  }
-  
-  /* Skip Link */
-  .skip-to-content {
-    position: absolute;
-    top: -50px; /* Hide offscreen */
-    left: 10px;
-    background: var(--primary);
-    color: white;
-    padding: 0.5rem 1rem;
-    z-index: 1100; /* Ensure it's above modal overlay */
-    transition: top 0.3s ease;
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-  }
-  .skip-to-content:focus {
-    top: 0;
-  }
-  
-  /* Keyframe Animations */
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } } /* Subtle pulse */
-  
-  /* Removed glitch/wave animations for general optimization unless specifically desired */
-  
-  
-  /* =========================================
-     RESPONSIVE ADJUSTMENTS (Mobile First Approach)
-     ========================================= */
-  
-  /* Base styles are mobile-first, this query is for larger screens */
-  @media (min-width: 768px) {
-    .ai-agents-wrapper {
-        gap: 2rem; /* Increase gap on larger screens */
-    }
-  
-    .chat-button {
-        padding: 1.25rem 2rem; /* Larger padding */
-        min-width: 200px;
-    }
-  
-    .modal-content {
-        width: 85%; /* Use % for flexibility */
-        height: 85vh; /* Adjust height */
-    }
-  
-    .header {
-        flex-direction: row; /* Switch back to row layout */
-        padding: 1rem 1.5rem;
-    }
-  
-    .controls {
-        width: auto; /* Reset width */
-    }
-  
-    .messages {
-        padding: 1.5rem 2rem; /* Increase padding */
-    }
-  
-    .message {
-        max-width: 80%;
-    }
-  
-    .input-container {
-        flex-direction: row; /* Switch back to row */
-        align-items: flex-end;
-        padding: 1rem 1.5rem;
-    }
-  
-    .send-button-wrapper {
-        flex-direction: column; /* Stack button and counter */
-        width: auto;
-    }
-     .send-button-wrapper .button {
-        padding: 0.75rem 1.5rem; /* Larger send button */
-     }
-  
-  
-    .mood-buttons {
-        gap: 0.75rem;
-    }
-    .mood-button {
-        padding: 0.6rem 1rem;
-    }
-  
-    .wellness-resources {
-        margin: 1rem 1.5rem;
-        font-size: 0.9rem;
-    }
-  }
-  
-  /* Optional: Adjustments for very large screens */
-  @media (min-width: 1200px) {
-      .modal-content {
-          max-width: 1100px; /* Slightly larger max-width */
-          height: 80vh;
-      }
-      .messages {
-          padding: 2rem 2.5rem;
-      }
-       .input-container {
-          padding: 1.5rem 2rem;
-       }
-  }
+.chat-open-button:hover svg {
+  transform: rotate(-10deg) scale(1.1); /* Subtle, playful icon animation */
+}
+
+/* === Dark Mode Adjustments for Chat Open Button === */
+body.dark-mode .chat-open-button {
+  color: var(--dt-text-dark); /* Light text */
+  background-color: var(--dt-accent-red); /* Bright "neon" red */
+  border-color: var(--dt-bg-cream); /* Light border for contrast */
+  box-shadow: 3px 3px 0px var(--dt-bg-cream); /* Light shadow */
+}
+
+body.dark-mode .chat-open-button::before {
+   background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--dt-text-dark-rgb), 0.25), /* Lighter shimmer (using light text color) on bright red */
+    transparent
+  );
+}
+
+body.dark-mode .chat-open-button:hover {
+  background-color: var(--dt-border-color); /* Darker version of the bright red */
+  color: var(--dt-accent-mustard); /* Mustard yellow text still pops */
+  border-color: var(--dt-accent-mustard); /* Match border to text for highlight */
+  box-shadow: 4px 4px 0px var(--dt-accent-mustard); /* Mustard shadow */
+}
+
+body.dark-mode .chat-open-button:active {
+  background-color: var(--dt-accent-red);
+  color: var(--dt-text-dark); /* Ensure text color for active state is correct */
+  box-shadow: 1px 1px 0px var(--dt-bg-cream);
+}
+
+.chat-open-button.tech-button {
+  background-color: var(--tech-primary);
+  color: var(--tech-light-text); 
+  border-color: var(--tech-secondary);
+  box-shadow: 3px 3px 0px var(--tech-secondary);
+  animation: none;
+}
+
+.chat-open-button.tech-button::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+}
+
+.chat-open-button.tech-button:hover {
+  background-color: var(--tech-secondary);
+  color: var(--tech-light-text); 
+  border-color: var(--tech-accent);
+  box-shadow: 4px 4px 0px var(--tech-accent);
+  transform: translateY(-2px) translateX(-2px);
+}
+
+.chat-open-button.tech-button:active {
+  background-color: var(--tech-primary);
+  box-shadow: 1px 1px 0px var(--tech-secondary);
+  transform: translateY(1px) translateX(1px);
+}
+
+body.dark-mode .chat-open-button.tech-button {
+  background-color: var(--tech-primary); 
+  color: var(--tech-dark-text); 
+  border-color: var(--tech-secondary);
+  box-shadow: 3px 3px 0px var(--tech-secondary);
+}

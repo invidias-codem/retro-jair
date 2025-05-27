@@ -9,7 +9,7 @@ import {
   faTerminal,
   faRobot
 } from '@fortawesome/free-solid-svg-icons';
-import './Menu.css';
+import './Menu.css'; // Original Menu.css, styles will be overridden by App.css for sidebar context
 
 const SHADOW_COLORS = {
   red: '0 0 25px 5px rgba(204, 76, 61, 0.7)',
@@ -19,96 +19,56 @@ const SHADOW_COLORS = {
 };
 
 const MENU_ITEMS = [
-  {
-    id: 'about',
-    icon: faUser,
-    label: 'About Me',
-    path: '/about',
-    color: 'red'
-  },
-  {
-    id: 'projects',
-    icon: faCode,
-    label: 'Projects',
-    path: '/projects',
-    color: 'green'
-  },
-  {
-    id: 'skills',
-    icon: faCogs,
-    label: 'Skills',
-    path: '/skills',
-    color: 'blue'
-  },
-  {
-    id: 'contact',
-    icon: faEnvelope,
-    label: 'Contact',
-    path: '/contact',
-    color: 'yellow'
-  }
+  { id: 'about', icon: faUser, label: 'About Me', path: '/about', color: 'red' },
+  { id: 'projects', icon: faCode, label: 'Projects', path: '/projects', color: 'green' },
+  { id: 'skills', icon: faCogs, label: 'Skills', path: '/skills', color: 'blue' },
+  { id: 'contact', icon: faEnvelope, label: 'Contact', path: '/contact', color: 'yellow' }
 ];
 
-// MenuItem component (remains the same)
-const MenuItem = memo(({ item, isActive, onClick }) => (
+// Standard Menu Item
+const MenuItem = memo(({ item, isActive, onClick, isDesktopSidebarCollapsed }) => (
   <Link
     to={item.path}
-    className="menu-item"
-    style={isActive ? { boxShadow: SHADOW_COLORS[item.color] } : {}}
-    onClick={onClick} // Existing onClick to close menu
+    className="menu-item" // This class is key for App.css to style it in the sidebar
+    style={isActive && !isDesktopSidebarCollapsed ? { boxShadow: SHADOW_COLORS[item.color] } : {}}
+    onClick={onClick}
     aria-label={item.label}
+    title={isDesktopSidebarCollapsed ? item.label : undefined} // Show full label on hover when collapsed
   >
-    <div className="menu-icon-wrapper">
-      <FontAwesomeIcon icon={item.icon} className="menu-icon" />
-    </div>
-    <span className="menu-text">{item.label}</span>
+    <FontAwesomeIcon icon={item.icon} className="menu-item-icon" fixedWidth />
+    <span className="menu-item-text">{item.label}</span>
   </Link>
 ));
 
-// Memoized chat button component - MODIFIED
-const ChatButton = memo(({ onClick }) => ( // <-- Added onClick prop
+// Chat Button, adapted for sidebar consistency
+const ChatButton = memo(({ onClick, isDesktopSidebarCollapsed }) => (
   <Link
     to="/chat"
-    className="chat-button-wrapper"
+    className="menu-item chat-button-link" // Use "menu-item" for sidebar styling, specific class for other contexts
     aria-label="Open GenAIe Chat"
-    onClick={onClick} // <-- Use the onClick prop here
+    onClick={onClick}
+    title={isDesktopSidebarCollapsed ? "GenAIe Chat" : undefined}
   >
-    <div className="genie-container"> {/* Assuming .genie-container is from your Menu.css for styling */}
-      <div className="genie-icon-container">
-        <FontAwesomeIcon icon={faRobot} className="genie-icon" />
-        <div className="energy-ring" />
-      </div>
-      <div className="power-core">
-        <div className="core-inner" />
-        <div className="core-outer" />
-        <div className="core-glow" />
-      </div>
-    </div>
-    <span>GenAIe</span>
+    <FontAwesomeIcon icon={faRobot} className="menu-item-icon" fixedWidth />
+    <span className="menu-item-text">GenAIe</span>
   </Link>
 ));
 
-// Memoized terminal component - MODIFIED to also accept and use onClick
-const Terminal = memo(({ isUnlocked, onClick }) => ( // <-- Added onClick prop
+// Terminal Link, adapted for sidebar consistency
+const TerminalLink = memo(({ isUnlocked, onClick, isDesktopSidebarCollapsed }) => (
   <Link
     to="/terminal"
-    className={`terminal-item ${isUnlocked ? 'unlocked' : ''}`} // Added unlocked class dynamically
+    className={`menu-item terminal-link ${isUnlocked ? 'unlocked' : ''}`} // Use "menu-item"
     aria-label="Open Terminal"
-    onClick={onClick} // <-- Use the onClick prop here
+    onClick={onClick}
+    title={isDesktopSidebarCollapsed ? "Terminal" : undefined}
   >
-    <div className="terminal-icon-container">
-      <FontAwesomeIcon icon={faTerminal} className="terminal-icon" />
-    </div>
-    <div className="cube">
-      {['front', 'back', 'right', 'left', 'top', 'bottom'].map(face => (
-        <div key={face} className={`cube__face cube__face--${face}`} />
-      ))}
-    </div>
-    <span>Terminal</span>
+    <FontAwesomeIcon icon={faTerminal} className="menu-item-icon" fixedWidth />
+    <span className="menu-item-text">Terminal</span>
   </Link>
 ));
 
-const Menu = ({ onItemClick }) => { // onItemClick is passed from App.js
+const Menu = ({ onItemClick, isDesktopSidebarCollapsed }) => {
   const [gameState, setGameState] = useState({
     pattern: [],
     currentStep: 0,
@@ -128,148 +88,147 @@ const Menu = ({ onItemClick }) => { // onItemClick is passed from App.js
 
   const showPattern = useCallback(async (patternToShow) => {
     setGameState(prev => ({ ...prev, canAcceptInput: false }));
-
     for (const color of patternToShow) {
       setGameState(prev => ({ ...prev, activeButton: color }));
       await new Promise(resolve => setTimeout(resolve, 800));
       setGameState(prev => ({ ...prev, activeButton: null }));
       await new Promise(resolve => setTimeout(resolve, 200));
     }
-
     setGameState(prev => ({ ...prev, canAcceptInput: true }));
   }, []);
 
   const startGame = useCallback(async () => {
     setGameState(prev => ({
-      ...prev,
-      isPlaying: true,
-      currentStep: 0,
-      isUnlocked: false,
-      showSuccess: false
+      ...prev, isPlaying: true, currentStep: 0, isUnlocked: false, showSuccess: false
     }));
-
     for (let i = 3; i > 0; i--) {
       setGameState(prev => ({ ...prev, countdown: i }));
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
-
     const newPattern = generatePattern();
-    setGameState(prev => ({
-      ...prev,
-      pattern: newPattern,
-      countdown: null
-    }));
-
+    setGameState(prev => ({ ...prev, pattern: newPattern, countdown: null }));
     await showPattern(newPattern);
   }, [generatePattern, showPattern]);
 
   const handleGameClick = useCallback((e, color) => {
-    e.preventDefault(); // Prevent navigation during game
+    e.preventDefault(); // Prevent navigation if game is active
     const { isPlaying, canAcceptInput, pattern, currentStep } = gameState;
 
     if (!isPlaying || !canAcceptInput) return;
 
     setGameState(prev => ({ ...prev, activeButton: color }));
-    setTimeout(() =>
-      setGameState(prev => ({ ...prev, activeButton: null })), 300
-    );
+    setTimeout(() => setGameState(prev => ({ ...prev, activeButton: null })), 300);
 
     if (color === pattern[currentStep]) {
       const newStep = currentStep + 1;
       if (newStep === pattern.length) {
         setGameState(prev => ({
-          ...prev,
-          isPlaying: false,
-          canAcceptInput: false,
-          isUnlocked: true,
-          showSuccess: true
+          ...prev, isPlaying: false, canAcceptInput: false, isUnlocked: true, showSuccess: true
         }));
-        // If onItemClick is available, call it to close menu, game won't interfere
-        onItemClick?.();
+        // Game won, if onItemClick is for mobile menu, close it (if not already collapsed on desktop)
+        if (onItemClick) {
+          onItemClick();
+        }
       } else {
         setGameState(prev => ({ ...prev, currentStep: newStep }));
       }
-    } else {
+    } else { // Wrong pattern
       setGameState(prev => ({
-        ...prev,
-        isPlaying: false,
-        canAcceptInput: false,
-        currentStep: 0
+        ...prev, isPlaying: false, canAcceptInput: false, currentStep: 0
       }));
-      // If onItemClick is available, call it to close menu
-      onItemClick?.();
+      // Game lost, if onItemClick is for mobile menu, close it
+      if (onItemClick) {
+        onItemClick();
+      }
     }
-  }, [gameState, onItemClick]); // Added onItemClick to dependency array
+  }, [gameState, onItemClick]); // isDesktopSidebarCollapsed removed as onItemClick is primarily for mobile menu closure
 
-  // Cleanup effect (remains the same)
-  useEffect(() => {
-    return () => {
-      const cleanup = () => {
-        setGameState(prev => ({
-          ...prev,
-          isPlaying: false,
-          canAcceptInput: false
-        }));
-      };
-      cleanup();
-    };
-  }, []);
-
-  // Centralized click handler for menu items that should close the menu
-  // And are not part of the memory game.
-  const handleStandardItemClick = () => {
-    if (!gameState.isPlaying) {
-      onItemClick?.();
+  // For items not part of the game, or when the game isn't active
+  const handleStandardItemClick = (e) => {
+    if (gameState.isPlaying) {
+      e.preventDefault(); // Prevent navigation if game is playing and a non-game item is somehow clicked
+      return;
     }
-    // If it is playing, the game logic will handle closing or not.
+    if (onItemClick) {
+      onItemClick(); // Close mobile menu
+    }
   };
+
+  // Effect for game success message timeout
+  useEffect(() => {
+    let timer;
+    if (gameState.showSuccess) {
+      timer = setTimeout(() => {
+        setGameState(prev => ({ ...prev, showSuccess: false }));
+      }, 3000); // Show success message for 3 seconds
+    }
+    return () => clearTimeout(timer);
+  }, [gameState.showSuccess]);
 
 
   return (
-    <div className="menu-container">
+    <div id="menuContainer"> {/* Styled by App.css when inside #appSidebar */}
       {gameState.countdown && (
-        <div className="game-countdown" role="timer">
+        <div id="gameCountdown" role="timer"> {/* Styling for this ID is in Menu.css */}
           {gameState.countdown}
         </div>
       )}
 
       {gameState.showSuccess && (
-        <div className="success-message" role="alert">
+        <div className="success-message" role="alert"> {/* Styling for this class is in Menu.css */}
           Sequence complete! Terminal unlocked.
         </div>
       )}
 
+      {/* This .menu-grid will be overridden by #appSidebar .menu-grid in App.css for sidebar context */}
       <div className="menu-grid">
         {MENU_ITEMS.map(item => (
           <MenuItem
             key={item.id}
             item={item}
             isActive={gameState.activeButton === item.color}
-            onClick={(e) => { // Modified onClick for MenuItem
-              if (gameState.isPlaying) {
+            onClick={(e) => {
+              if (gameState.isPlaying && gameState.canAcceptInput) {
                 handleGameClick(e, item.color);
+              } else if (!gameState.isPlaying) {
+                // Standard click, allow navigation and call onItemClick (for mobile menu)
+                handleStandardItemClick(e); // Pass event if needed, or just call
               } else {
-                onItemClick?.(); // Directly call onItemClick if not playing game
+                // Game is playing but input not yet accepted (e.g., during pattern display)
+                e.preventDefault();
               }
             }}
+            isDesktopSidebarCollapsed={isDesktopSidebarCollapsed}
           />
         ))}
 
-        {/* Pass onItemClick to ChatButton */}
-        <ChatButton onClick={handleStandardItemClick} />
+        {/* The ChatButton and TerminalLink will also be treated as .menu-item by App.css in sidebar context */}
+        <ChatButton
+            onClick={handleStandardItemClick}
+            isDesktopSidebarCollapsed={isDesktopSidebarCollapsed}
+        />
 
         {gameState.isUnlocked ? (
-          // Pass onItemClick to Terminal as well
-          <Terminal isUnlocked={gameState.isUnlocked} onClick={handleStandardItemClick} />
+          <TerminalLink
+            isUnlocked={gameState.isUnlocked}
+            onClick={handleStandardItemClick}
+            isDesktopSidebarCollapsed={isDesktopSidebarCollapsed}
+          />
         ) : (
           !gameState.isPlaying && (
-            <button
-              className="start-game-button"
-              onClick={startGame}
-              aria-label="Start Memory Game"
-            >
-              Start Memory Game
-            </button>
+            // This button might need specific styling if it's to appear like other .menu-items in the sidebar
+            // Or it could be a more prominent button at the end.
+            // For sidebar consistency, you might want to make it a MenuItem-like component too.
+            // For now, it keeps its .start-game-button class from Menu.css
+            <div className="menu-item start-game-button-container"> {/* Wrapper to help with layout if needed */}
+                <button
+                className="start-game-button" // Styled by Menu.css
+                onClick={startGame}
+                aria-label="Start Memory Game"
+                >
+                Start Memory Game
+                </button>
+            </div>
           )
         )}
       </div>
