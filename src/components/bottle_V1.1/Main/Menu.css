@@ -15,10 +15,10 @@
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(1);
-  gap: 2rem;
   width: 120%;
-  height: 110%;
-  margin: 0rem;
+  height: 70vh;
+  margin: -24px;
+  padding: 2rem;
   background-color: rgba(0, 0, 0, 0);
   align-content: stretch;
   justify-content: center;

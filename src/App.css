@@ -398,7 +398,6 @@ body.dark-mode #appContainer::before {
   #appSidebar {
     position: fixed !important;
     top: -72px;
-    left: 18;
     z-index: 1000; /* Ensure mobile menu is on top */
     display: flex !important;
     flex-direction: column !important;
