@@ -346,7 +346,7 @@ body.dark-mode #appSidebar:hover {
 
 #appContent {
   flex-grow: 1;
-  padding: 25px 30px;
+  padding: 151px 30px;
   background-color: var(--menu-yellow);
   color: var(--menu-black);
   overflow-y: auto;
@@ -397,19 +397,19 @@ body.dark-mode #appContainer::before {
   /* Mobile Sidebar (Fly-out) */
   #appSidebar {
     position: fixed !important;
-    top: -58px;
-    left: 0;
+    top: -72px;
+    left: 18;
     z-index: 1000; /* Ensure mobile menu is on top */
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: center !important;
     width: 90% !important;
-    max-width: 300px !important;
+    max-width: 330px !important;
     height: 77vh !important;
     padding: 0 !important; 
-    padding-top: 50px !important; 
-    padding-bottom: 20px !important;
+    padding-top: 41px !important; 
+    padding-bottom: -5px !important;
     margin-left: 0 !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
@@ -531,7 +531,7 @@ body.dark-mode #appContainer::before {
     display: block; 
     position: fixed;
     top: 94px;
-    right: 20px;
+    right: 8px;
     background-color: var(--dt-accent-red);
     color: var(--dt-bg-cream);
     padding: 8px;

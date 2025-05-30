@@ -9,9 +9,7 @@
   padding: 0rem;
   width: 75%;
   max-width: 56rem;
-  margin-top: 1rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin-top: 2rem;
 }
 
 .menu-grid {
@@ -21,7 +19,7 @@
   width: 120%;
   height: 110%;
   margin: 0rem;
-  background-color: var(--mindful-bright-surface, #F8F9FA);
+  background-color: rgba(0, 0, 0, 0);
   align-content: stretch;
   justify-content: center;
   align-items: stretch;

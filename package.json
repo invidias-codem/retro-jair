@@ -15,7 +15,7 @@
     "autoprefixer": "^10.4.20",
     "caniuse-lite": "^1.0.30001702",
     "dotenv": "^16.4.7",
-    "firebase": "^11.1.0",
+    "firebase": "^11.8.1",
     "firebase-admin": "^13.4.0",
     "firebase-functions": "^6.3.2",
     "lucide-react": "^0.475.0",
