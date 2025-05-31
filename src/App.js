@@ -146,14 +146,18 @@ function AppContent() {
             </button>
           </>
         ) : (
+        <>
           <div id="appSidebar">
             <Menu />
           </div>
+          
+        </>
         )}
         <div id="appContent">
           {/* Pass location to AnimatedRoutes for react-spring transitions */}
           <AnimatedRoutes location={location} />
         </div>
+
       </main>
 
       <div className={`active-chat-agent ${!isChatButtonVisible ? 'hidden' : ''}`}>
@@ -172,12 +176,57 @@ function AppContent() {
 
 // AppWrapper sets up the Router context needed by AppContent
 function App() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showMenu, setShowMenu] = useState(false); // Assuming 'showMenu' is the correct state based on toggleMenu
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
-    <Router>
-      <ChatProvider>
-        <AppContent />
-      </ChatProvider>
-    </Router>
+    <ChatProvider>
+      <Router>
+        <div id="appContainer">
+          <header id="appHeader">
+            <Link to="/" id="appHeaderLink">
+              Cruise-Thru Portfolio
+            </Link>
+          </header>
+
+          <main id="appMain">
+            {isMobile ? (
+              <> {/* Opening React Fragment */}
+                <div id="appSidebar" className={`mobile-sidebar ${showMenu ? 'show' : ''}`}>
+                  <Menu onItemClick={() => setShowMenu(false)} />
+                </div>
+                <button id="menuToggle" onClick={toggleMenu} aria-label={showMenu ? 'Close Menu' : 'Open Menu'} aria-expanded={showMenu}>
+                   {showMenu ? '✕' : '☰'}
+                </button>
+              </> 
+            ) : (
+              <div id="appSidebar">
+                <Menu />
+              </div>
+            )}
+            <div id="appContent">
+              <AnimatedRoutes />
+            </div>
+          </main>
+
+          {/* <ChatModal /> */}
+          <Footer />
+        </div>
+      </Router>
+    </ChatProvider>
   );
 }
 
