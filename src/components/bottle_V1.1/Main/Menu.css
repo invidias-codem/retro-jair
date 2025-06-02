@@ -1,29 +1,48 @@
 /* =========================================
    MENU CONTAINER & GRID (Default Page Layout)
    ========================================= */
+/* Base style for #menuContainer */
 #menuContainer {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 0rem;
+  align-items: center; /* Centers flex children (e.g., .menu-grid) within this container */
+  padding: 0rem;       /* Original padding, can be overridden for mobile */
   width: 75%;
-  max-width: 56rem;
+  max-width: 56rem;    /* Approx 896px, good for desktop */
+  margin-left: auto;   /* Added for horizontal centering of the container */
+  margin-right: auto;  /* Added for horizontal centering of the container */
   margin-top: 2rem;
+  height: auto;
+  box-sizing: border-box; /* Good practice to include for easier width/padding management */
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  #menuContainer {
+    width: 90%;          /* Utilize more screen width on mobile devices */
+    padding-left: 1rem;  /* Add horizontal padding to prevent content touching screen edges */
+    padding-right: 1rem; /* Add horizontal padding to prevent content touching screen edges */
+    margin-top: 1.5rem;  /* Optional: Slightly reduce top margin for a tighter mobile layout */
+    /* max-width: none; */ /* Optional: If you want to remove the max-width constraint on mobile,
+                              though with width: 90%, it's unlikely to be an issue.
+                              Keeping the base max-width is usually fine. */
+  }
 }
 
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(1);
+  gap: 1rem;
   width: 120%;
-  height: 72vh;
-  margin: -39px;
-  padding: 3rem;
+  height: 70vh;
+  margin: -16px;
+  padding: 2rem;
   background-color: rgba(0, 0, 0, 0);
-  align-content: stretch;
+  align-content: space-between;
   justify-content: center;
   align-items: stretch;
-  justify-items: center;
+  justify-items: stretch;
 }
 
 /* =========================================
@@ -381,6 +400,7 @@
     grid-template-columns: 1fr; /* Stack items */
     gap: 1rem;
     background-color: var(--mindful-bright-surface, #F8F9FA);
+    justify-items: center;
   }
   .chat-button-wrapper,
   .terminal-container, /* Ensure .terminal-container spans full grid width on mobile */

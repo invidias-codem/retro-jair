@@ -298,19 +298,18 @@ body.dark-mode #appContainer {
 /* Desktop Sidebar (Hover-to-expand) */
 #appSidebar {
   width: var(--desktop-sidebar-collapsed-width);
+  height: 100dvh;
   padding: 20px 10px;
   background-color: var(--dt-sidebar-bg);
   color: var(--dt-sidebar-text);
-  border-right: 3px solid var(--dt-sidebar-border);
+  border-right: 10px solid var(--dt-sidebar-border);
   flex-shrink: 0;
-  transition: width var(--desktop-sidebar-transition-duration) ease-in-out, 
-              padding var(--desktop-sidebar-transition-duration) ease-in-out,
-              background-color var(--desktop-sidebar-transition-duration) ease,
-              color var(--desktop-sidebar-transition-duration) ease,
-              border-color var(--desktop-sidebar-transition-duration) ease;
   overflow-x: hidden;
   position: relative;
   z-index: 200; /* Above appContent if it ever needed to overlap slightly */
+  transition-property: width, padding, background-color, box-shadow;
+  transition-duration: 0.3s; /* Adjust duration as needed, e.g., 0.3s, 0.5s */
+  transition-timing-function: ease;
 }
 #appSidebar:hover {
   width: var(--desktop-sidebar-expanded-width);

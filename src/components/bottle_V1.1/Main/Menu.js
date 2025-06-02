@@ -21,7 +21,7 @@ const SHADOW_COLORS = {
 const MENU_ITEMS = [
   { id: 'about', icon: faUser, label: 'About Me', path: '/about', color: 'red' },
   { id: 'projects', icon: faCode, label: 'Projects', path: '/projects', color: 'green' },
-  { id: 'skills', icon: faCogs, label: 'Skills', path: '/skills', color: 'blue' },
+  { id: 'skills', icon: faCogs, label: 'Skills Game', path: '/skills', color: 'blue' },
   { id: 'contact', icon: faEnvelope, label: 'Contact', path: '/contact', color: 'yellow' }
 ];
 
