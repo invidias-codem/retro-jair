@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactMarkdown from 'react-markdown';
@@ -223,29 +223,29 @@ const TechChat = () => {
         }
     };
 
-    const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-            setShowScrollToBottom(false);
-            setIsUserScrolled(false);
-        }
-    };
+    // const scrollToBottom = () => {
+    //     if (messagesEndRef.current) {
+    //         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    //         setShowScrollToBottom(false);
+    //         setIsUserScrolled(false);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (!isUserScrolled && messagesContainerRef.current && messagesContainerRef.current.scrollHeight > messagesContainerRef.current.clientHeight) {
-            scrollToBottom();
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messages]);
+    // useEffect(() => {
+    //     if (!isUserScrolled && messagesContainerRef.current && messagesContainerRef.current.scrollHeight > messagesContainerRef.current.clientHeight) {
+    //         scrollToBottom();
+    //     }
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [messages]);
 
-    const handleScroll = () => {
-        if (messagesContainerRef.current) {
-            const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
-            const isNearBottom = scrollHeight - clientHeight - scrollTop < 70; // Slightly increased threshold
-            setIsUserScrolled(!isNearBottom);
-            setShowScrollToBottom(!isNearBottom && scrollHeight > clientHeight + 50); // Only show if significantly scrolled and content overflows
-        }
-    };
+    // const handleScroll = () => {
+    //     if (messagesContainerRef.current) {
+    //         const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    //         const isNearBottom = scrollHeight - clientHeight - scrollTop < 70; // Slightly increased threshold
+    //         setIsUserScrolled(!isNearBottom);
+    //         setShowScrollToBottom(!isNearBottom && scrollHeight > clientHeight + 50); // Only show if significantly scrolled and content overflows
+    //     }
+    // };
     
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     useEffect(() => {

@@ -1,5 +1,5 @@
 // stem.js
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,7 +7,7 @@ import {
   faPaperPlane, faChevronDown, faSpinner, faPaperclip, faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { MarkdownHooks } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
