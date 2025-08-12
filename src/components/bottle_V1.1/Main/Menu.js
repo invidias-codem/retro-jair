@@ -141,7 +141,7 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed }) => {
         onItemClick();
       }
     }
-  }, [gameState, onItemClick]); // isDesktopSidebarCollapsed removed as onItemClick is primarily for mobile menu closure
+  }, [gameState, onItemClick]);
 
   // For items not part of the game, or when the game isn't active
   const handleStandardItemClick = (e) => {
@@ -181,7 +181,8 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed }) => {
       )}
 
       {/* This .menu-grid will be overridden by #appSidebar .menu-grid in App.css for sidebar context */}
-      <div className="menu-grid">
+      {/* MODIFICATION: Added flexbox and overflow classes for mobile view */}
+      <div className="menu-grid flex items-center justify-center overflow-x-hidden md:justify-start">
         {MENU_ITEMS.map(item => (
           <MenuItem
             key={item.id}

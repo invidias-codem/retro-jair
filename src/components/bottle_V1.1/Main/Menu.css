@@ -7,43 +7,41 @@
   display: flex;
   flex-direction: column;
   align-items: center; /* Centers flex children (e.g., .menu-grid) within this container */
-  padding: 0rem;       /* Original padding, can be overridden for mobile */
+  padding: 0rem;
   width: 75%;
-  max-width: 56rem;    /* Approx 896px, good for desktop */
-  margin-left: auto;   /* Added for horizontal centering of the container */
-  margin-right: auto;  /* Added for horizontal centering of the container */
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 2rem;
   height: auto;
-  box-sizing: border-box; /* Good practice to include for easier width/padding management */
+  box-sizing: border-box;
 }
 
 /* Mobile-specific optimizations */
 @media (max-width: 768px) {
   #menuContainer {
-    width: 90%;          /* Utilize more screen width on mobile devices */
-    padding-left: 1rem;  /* Add horizontal padding to prevent content touching screen edges */
-    padding-right: 1rem; /* Add horizontal padding to prevent content touching screen edges */
-    margin-top: 1.5rem;  /* Optional: Slightly reduce top margin for a tighter mobile layout */
-    /* max-width: none; */ /* Optional: If you want to remove the max-width constraint on mobile,
-                              though with width: 90%, it's unlikely to be an issue.
-                              Keeping the base max-width is usually fine. */
+    width: 90%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 1.5rem;
   }
 }
 
+/* REFACTORED .menu-grid to support Tailwind's flexbox layout */
 .menu-grid {
-  display: grid;
-  grid-template-columns: repeat(1);
-  gap: 1rem;
-  width: 120%;
-  height: 70vh;
-  margin: -16px;
-  padding: 2rem;
-  background-color: rgba(0, 0, 0, 0);
-  align-content: space-between;
-  justify-content: center;
-  align-items: stretch;
-  justify-items: stretch;
+  /*
+    Layout logic (display, alignment, overflow) is now handled by Tailwind CSS classes in the Menu.js component.
+    The old `display: grid` and related properties like `width: 120%`, `height: 103vh`, `margin: -115px`,
+    and `padding: 9rem` were removed as they caused the overflow and conflicted with the new flexbox layout.
+  */
+  display: flex; /* Explicitly defining flex to match Tailwind for clarity */
+  flex-wrap: wrap; /* Allows menu items to wrap to the next line on smaller screens */
+  gap: 1rem; /* Defines the space between menu items */
+  padding: 1rem; /* Provides some sensible space around the group of items */
+  width: 100%; /* Ensures the container fits within its parent (#menuContainer) */
+  background-color: rgba(0, 0, 0, 0); /* Kept from original style */
 }
+
 
 /* =========================================
    GAME ELEMENTS (Countdown, Success)
@@ -76,13 +74,27 @@
 /* =========================================
    MENU ITEM (Default Page Layout)
    ========================================= */
-.menu-item { /* Default styling for items in the grid */
+
+/* --- A more cohesive, retro-futuristic color palette --- */
+:root {
+  --menu-bg: #1A202C; /* Dark Charcoal/Slate */
+  --menu-bg-hover: #2D3748; /* Lighter Slate for hover */
+  --menu-border: #2D3748;
+  --menu-accent-glow: rgba(100, 255, 218, 0.7); /* Vibrant Cyan/Mint for glow */
+  --menu-icon-color: #64FFDA; /* The solid icon color */
+  --menu-text-color: #A0AEC0; /* Muted, readable off-white */
+  --menu-text-hover: #E2E8F0; /* Brighter off-white for hover */
+}
+
+.menu-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 1.5rem;
-  background-color: rgb(31, 41, 55); /* Consider var(--surface) or similar */
+  /* MODIFIED: Using new color variables */
+  background-color: var(--menu-bg);
+  border: 1px solid var(--menu-border);
   border-radius: 0.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
@@ -94,29 +106,37 @@
 .menu-item:hover,
 .menu-item:focus {
   transform: translateY(-4px);
-  background-color: rgb(55, 65, 81);
+  /* MODIFIED: Using new color variables for hover state */
+  background-color: var(--menu-bg-hover);
   outline: none;
-  box-shadow: 0 0 0 2px rgb(59, 130, 246); /* Consider var(--accent) */
+  /* MODIFIED: A more subtle "glow" effect for the box-shadow */
+  box-shadow: 0 0 12px -2px var(--menu-accent-glow);
 }
 
-.menu-icon-wrapper { /* Used by default menu items */
+.menu-icon-wrapper {
   margin-bottom: 0.5rem;
 }
 
-.menu-icon { /* Used by default menu items */
+.menu-icon {
   font-size: 2rem;
-  color: paleturquoise; /* Consider var(--accent) or theme color */
+  /* MODIFIED: Using the new accent color for the icon */
+  color: var(--menu-icon-color);
   transform-style: preserve-3d;
+  /* ADDED: A subtle text shadow to make the icon glow */
+  text-shadow: 0 0 8px var(--menu-accent-glow);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.menu-text { /* Used by default menu items */
-  color: #696958; /* Consider var(--text-secondary) */
+.menu-text {
+  /* MODIFIED: Using a more readable, modern text color */
+  color: var(--menu-text-color);
   font-weight: bold;
   transition: color 0.3s ease;
 }
 
 .menu-item:hover .menu-text {
-  color: darkorchid; /* Consider var(--primary) or var(--accent) */
+  /* MODIFIED: Using a brighter text color on hover for better contrast */
+  color: var(--menu-text-hover);
 }
 
 /* =========================================
@@ -396,18 +416,21 @@
   #menuContainer { /* This is when Menu is used as a main page component */
     width: 90%;
   }
+
+  /* REFACTORED .menu-grid for mobile */
   .menu-grid { /* For main page menu on mobile */
-    grid-template-columns: 1fr; /* Stack items */
-    gap: 1rem;
-    background-color: var(--mindful-bright-surface, #F8F9FA);
-    justify-items: center;
+    /* Grid-specific properties like `grid-template-columns` and `justify-items` were removed. */
+    /* The layout is now a centered, wrapping flexbox row via Tailwind. */
+    gap: 0.5rem; /* A smaller gap for a tighter mobile layout. */
+    background-color: var(--mindful-bright-surface, #F8F9FA); /* Kept from original style */
   }
+
   .chat-button-wrapper,
   .terminal-container, /* Ensure .terminal-container spans full grid width on mobile */
   .mindful-button-wrapper, /* Ensure it spans full width if used in this grid */
   .start-game-button {
-    grid-column: span 1; /* Each takes full width of the single column grid */
-    width: 100%; /* Ensure they fill the grid cell */
+    /* `grid-column: span 1` is redundant in a flex layout but harmless. Removing for clarity. */
+    width: 100%; /* Ensure they fill the container width */
     margin-left: auto;
     margin-right: auto;
   }

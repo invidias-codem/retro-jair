@@ -548,7 +548,6 @@
     background-color: color-mix(in srgb, var(--bg-primary) 70%, black);
 }
 
-
 /* Links */
 .message-text a { /* */
   color: var(--link-color); /* */
@@ -684,8 +683,8 @@
 
 .scroll-to-page-top-button {
   position: fixed;
-  bottom: 77px;
-  right: -1px;
+  bottom: -7px;
+  right: 135px;
   background-color: var(--bg-accent, #007bff); /* Use a theme variable or a default */
   color: var(--text-accent, #ffffff); /* Use a theme variable or a default */
   border: none;
@@ -1056,3 +1055,107 @@
     .chat-notification { animation: fadeIn 0.01s ease-out, fadeOut 0.01s ease-in 2.48s forwards !important; }
     .scroll-to-bottom { transition: opacity 0.01s ease, visibility 0.01s step-end; } /* Reduce motion for scroll button */
   }
+
+/* --- Base Code Block Style --- */
+.message-text pre {
+  position: relative;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  font-size: 0.9em;
+  line-height: 1.6;
+  overflow-x: auto; /* Kept for desktop, but mobile will wrap */
+  color: #d4d4d4;
+  border: 1px solid #333;
+}
+
+/* --- OPTIMIZATION FOR MOBILE & LANDSCAPE --- */
+@media (max-width: 768px) {
+  .message-text pre {
+    font-size: 0.85em;
+    padding: 0.75rem 1rem;
+
+    /*
+     IMPROVEMENT: These properties force the code to wrap on mobile.
+     This is the key to preventing horizontal overflow and the "cut off" issue.
+    */
+    white-space: pre-wrap;   /* Allows lines to wrap */
+    word-break: break-all;     /* Forces long, unbreakable strings to break */
+    overflow-x: hidden;      /* Hide the horizontal scrollbar on mobile */
+  }
+}
+
+/* Style for the copy button within a code block */
+.code-copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #444;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.8em;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+/* Show the button on hover of the parent <pre> tag */
+.message-text pre:hover .code-copy-button {
+  opacity: 1;
+}
+
+.code-copy-button:hover {
+  background-color: #5a5a5a;
+}
+
+/* Style for the "Copied!" feedback text */
+.code-copy-button .copied-text {
+  color: #4ade80; /* A bright green for success */
+  font-weight: bold;
+}
+
+/* =======================================================
+   OPTIMIZED: Styled Horizontal Scrollbar for Code Blocks
+   ======================================================= */
+
+/* This targets the scrollbar on WebKit-based browsers (Chrome, Safari, Edge) */
+.message-text pre::-webkit-scrollbar {
+  height: 12px; /* Sets the height of the horizontal scrollbar */
+  background-color: transparent; /* Makes the background of the scrollbar area transparent */
+}
+
+/* The "track" of the scrollbar (the area the handle slides in) */
+.message-text pre::-webkit-scrollbar-track {
+  background-color: color-mix(in srgb, var(--bg-primary) 70%, black); /* A color slightly different from the code block bg */
+  border-radius: var(--border-radius-small);
+  margin-inline: var(--spacing-sm); /* Adds some horizontal margin to the track */
+}
+
+/* The draggable scrolling handle */
+.message-text pre::-webkit-scrollbar-thumb {
+  background-color: var(--text-secondary); /* Uses your theme's secondary text color for the handle */
+  border-radius: var(--border-radius-small);
+  border: 2px solid transparent; /* Creates padding around the thumb */
+  background-clip: content-box; /* Ensures the border creates padding, not just an outline */
+}
+
+/* The draggable handle on hover */
+.message-text pre::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bg-accent); /* Uses your theme's accent color on hover for better feedback */
+}
+
+/* --- Dark Theme Specific Scrollbar Style --- */
+/* Makes the scrollbar less intrusive in the dark theme */
+.dark .message-text pre::-webkit-scrollbar-track {
+    background-color: #1e1f20; /* A dark color matching the dark theme */
+}
+
+.dark .message-text pre::-webkit-scrollbar-thumb {
+    background-color: #5f6368; /* A muted gray for the handle in dark mode */
+}
+
+.dark .message-text pre::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bg-accent); /* The brighter accent color on hover still works well */
+}
