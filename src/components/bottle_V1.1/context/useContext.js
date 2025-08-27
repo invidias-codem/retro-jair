@@ -1,24 +1,26 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
-import { agentConfig } from '../config/agent-config'; // Use the instance, not the function
+import { agentConfig } from '../config/agent-config';
 
-// 1. Create the Context
 const ChatContext = createContext();
 
-// 2. Create the Provider Component
 export const ChatProvider = ({ children }) => {
   const [activeAgentId, setActiveAgentId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // --- OPTIMIZATION 1: Manage button visibility in the context ---
+  const [isChatButtonVisible, setIsChatButtonVisible] = useState(true);
+  
   const [theme, setTheme] = useState(null);
   const [userSubscription, setUserSubscription] = useState('free');
 
-  // Function to open the chat modal for a specific agent
   const openChatModal = useCallback((agentId) => {
-    // Use hasAgent to check if the agent exists
     if (agentConfig.hasAgent(agentId)) {
       setActiveAgentId(agentId);
       setIsModalOpen(true);
       
-      // Set default theme if not already set
+      // --- OPTIMIZATION 2: Hide the button when the modal opens ---
+      setIsChatButtonVisible(false);
+      
       const agent = agentConfig.getById(agentId);
       if (agent && !theme) {
         setTheme(agent.defaultTheme);
@@ -28,50 +30,44 @@ export const ChatProvider = ({ children }) => {
     }
   }, [theme]);
 
-  // Function to close the chat modal
   const closeChatModal = useCallback(() => {
     setIsModalOpen(false);
     
-    // Optionally reset active agent after a delay to allow modal fade-out
+    // --- OPTIMIZATION 3: Show the button again when the modal closes ---
+    setIsChatButtonVisible(true);
+    
+    // Reset active agent after a delay to allow modal fade-out
     setTimeout(() => setActiveAgentId(null), 300);
-  }, [activeAgentId]);
+  }, []);
 
-  // Toggle theme for the current agent
   const toggleTheme = useCallback(() => {
     if (!activeAgentId) return;
-    
     const agent = agentConfig.getById(activeAgentId);
     if (!agent) return;
-    
     const themeOptions = Object.keys(agent.themes);
     if (themeOptions.length < 2) return;
-    
     const currentIndex = themeOptions.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themeOptions.length;
-    const newTheme = themeOptions[nextIndex];
-    
-    setTheme(newTheme);
+    setTheme(themeOptions[nextIndex]);
   }, [activeAgentId, theme]);
 
-  // Update subscription tier
   const updateSubscription = useCallback((tier) => {
     setUserSubscription(tier);
-  }, [userSubscription]);
+  }, []);
 
-  // Get the configuration for the currently active agent
   const activeAgentConfig = activeAgentId ? agentConfig.getById(activeAgentId) : null;
 
-  // 3. Define the Context Value
   const value = {
     // State
     isModalOpen,
     activeAgentId,
-    activeAgentConfig, // Derived state: config of the active agent
+    activeAgentConfig,
     theme,
     userSubscription,
+    isChatButtonVisible, // <-- Expose the new state
     
     // All agents
-    agents: agentConfig.getAllConfigs(), // Get array of all agent configs
+    agents: agentConfig.getAllConfigs(),
 
     // Actions
     openChatModal,
@@ -85,7 +81,6 @@ export const ChatProvider = ({ children }) => {
     getAgentByMode: agentConfig.getByMode
   };
 
-  // 4. Return the Provider wrapping children
   return (
     <ChatContext.Provider value={value}>
       {children}
@@ -93,7 +88,6 @@ export const ChatProvider = ({ children }) => {
   );
 };
 
-// 5. Create a custom hook for easy consumption
 export const useChat = () => {
   const context = useContext(ChatContext);
   if (context === undefined) {

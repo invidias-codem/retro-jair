@@ -299,24 +299,44 @@
 }
 
 .start-game-button {
-  grid-column: span 2; /* For .menu-grid layout */
-  padding: 0.75rem 1.5rem;
-  background-color: #7C3AED; /* Consider var(--primary) or var(--accent) */
-  color: white;
+  /* --- Layout & Sizing --- */
+  grid-column: span 2;
+  display: block; /* Ensures margins work correctly */
+  width: 90%;
+  margin: 0 auto; /* Cleaner centering */
+
+  /* --- Thematic Appearance --- */
+  background-color: var(--c-brand-accent, #ffc107);
+  color: var(--c-brand-text-dark, #1a1a1a);
   border: none;
-  border-radius: 0.5rem;
-  font-weight: bold;
+  border-radius: var(--radius, 4px); /* Use theme's angular radius */
+  box-shadow: 2px 2px 0px var(--c-brand-line, #5f7db4); /* "Stamped" effect */
+
+  /* --- Typography --- */
+  font-family: var(--font-family-header, 'Teko', sans-serif);
+  font-weight: 500;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  
+  /* --- Interactivity --- */
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  /* margin-left: 0 rem; /* Typo, should be 0rem or just 0 */
-  margin-left: 0;
-  width: 90%; /* Relative to its grid cell */
-  margin-right: auto; /* Centering in grid cell if display block/inline-block */
-  margin-left: auto;
+  /* Smooth transition for all properties */
+  transition: all 0.15s ease-out;
 }
 
 .start-game-button:hover {
-  background-color: #6D28D9;
+  background-color: #ffd452; /* Slightly brighter yellow */
+  /* Button moves up and left, giving a 'lifted' feel */
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--c-brand-line, #5f7db4);
+}
+
+.start-game-button:active {
+  /* Button looks "pressed down" on click */
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--c-brand-line, #5f7db4);
+  transition-duration: 0.05s;
 }
 
 /* =========================================
@@ -434,4 +454,80 @@
     margin-left: auto;
     margin-right: auto;
   }
+}
+
+/* --- 1. Base Styles for the Menu Item --- */
+.menu-item.terminal-link .terminal-item.unlocked::before {
+  /* Use retro fonts and colors for the CRT theme */
+  font-family: var(--call-font, 'VT323', monospace);
+  color: var(--call-text, #00ff41);
+  text-shadow: 0 0 5px var(--call-text, #00ff41);
+  font-size: 1.5rem; /* A larger, more prominent font size */
+  text-decoration: none;
+  
+  /* Layout and transitions */
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem; /* Add some padding for better spacing */
+  border-radius: 2px;
+  overflow: hidden; /* Important for the typing animation */
+  transition: background-color 0.3s ease;
+}
+
+/* --- 2. Styling for the Text Span & Cursor --- */
+.menu-item.terminal-link .menu-item-text {
+  position: relative; /* Required for positioning the cursor */
+  white-space: nowrap; /* Prevent text wrapping during animation */
+  overflow: hidden;
+  
+  /* The "Typing" Animation:
+     - Text starts with zero width.
+     - On hover, it transitions to its full width using a 'steps' function,
+       which creates a choppy, character-by-character reveal.
+  */
+  width: 0;
+  transition: width 0.4s steps(8, end); /* '8' is the number of characters in "Terminal" */
+}
+
+/* The Blinking Cursor:
+   - Created with an ::after pseudo-element.
+   - It is hidden by default and only appears after the typing is done.
+*/
+.menu-item.menu-item.terminal-link:hover::after {
+  content: '_';
+  position: absolute;
+  right: -12px; /* Position cursor just after the text area */
+  opacity: 0; /* Hidden by default */
+  animation: blink 1s infinite step-end;
+}
+
+/* =========================================
+   HOVER EFFECTS
+   ========================================= */
+
+.menu-item.terminal-link:hover {
+  background-color: rgba(0, 255, 65, 0.1); /* Faint green highlight */
+}
+
+/* Reveal the text by transitioning its width */
+.menu-item.terminal-link:hover .menu-item-text {
+  /* Set a fixed width on hover to reveal the text.
+     Adjust this value if your text changes. */
+  width: 110px;
+}
+
+/* Show and start blinking the cursor AFTER the typing animation is complete */
+.menu-item.terminal-link:hover .menu-item-text::after {
+  opacity: 1;
+  transition: opacity 0.01s ease 0.4s; /* Delay matches the typing transition duration */
+}
+
+/* =========================================
+   KEYFRAME DEFINITION
+   ========================================= */
+
+/* The cursor blink effect toggles opacity */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }

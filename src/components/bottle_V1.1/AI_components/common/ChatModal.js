@@ -1,61 +1,37 @@
-import React, { Suspense, useEffect, useCallback } from 'react'; // Added useCallback
+import React, { Suspense, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faSpinner } from '@fortawesome/free-solid-svg-icons'; // Added faSpinner for fallback
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useFocusTrap } from '../../hooks/accessibility.js';
-// It's good practice to import PropTypes or use TypeScript for prop validation
-// import PropTypes from 'prop-types';
 
 /**
- * Unified Chat Modal Component
+ * A highly reusable and accessible modal component that provides an overlay,
+ * focus trapping, and closing logic, while delegating all content rendering
+ * to a dynamically provided child component.
  *
- * A flexible modal container that can render any AI agent component
- * based on the provided configuration. Ensures focus trapping for accessibility.
- *
- * @param {Object} props Component props
- * @param {Object} props.agentConfig Configuration for the agent to render (requires id, component, name)
- * @param {boolean} props.isOpen Whether the modal is currently open
- * @param {Function} props.onClose Function to call when closing the modal
- * @param {string} props.subscription User's subscription tier
- * @returns {JSX.Element | null} The rendered modal component or null
+ * @param {object} props The component props.
+ * @param {object} props.agentConfig The configuration for the agent component to render.
+ * @param {boolean} props.isOpen Controls the visibility of the modal.
+ * @param {function} props.onClose Callback function to close the modal.
+ * @param {string} props.subscription The user's subscription tier.
+ * @returns {JSX.Element|null}
  */
-const ChatModal = ({
-  agentConfig,
-  isOpen = false,
-  onClose,
-  subscription = "free"
-}) => {
-  // Always use hooks at the top level
-  const modalRef = useFocusTrap(); // Ensure useFocusTrap handles its own cleanup
+const ChatModal = ({ agentConfig, isOpen, onClose, subscription }) => {
+  const modalRef = useFocusTrap(isOpen); // The hook now takes isOpen to manage its state.
 
-  // Memoize onClose callback if it might change identity unnecessarily
+  // Destructure required properties from agentConfig for cleaner validation.
+  const AgentComponent = agentConfig?.component;
+  const agentId = agentConfig?.id;
+
+  // Memoize the onClose handler to prevent unnecessary re-renders.
   const handleClose = useCallback(() => {
-      if (typeof onClose === 'function') {
-          onClose();
-      } else {
-          console.warn("ChatModal: onClose prop is not a function.");
-      }
+    if (typeof onClose === 'function') {
+      onClose();
+    }
   }, [onClose]);
 
-  // Effect for focus trapping
+  // Effect to handle side effects when the modal opens or closes.
   useEffect(() => {
-    if (isOpen && modalRef.current) {
-      // Activate the focus trap
-      const focusableElements = modalRef.current.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      const firstElement = focusableElements[0];
-      if (firstElement) {
-        firstElement.focus();
-      }
-      // Ensure your useFocusTrap hook implementation correctly traps focus
-      // and includes cleanup logic when the component unmounts or isOpen becomes false.
-    }
-    // If useFocusTrap doesn't handle its own cleanup, add it here
-    // return () => { /* Deactivate trap */ };
-  }, [isOpen, modalRef]); // Dependency array is correct
-
-  // Effect for Escape key listener
-  useEffect(() => {
+    // 1. Handle Escape key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         handleClose();
@@ -63,103 +39,66 @@ const ChatModal = ({
     };
 
     if (isOpen) {
-      // Add listener only when modal is open
+      // 2. Prevent background scroll
+      document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleKeyDown);
     }
 
-    // Cleanup listener when modal closes or component unmounts
+    // 3. Cleanup function
     return () => {
+      document.body.style.overflow = 'auto';
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, handleClose]); // Add handleClose dependency
+  }, [isOpen, handleClose]);
 
-  // --- Early exit ---
-  // If modal is not open or essential agent config is missing, don't render
-  if (!isOpen || !agentConfig || typeof agentConfig.component !== 'function' || !agentConfig.id || !agentConfig.name) {
-      if (isOpen && !agentConfig) {
-        console.error("ChatModal: agentConfig prop is missing or invalid.");
-      }
-      // Add more specific checks/warnings if needed
-      return null;
+  // Early return if the modal should not be rendered.
+  if (!isOpen || !AgentComponent || !agentId) {
+    if (isOpen) {
+      console.error("ChatModal: Invalid `agentConfig` provided. It must include `id` and `component`.");
+    }
+    return null;
   }
 
-  // --- Component Rendering ---
-  const AgentComponent = agentConfig.component; // Already checked if it's a function (for lazy components)
-  const theme = agentConfig.theme || agentConfig.defaultTheme || 'dark'; // Allow 'theme' or 'defaultTheme'
-  const agentId = agentConfig.id;
-  const agentName = agentConfig.name;
+  // Clicks on the overlay will close the modal, but clicks on the content will not.
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
 
   return (
     <div
-      className={`modal ${agentId}-modal`} // Use agentId which is checked for existence
-      // Removed onKeyDown here, handled by useEffect for document listener
+      className={`modal-overlay ${agentId}-modal-overlay`}
+      onClick={handleOverlayClick}
       role="dialog"
       aria-modal="true"
-      aria-labelledby={`${agentId}-modal-title`} // Use a dynamic title ID
+      aria-labelledby={`${agentId}-title`} // Assume the agent component provides a title with this ID.
     >
       <div
-        className={`modal-content ${agentId}-theme ${theme}`} // Use theme derived above
+        className={`modal-content-wrapper ${agentId}-modal-content`}
         ref={modalRef}
-        // Add tabIndex={-1} to make the div focusable programmatically if needed,
-        // but focus should usually go to the first interactive element inside.
       >
-        {/* Modal Header (Example) */}
-        <div className="modal-header">
-            <h2 id={`${agentId}-modal-title`} className="modal-title">
-                {agentName} {/* Use agentName which is checked */}
-            </h2>
-            <button
-              onClick={handleClose} // Use memoized handler
-              className="close-button"
-              aria-label="Close"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-        </div>
-
-        {/* Agent Component Area */}
-        <div className="modal-body">
-            {/* Suspense Fallback: Shown while lazy component loads */}
-            <Suspense fallback={
-                <div className="loading-fallback">
-                    <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-                    <p>Loading {agentName}...</p>
-                </div>
-            }>
-                {/* Render the specific agent component */}
-                {/* Consider adding an ErrorBoundary here */}
-                <AgentComponent
-                  config={agentConfig}
-                  subscription={subscription}
-                  onClose={handleClose} // Pass memoized handler
-                  // Pass other necessary props down
-                />
-            </Suspense>
-        </div>
-
-        {/* Optional Modal Footer */}
-        {/* <div className="modal-footer"> ... </div> */}
-
+        <Suspense fallback={
+          <div className="loading-fallback">
+            <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+            <p>Loading Interface...</p>
+          </div>
+        }>
+          {/*
+            Render the specific agent component.
+            It's now responsible for its own header, body, and close button.
+            We pass `onClose` so it can trigger the closing action.
+          */}
+          <AgentComponent
+            subscription={subscription}
+            onClose={handleClose}
+            // Pass the entire config if the component needs more details.
+            config={agentConfig}
+          />
+        </Suspense>
       </div>
     </div>
   );
 };
-
-/*
-// Example PropTypes (install prop-types package)
-ChatModal.propTypes = {
-  agentConfig: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    component: PropTypes.elementType.isRequired, // For React components (incl. lazy)
-    theme: PropTypes.string,
-    defaultTheme: PropTypes.string,
-    // other expected config props...
-  }),
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func.isRequired,
-  subscription: PropTypes.string,
-};
-*/
 
 export default ChatModal;

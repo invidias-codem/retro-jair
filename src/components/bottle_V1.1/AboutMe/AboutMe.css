@@ -1,89 +1,122 @@
 .about-me-container {
-    background-color: #000080; /* Navy blue background */
-    color: #00FF00; /* Bright green text */
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Cyan glow effect */
-    font-family: 'VT323', 'Courier New', monospace;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .about-me-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      linear-gradient(90deg, #000080 50%, transparent 50%),
-      linear-gradient(90deg, #000080 50%, transparent 50%),
-      linear-gradient(0deg, #000080 50%, transparent 50%),
-      linear-gradient(0deg, #000080 50%, transparent 50%);
-    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-    background-size: 15px 4px, 15px 4px, 4px 15px, 4px 15px;
+  background-color: #000080; /* Navy blue background */
+  color: #00FF00; /* Bright green text */
+  padding: 5rem; /* Adjusted base padding */
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Cyan glow effect */
+  font-family: 'VT323', 'Courier New', monospace;
+  position: relative;
+  overflow: hidden;
+
+  /* --- OPTIMIZATIONS for Desktop --- */
+  max-width: 800px; /* Prevents the component from stretching too wide */
+  margin: 2rem auto; /* Adds some vertical space and centers it horizontally */
+}
+
+.about-me-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(90deg, #000080 50%, transparent 50%),
+    linear-gradient(90deg, #000080 50%, transparent 50%),
+    linear-gradient(0deg, #000080 50%, transparent 50%),
+    linear-gradient(0deg, #000080 50%, transparent 50%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 15px 4px, 15px 4px, 4px 15px, 4px 15px;
+  background-position: 0px 0px, 200px 100%, 0px 200px, 100% 0px;
+  padding: 10px;
+  animation: border-dance 4s infinite linear;
+}
+
+@keyframes border-dance {
+  0% {
     background-position: 0px 0px, 200px 100%, 0px 200px, 100% 0px;
-    padding: 10px;
-    animation: border-dance 4s infinite linear;
   }
-  
-  @keyframes border-dance {
-    0% {
-      background-position: 0px 0px, 200px 100%, 0px 200px, 100% 0px;
-    }
-    100% {
-      background-position: 200px 0px, 0px 100%, 0px 0px, 100% 200px;
-    }
+  100% {
+    background-position: 200px 0px, 0px 100%, 0px 0px, 100% 200px;
   }
-  
+}
+
+.about-me-title {
+  font-size: 2.5rem;
+  color: #FF00FF; /* Magenta */
+  text-shadow: 3px 3px #00FFFF; /* Cyan shadow */
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.about-me-icon {
+  margin-right: 0.5rem;
+  font-size: 2rem;
+}
+
+.about-me-content {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  border-radius: 5px;
+  border: 2px solid #00FFFF; /* Cyan border */
+}
+
+.about-me-text {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.about-me-text:last-child {
+  margin-bottom: 0;
+}
+
+.about-me-text .about-me-icon {
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
+
+/* CRT screen effect */
+.about-me-container::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* --- OPTIMIZATIONS for Mobile --- */
+@media (max-width: 768px) {
+  .about-me-container {
+    margin: 1rem; /* Less margin on smaller screens */
+    padding: 0.5rem;
+  }
+
   .about-me-title {
-    font-size: 2.5rem;
-    color: #FF00FF; /* Magenta */
-    text-shadow: 3px 3px #00FFFF; /* Cyan shadow */
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
+    font-size: 1.8rem; /* Smaller title font for mobile */
+    text-shadow: 2px 2px #00FFFF; /* A more subtle shadow */
   }
-  
+
   .about-me-icon {
-    margin-right: 0.5rem;
-    font-size: 2rem;
+    font-size: 1.6rem; /* Scale down the title icon */
   }
-  
+
   .about-me-content {
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 1.5rem;
-    border-radius: 5px;
-    border: 2px solid #00FFFF; /* Cyan border */
+    padding: 1rem; /* Reduce padding inside the content box */
   }
-  
+
   .about-me-text {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    line-height: 1.6;
+    font-size: 1rem; /* More readable body font size for mobile */
   }
-  
-  .about-me-text:last-child {
-    margin-bottom: 0;
-  }
-  
+
   .about-me-text .about-me-icon {
-    font-size: 1.2rem;
-    vertical-align: middle;
+    font-size: 1rem; /* Match the text size */
   }
-  
-  /* CRT screen effect */
-  .about-me-container::after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 2;
-    background-size: 100% 2px, 3px 100%;
-    pointer-events: none;
-  }
+}

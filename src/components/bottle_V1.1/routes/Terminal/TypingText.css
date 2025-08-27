@@ -15,11 +15,15 @@
 .typing-effect-cursor {
   background-color: var(--as400-fg-highlight, #FFFF00);
   color: var(--as400-bg, #00001A);
-  animation: blinkCursor 1s steps(2, start) infinite;
-  display: inline-block; /* Allows it to sit next to text */
-  width: 0.6em;  /* Width of a typical character */
-  height: 1.2em; /* Approximate height of a line */
-  vertical-align: bottom; /* Aligns cursor with text baseline */
+  
+  /* --- CHANGE THIS VALUE --- */
+  /* Was '1s', now it's '0.6s' for a faster blink. */
+  animation: blinkCursor 0.6s steps(2, start) infinite;
+  
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  vertical-align: bottom;
   margin-left: 1px;
 }
 

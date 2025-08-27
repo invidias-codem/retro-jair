@@ -1,69 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@500&family=Roboto+Mono&display=swap');
+
 /* ===================================================================
-   1. ROOT & THEME VARIABLES
+   1. ROOT & THEME VARIABLES (BLUEPRINT THEME)
    =================================================================== */
 
 :root {
-  /* --- Core Palette: Retro Drive-Thru (Light Mode) --- */
-  --c-brand-red: #D83A3A;
-  --c-brand-teal: #008080;
-  --c-brand-mustard: #FFDB58;
-  --c-brand-cream: #FAF0E6;
-  --c-text-dark: #3D2B1F;
-  --c-border: #B74141;
+  /* --- Core Palette: Blueprint --- */
+  --c-brand-blue-dark: #2a3a5e;
+  --c-brand-blue-light: #3c4f76;
+  --c-brand-accent: #ffc107; /* Yellow */
+  --c-brand-line: #5f7db4;
+  --c-brand-text-light: #e0e5f0;
+  --c-brand-text-dark: #1a1a1a;
+  --c-brand-text-muted: #a0b0d0;
 
   /* --- Structural Colors --- */
-  --c-bg-body: #E0E0E0;
-  --c-bg-app: var(--c-brand-cream);
-  --c-bg-header: var(--c-brand-red);
-  --c-bg-sidebar: #FCE2D4;
-  --c-bg-sidebar-hover: #F8CFAF;
+  --c-bg-body: #1e2a47; /* Slightly different for contrast */
+  --c-bg-app: var(--c-brand-blue-dark);
+  --c-bg-header: var(--c-brand-blue-light);
+  --c-bg-sidebar: var(--c-brand-blue-dark);
+  --c-bg-sidebar-hover: var(--c-brand-blue-light);
 
   /* --- Text Colors --- */
-  --c-text-header: var(--c-brand-cream);
-  --c-text-body: var(--c-text-dark);
-  --c-text-sidebar: var(--c-text-dark);
-  --c-text-link: var(--c-brand-teal);
-  --c-text-link-hover: var(--c-brand-red);
+  --c-text-header: var(--c-brand-text-light);
+  --c-text-body: var(--c-brand-text-light);
+  --c-text-sidebar: var(--c-brand-text-muted);
+  --c-text-link: var(--c-brand-accent);
+  --c-text-link-hover: #ffd452; /* Lighter yellow */
 
   /* --- General UI --- */
-  --radius: 10px;
-  --shadow-main: 0 5px 15px rgba(0, 0, 0, 0.25);
-  --shadow-inset: inset 0 0 0 5px var(--c-border);
-  --flicker-shadow-offset: #271C16;
+  --radius: 4px; /* More angular */
+  --shadow-main: 0 5px 15px rgba(0, 0, 0, 0.4);
   --transition-speed: 0.3s;
 
-  /* --- Scrollbar --- */
-  --scrollbar-thumb: rgba(61, 43, 31, 0.4);
-  --scrollbar-track: rgba(61, 43, 31, 0.1);
+  /* --- Fonts --- */
+  --font-family-sans: 'Roboto Mono', monospace;
+  --font-family-header: 'Teko', sans-serif;
 
-  /* --- Layout Dimensions --- */
-  --sidebar-width-expanded: 260px;
-  --sidebar-width-collapsed: 75px;
-}
-
-body.dark-mode {
-  /* --- Core Palette: Retro Drive-Thru (Dark Mode) --- */
-  --c-brand-red: #FF6B6B;
-  --c-brand-teal: #48D1CC;
-  --c-brand-mustard: #FFD700;
-  --c-brand-cream: #2A2623;
-  --c-text-dark: #EAE6E1;
-  --c-border: #872323;
-
-  /* --- Structural Colors (Dark) --- */
-  --c-bg-body: #1C1A19;
-  --c-bg-header: var(--c-brand-red);
-  --c-bg-sidebar: #3D352F;
-  --c-bg-sidebar-hover: #4D433B;
-
-  /* --- Text Colors (Dark) --- */
-  --c-text-header: #1A1A1A;
-  --c-text-link-hover: var(--c-brand-mustard);
-  --flicker-shadow-offset: #110E0C;
-
-  /* --- Scrollbar (Dark) --- */
-  --scrollbar-thumb: rgba(234, 230, 225, 0.3);
-  --scrollbar-track: rgba(234, 230, 225, 0.05);
+  /* --- Background Pattern --- */
+  --grid-background: linear-gradient(var(--c-brand-line) 1px, transparent 1px),
+                     linear-gradient(to right, var(--c-brand-line) 1px, transparent 1px);
 }
 
 
@@ -71,51 +47,33 @@ body.dark-mode {
    2. GLOBAL RESETS & BASE STYLES
    =================================================================== */
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   background-color: var(--c-bg-body);
-  font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: var(--font-family-sans);
   color: var(--c-text-body);
   margin: 0;
-  padding: 0;
+  padding: 2rem 1rem; /* Add padding to body */
   overflow-x: hidden;
-  line-height: 1.5;
-  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  line-height: 1.6;
 }
 
 a {
   color: var(--c-text-link);
   text-decoration: none;
-  transition: color 0.2s ease;
+  font-weight: bold;
+  transition: color var(--transition-speed) ease;
 }
-a:hover {
-  color: var(--c-text-link-hover);
-  text-decoration: underline;
-}
+a:hover { color: var(--c-text-link-hover); }
 
 a:focus, button:focus {
-  outline: 2px solid var(--c-brand-mustard);
-  outline-offset: 2px;
-}
-body.dark-mode a:focus, body.dark-mode button:focus {
-  outline-color: var(--c-brand-teal);
+  outline: 2px solid var(--c-brand-accent);
+  outline-offset: 3px;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 4px;
-}
+img { max-width: 100%; height: auto; display: block; }
 
 
 /* ===================================================================
@@ -123,206 +81,169 @@ img {
    =================================================================== */
 
 #appContainer {
-  max-width: 1200px;
-  margin: 0px auto;
-  padding: 0;
+  max-width: 1400px;
+  margin: 0 auto;
   background-color: var(--c-bg-app);
-  border: 15px solid var(--c-brand-red);
+  /* Blueprint Grid Background */
+  background-image: var(--grid-background);
+  background-size: 40px 40px;
+  border: 2px solid var(--c-brand-line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-main), var(--shadow-inset);
+  box-shadow: var(--shadow-main);
   overflow: hidden;
-  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 #appHeader {
   background-color: var(--c-bg-header);
   color: var(--c-text-header);
-  padding: 15px 20px;
-  border-bottom: 4px dashed var(--c-border);
+  padding: 10px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Changed for better alignment */
-  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  justify-content: space-between;
+  position: relative; /* For ruler effect */
+  padding-bottom: calc(10px + 8px); /* Make space for ruler */
+}
+
+/* Unique Blueprint Ruler Effect for Header */
+#appHeader::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 8px;
+  background-image:
+    repeating-linear-gradient(to right, var(--c-brand-text-muted) 0, var(--c-brand-text-muted) 1px, transparent 1px, transparent 100px),
+    repeating-linear-gradient(to right, var(--c-brand-line) 0, var(--c-brand-line) 1px, transparent 1px, transparent 10px);
+  background-size: 100% 8px, 100% 4px;
+  background-repeat: no-repeat;
+  background-position: bottom;
 }
 
 #appHeaderLink {
-  font-size: 2.2em;
-  font-weight: bold;
+  font-family: var(--font-family-header);
+  font-size: 2.5em;
+  font-weight: 500;
   color: var(--c-text-header);
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  text-shadow: 2px 2px 0px var(--flicker-shadow-offset);
-  animation: flicker 2.5s infinite alternate;
-  transition: color var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.5); /* Simple, clean shadow */
 }
 
-.dark-mode-toggle-button {
+.dark-mode-toggle-button { /* Now just a generic button */
   background: none;
-  border: 2px solid var(--c-text-header);
+  border: 1px solid var(--c-text-header);
   color: var(--c-text-header);
-  padding: 6px 10px;
+  padding: 6px;
   border-radius: var(--radius);
   cursor: pointer;
   font-size: 1.3em;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 .dark-mode-toggle-button:hover {
   background-color: var(--c-text-header);
   color: var(--c-bg-header);
+  transform: scale(1.1);
 }
 
 #appMain {
   display: flex;
-  min-height: calc(100vh - 240px);
+  min-height: calc(100vh - 200px); /* Adjusted for body padding */
 }
 
 #appContent {
   flex-grow: 1;
-  padding: 0px;
-  background-color: var(--c-bg-app);
-  color: var(--c-text-body);
+  padding: var(--spacing-md, 1rem);
+  background-color: transparent; /* Let grid show through */
   overflow-y: auto;
-  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
 /* ===================================================================
    4. SIDEBAR (Mobile-First Approach)
    =================================================================== */
 
-/* --- Mobile Styles (Default) --- */
 #appSidebar {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  max-width: 330px;
+  top: 0; left: 0; z-index: 1000;
+  width: 90%; max-width: 300px;
   height: 100vh;
   padding-top: 50px;
   background-color: var(--c-bg-sidebar);
-  border-right: 3px solid var(--c-border);
-  box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+  border-right: 2px solid var(--c-brand-line);
+  box-shadow: 5px 0 15px rgba(0,0,0,0.4);
   transform: translateX(-100%);
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  overflow-y: auto;
+  transition: transform 0.4s ease-out;
 }
-
-#appSidebar.show {
-  transform: translateX(0);
-}
+#appSidebar.show { transform: translateX(0); }
 
 #appSidebar .menu-item {
   width: 85%;
+  margin: 0 auto 10px;
   padding: 12px 18px;
-  margin-bottom: 10px;
-  background-color: var(--c-brand-red);
-  color: var(--c-brand-cream);
-  border-radius: 6px;
+  color: var(--c-brand-text-dark);
+  background-color: var(--c-brand-accent);
+  border-radius: var(--radius);
   text-align: left;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  transform: translateX(-110%);
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  font-family: var(--font-family-header);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 0.3s ease;
 }
+#appSidebar .menu-item:hover { transform: translateX(5px); }
 
-#appSidebar.show .menu-item {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Staggered animation for menu items */
-#appSidebar.show .menu-item:nth-child(1) { transition-delay: 0.1s; }
-#appSidebar.show .menu-item:nth-child(2) { transition-delay: 0.15s; }
-#appSidebar.show .menu-item:nth-child(3) { transition-delay: 0.2s; }
-#appSidebar.show .menu-item:nth-child(4) { transition-delay: 0.25s; }
-#appSidebar.show .menu-item:nth-child(5) { transition-delay: 0.3s; }
-
-#appSidebar .menu-item-text {
-  margin-left: 10px;
-  color: var(--c-brand-cream);
-}
-
-/* Hamburger menu toggle */
 #menuToggle {
   display: block;
   position: fixed;
-  top: 94px;
-  right: 8px;
-  background-color: var(--c-brand-red);
-  color: var(--c-brand-cream);
-  padding: 8px;
+  top: 20px;
+  left: 333px;
+  z-index: 1001;
+  background-color: var(--c-brand-accent);
+  color: var(--c-brand-text-dark);
+  padding: 10px;
   border-radius: 50%;
   font-size: 22px;
-  z-index: 1001;
-  border: 2px solid var(--c-brand-cream);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-body.dark-mode #menuToggle {
-  border-color: var(--c-brand-mustard);
+  border: none;
+  box-shadow: var(--shadow-main);
 }
 
-
-/* --- Desktop Styles (Applied on larger screens) --- */
 @media (min-width: 769px) {
-  #menuToggle {
-    display: none; /* Hide hamburger on desktop */
-  }
-
+  #menuToggle { display: none; }
   #appSidebar {
-    /* Reset mobile fixed positioning */
     position: static;
     transform: none;
     box-shadow: none;
-
-    /* Apply desktop layout */
-    width: var(--sidebar-width-collapsed);
+    width: 122px;
     height: auto;
-    padding: 20px 10px;
-    border-right: 10px solid var(--c-border);
-    flex-shrink: 0;
-    overflow-x: hidden;
-    transition: width var(--transition-speed) ease, background-color var(--transition-speed) ease;
+    padding-top: 1rem;
+    border-right: 2px solid var(--c-brand-line);
+    transition: width var(--transition-speed) ease;
   }
-
-  #appSidebar:hover {
-    width: var(--sidebar-width-expanded);
-    background-color: var(--c-bg-sidebar-hover);
-  }
+  #appSidebar:hover { width: 220px; }
 
   #appSidebar .menu-item {
-    /* Reset mobile styles */
     width: 100%;
     background-color: transparent;
-    box-shadow: none;
-    opacity: 1;
-    transform: none;
     color: var(--c-text-sidebar);
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 12px 24px;
+    font-family: var(--font-family-sans);
+    font-size: 1rem;
+    text-transform: none;
+    letter-spacing: 0;
   }
-
+  #appSidebar .menu-item:hover { background-color: var(--c-bg-sidebar-hover); }
+  
   #appSidebar .menu-item-text {
     opacity: 0;
     visibility: hidden;
-    margin-left: -15px;
     white-space: nowrap;
-    transition: opacity 0.2s ease, visibility 0s linear 0.2s, margin-left 0.2s ease;
-    pointer-events: none;
-    color: var(--c-text-sidebar);
+    transition: opacity 0.2s ease;
   }
-
   #appSidebar:hover .menu-item-text {
     opacity: 1;
     visibility: visible;
-    margin-left: 12px;
-    transition-delay: 0.1s;
-    pointer-events: auto;
+    transition-delay: 0.15s;
   }
 }
 
@@ -330,91 +251,73 @@ body.dark-mode #menuToggle {
    5. MODAL & AGENT STYLES
    =================================================================== */
 
-/* --- AI Agent Selection --- */
 .agent-selector {
   display: flex;
-  gap: 10px;
-  padding: 15px;
-  background-color: rgba(61, 43, 31, 0.05); /* Using RGB of text-dark for subtle bg */
-  border-radius: var(--radius);
+  gap: 5px;
+  padding: 0px;
+  border-bottom: 2px dashed var(--c-brand-line);
   margin-bottom: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .selector-button {
-  padding: 10px 20px;
-  font-weight: bold;
-  color: var(--c-text-dark);
-  background-color: var(--c-brand-cream);
-  border: 2px solid var(--c-border);
-  border-radius: calc(var(--radius) * 0.8);
+  padding: 8px 18px;
+  font-family: var(--font-family-header);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-brand-text-muted);
+  background-color: transparent;
+  border: 1px solid var(--c-brand-line);
+  border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  box-shadow: 2px 2px 0px var(--c-border);
 }
-
 .selector-button:hover {
-  background-color: var(--c-bg-sidebar-hover);
-  box-shadow: 3px 3px 0px var(--c-border);
-  transform: translateY(-1px) translateX(-1px);
+  background-color: var(--c-bg-header);
+  color: var(--c-text-header);
 }
-
 .selector-button.active {
-  background-color: var(--c-brand-red);
-  color: var(--c-brand-cream);
-  border-color: var(--c-text-dark);
-  box-shadow: 1px 1px 0px var(--c-text-dark);
-  transform: translateY(1px) translateX(1px);
-}
-body.dark-mode .selector-button.active {
-  color: #1A1A1A; /* Ensure high contrast on bright red */
+  background-color: var(--c-brand-accent);
+  color: var(--c-brand-text-dark);
+  border-color: var(--c-brand-accent);
 }
 
-
-/* --- Chat Open Button --- */
+/* --- Optimized Chat Open Button --- */
 .chat-open-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 22px;
-  font-size: 1.05em;
-  font-weight: bold;
+  padding: 0rem;
+  width: 100%; 
+  font-family: var(--font-family-header);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--c-brand-cream);
-  background-color: var(--c-brand-red);
-  border: 2px solid var(--c-text-dark);
-  border-radius: calc(var(--radius) * 0.8);
-  box-shadow: 3px 3px 0px var(--c-text-dark);
+  color: var(--c-brand-text-dark);
+  background-color: var(--c-brand-accent);
+  border: none;
+  border-radius: var(--radius);
   cursor: pointer;
-  transition: all 0.15s ease;
-  animation: chatButtonPulse 2.8s infinite ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .chat-open-button:hover {
-  background-color: var(--c-border);
-  color: var(--c-brand-mustard);
-  box-shadow: 4px 4px 0px var(--c-text-dark);
-  transform: translateY(-2px) translateX(-2px);
-  animation-play-state: paused;
+  background-color: var(--c-text-link-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-main);
 }
 .chat-open-button:active {
-  box-shadow: 1px 1px 0px var(--c-text-dark);
-  transform: translateY(1px) translateX(1px);
-  animation-play-state: paused;
+  transform: translateY(0);
 }
-body.dark-mode .chat-open-button {
-  border-color: var(--c-brand-cream);
-  box-shadow: 3px 3px 0px var(--c-brand-cream);
-}
-
 
 /* --- Modal Styles --- */
 .modal {
   position: fixed;
   z-index: 1050;
   inset: 0;
-  background-color: rgba(28, 26, 25, 0.6);
-  backdrop-filter: blur(3px);
+  background-color: rgba(28, 42, 71, 0.7);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -425,48 +328,21 @@ body.dark-mode .chat-open-button {
 .modal-content {
   width: 100%;
   max-width: 950px;
-  height: clamp(300px, 85vh, 700px); /* Responsive height */
+  height: clamp(300px, 85vh, 700px);
   border-radius: var(--radius);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-main);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   animation: slideUp 0.4s ease-out;
-  background-color: var(--c-bg-app); /* Use theme bg for modal */
-  color: var(--c-text-body);
-  border: 4px solid var(--c-brand-red);
+  background-color: var(--c-bg-app);
+  border: 2px solid var(--c-brand-line);
 }
-
-/* ... (rest of modal, message, input styles can remain as they are well-structured) ... */
-
 
 /* ===================================================================
    6. ANIMATIONS
    =================================================================== */
 
-@keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-    text-shadow:
-      0 0 4px var(--c-text-header),
-      0 0 10px var(--c-text-header),
-      0 0 18px var(--c-text-header),
-      0 0 38px var(--c-brand-mustard),
-      0 0 70px var(--c-brand-mustard),
-      2px 2px 0px var(--flicker-shadow-offset);
-    opacity: 1;
-  }
-  20%, 24%, 55% {
-    text-shadow: 2px 2px 0px var(--flicker-shadow-offset);
-    opacity: 0.7;
-  }
-}
-
-@keyframes chatButtonPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.025); }
-}
-
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
 @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }

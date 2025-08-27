@@ -10,7 +10,7 @@
 }
 
 .terminal-container {
-  min-height: 100vh;
+  min-height: 96vh;
   background-color: var(--as400-bg);
   color: var(--as400-fg);
   font-family: var(--as400-font);
@@ -22,7 +22,10 @@
   text-transform: uppercase; /* AS400 was often all caps */
   overflow: hidden; /* Prevent scrollbars unless content demands it */
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
 }
 
 /* Boot Sequence & General Lines */
@@ -241,7 +244,8 @@ hr.detail-separator {
   display: flex;
   flex-direction: column;
   /* Adjust height calc based on your .terminal-container padding and border */
-  height: calc(100vh - 16px); /* Example: if .terminal-container has 8px total vertical padding/border */
+  height: calc(122vh - 260px); /* Example: if .terminal-container has 8px total vertical padding/border */
+  margin: 0rem;
   overflow: hidden;
 }
 
@@ -302,4 +306,14 @@ hr.detail-separator {
   padding: 8px 5px;
   border-top: 1px solid var(--as400-fg-dim, #00A32A);
   flex-shrink: 0; /* Prevent command line from shrinking */
+}
+
+.typing-effect-cursor {
+  background-color: var(--as400-fg-highlight);
+  animation: blinkCursor 0.6s steps(2, start) infinite;
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  vertical-align: bottom;
+  margin-left: 1px;
 }

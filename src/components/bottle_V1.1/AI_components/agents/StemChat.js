@@ -422,16 +422,7 @@ const StemChat = () => {
                 <div className={`${currentMode.subscriptionBadgeClass} ${subscription}`}>{subscription} Tier {subscription === "free" && `(${remainingInteractions} left)`}</div>
             </div>
             <div className={currentMode.controlsClass}>
-                <button
-                    className={`${currentMode.buttonClass} ${currentMode.buttonClass}--icon ${currentMode.buttonClass}--theme`}
-                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                    title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} >
-                    <FontAwesomeIcon icon={theme === "dark" ? faSun : faMoon} />
-                </button>
-                <button className={`${currentMode.buttonClass} ${currentMode.buttonClass}--settings`} aria-label="Settings" title="Settings (coming soon)" disabled>
-                    <FontAwesomeIcon icon={faCog} /><span>Settings</span>
-                </button>
+                
             </div>
         </header>
     );
@@ -440,10 +431,12 @@ const StemChat = () => {
         showScrollToBottom && (<button className="scroll-to-bottom visible" onClick={scrollToBottom} aria-label="Scroll to newest messages" title="Scroll to bottom"><FontAwesomeIcon icon={faChevronDown} /></button>)
     );
 
+    
+
 
     return (
         <>
-            <button onClick={openModal} className={`chat-open-button ${currentMode.buttonClass}`}>
+            <button onClick={openModal} className={`chat-open-button ${currentMode.buttonClass} ${isModalOpen ? 'hidden' : ''}`}>
                 <FontAwesomeIcon icon={currentMode.icon} style={{ marginRight: '8px' }} />
                 {currentMode.buttonText}
             </button>

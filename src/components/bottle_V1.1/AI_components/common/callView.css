@@ -1,0 +1,195 @@
+/* Import the retro font if it's not already globally available */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+    --call-bg: #0a0a14; /* Deep, dark blue-black */
+    --call-text: #00ff41; /* Classic CRT green */
+    --call-text-user: #000000; /* Black text for user bubble */
+    --call-border: #008f11; /* A darker green for borders */
+    --call-user-bg: #ffa500; /* Vibrant orange for user bubble */
+    --call-assistant-bg: #1a1a2b; /* Darker background for assistant bubble */
+    --call-end-button-bg: #c50f1f; /* Retro red */
+    --call-end-button-hover: #ff3b4b;
+    --call-end-button-shadow: #8f0a15;
+    --call-font: 'VT323', monospace;
+}
+
+.call-view-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: var(--call-bg);
+    color: var(--call-text);
+    padding: 1rem;
+    box-sizing: border-box;
+    font-family: var(--call-font);
+    border: 4px solid var(--call-border);
+    border-radius: 10px;
+    box-shadow: inset 0 0 15px rgba(0, 255, 65, 0.2);
+    position: relative;
+}
+
+/* CRT Scanline Effect */
+.call-view-container::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+    z-index: 1;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    animation: flicker 0.08s infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.95; }
+    50% { opacity: 1; }
+    100% { opacity: 0.95; }
+}
+
+.call-view-header {
+    text-align: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px dashed var(--call-border);
+    margin-bottom: 1rem;
+    z-index: 2;
+}
+
+.agent-avatar-icon {
+    font-size: 2.5rem;
+    color: var(--call-text);
+    text-shadow: 0 0 10px var(--call-text);
+    margin-bottom: 0.5rem;
+}
+
+.agent-name {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.call-status {
+    font-size: 1.1rem;
+    min-height: 1.2rem; /* Prevent layout shift */
+    animation: text-glow 1.5s infinite alternate;
+}
+
+@keyframes text-glow {
+    from { text-shadow: 0 0 2px var(--call-text); }
+    to { text-shadow: 0 0 8px var(--call-text); }
+}
+
+.transcript-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 2;
+}
+
+.transcript-entry {
+    max-width: 85%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--call-border);
+    border-radius: 0; /* Sharp corners for a retro feel */
+}
+
+.transcript-entry.user {
+    align-self: flex-end;
+    background-color: var(--call-user-bg);
+    color: var(--call-text-user);
+    border-color: #ffde00;
+}
+
+.transcript-entry.assistant {
+    align-self: flex-start;
+    background-color: var(--call-assistant-bg);
+}
+
+.speaker-label {
+    font-weight: bold;
+    font-size: 1em;
+    opacity: 1;
+    display: block;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
+.transcript-text {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.call-view-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 2px dashed var(--call-border);
+    z-index: 2;
+}
+
+.mic-status-icon {
+    font-size: 2rem;
+    color: var(--call-end-button-bg);
+    transition: color 0.2s ease-in-out;
+}
+
+.mic-status-icon.listening {
+    color: var(--call-text);
+    animation: mic-pulse 1s infinite;
+}
+
+@keyframes mic-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.end-call-button {
+    background-color: var(--call-end-button-bg);
+    color: white;
+    border: 2px solid white;
+    border-radius: 0;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: var(--call-font);
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+    box-shadow: 4px 4px 0px var(--call-end-button-shadow);
+}
+
+.end-call-button:hover:not(:disabled) {
+    background-color: var(--call-end-button-hover);
+    box-shadow: 2px 2px 0px var(--call-end-button-shadow);
+    transform: translate(2px, 2px);
+}
+
+.end-call-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Scrollbar Styling */
+.transcript-container::-webkit-scrollbar {
+  width: 10px;
+}
+.transcript-container::-webkit-scrollbar-track {
+  background: var(--call-bg);
+}
+.transcript-container::-webkit-scrollbar-thumb {
+  background-color: var(--call-border);
+  border: 2px solid var(--call-bg);
+}
+/* Add other styles for header, avatar etc. */
