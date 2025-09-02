@@ -104,3 +104,27 @@
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
   }
+
+  .form-select {
+  width: 100%; /* Match other inputs */
+  padding: 0.8rem;
+  background-color: #111;
+  border: 2px solid #00FF00;
+  color: #00FF00;
+  font-family: 'VT323', monospace;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  -webkit-appearance: none; /* Removes default browser styling */
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300FF00%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20127.9c3.6%203.6%207.8%205.4%2013%205.4s9.4-1.8%2013-5.4L287%2095.2c3.6-3.6%205.4-7.8%205.4-13%200-5-1.8-9.4-5.4-13z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #FF00FF;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}

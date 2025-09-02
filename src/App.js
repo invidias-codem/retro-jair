@@ -16,6 +16,7 @@ import Projects from './components/bottle_V1.1/Projects/Projects';
 import Skills from './components/bottle_V1.1/Skills/Skills';
 import Contact from './components/bottle_V1.1/ContactMe/Contact';
 import Terminal from './components/bottle_V1.1/routes/Terminal/Terminal';
+import Services from './components/bottle_V1.1/Services/Service';
 import Footer from './components/bottle_V1.1/Footer/Footer';
 
 // Agent system imports - KEEP these for now, might be used by modal or context
@@ -56,6 +57,7 @@ function AnimatedRoutes() {
           {/* MODIFIED ROUTE: Use ChatInterface for the /chat path */}
           <Route path="/chat" element={<ChatInterface />} />
           <Route path="/terminal" element={<Terminal />} />
+          <Route path="/services" element={<Services />} />
           {/* Add other routes as needed */}
           {/* Optional: Add a 404 Not Found route */}
           {/* <Route path="*" element={<NotFoundComponent />} /> */}

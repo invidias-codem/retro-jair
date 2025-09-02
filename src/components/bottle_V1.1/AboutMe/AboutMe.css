@@ -1,18 +1,30 @@
+/* bottle_V1.1/AboutMe/AboutMe.css */
+
+/* --- CSS Variables for Easy Theming --- */
 .about-me-container {
-  background-color: #000080; /* Navy blue background */
-  color: #00FF00; /* Bright green text */
-  padding: 5rem; /* Adjusted base padding */
+  --navy-bg: #000080;
+  --text-green: #00FF00;
+  --glow-cyan: #00FFFF;
+  --glow-magenta: #FF00FF;
+  --dark-bg-transparent: rgba(0, 0, 0, 0.6);
+  --crt-flicker-speed: 0.15s;
+}
+
+.about-me-container {
+  background-color: var(--navy-bg);
+  color: var(--text-green);
+  padding: 2.5rem; /* Slightly adjusted padding */
   border-radius: 10px;
-  box-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Cyan glow effect */
+  box-shadow: 0 0 10px var(--glow-cyan), 0 0 20px var(--glow-cyan);
   font-family: 'VT323', 'Courier New', monospace;
   position: relative;
   overflow: hidden;
-
-  /* --- OPTIMIZATIONS for Desktop --- */
-  max-width: 800px; /* Prevents the component from stretching too wide */
-  margin: 2rem auto; /* Adds some vertical space and centers it horizontally */
+  max-width: 800px;
+  margin: 2rem auto;
+  border: 3px solid var(--glow-cyan); /* Added a solid border */
 }
 
+/* --- Animated Border Effect --- */
 .about-me-container::before {
   content: '';
   position: absolute;
@@ -21,14 +33,13 @@
   right: 0;
   bottom: 0;
   background: 
-    linear-gradient(90deg, #000080 50%, transparent 50%),
-    linear-gradient(90deg, #000080 50%, transparent 50%),
-    linear-gradient(0deg, #000080 50%, transparent 50%),
-    linear-gradient(0deg, #000080 50%, transparent 50%);
+    linear-gradient(90deg, var(--navy-bg) 50%, transparent 50%),
+    linear-gradient(90deg, var(--navy-bg) 50%, transparent 50%),
+    linear-gradient(0deg, var(--navy-bg) 50%, transparent 50%),
+    linear-gradient(0deg, var(--navy-bg) 50%, transparent 50%);
   background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
   background-size: 15px 4px, 15px 4px, 4px 15px, 4px 15px;
   background-position: 0px 0px, 200px 100%, 0px 200px, 100% 0px;
-  padding: 10px;
   animation: border-dance 4s infinite linear;
 }
 
@@ -41,13 +52,49 @@
   }
 }
 
+/* --- CRT Screen & Vignette Effect --- */
+.about-me-container::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  /* Added a radial gradient for a vignette effect to simulate a curved screen */
+  background: 
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%),
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 100%, 100% 2px, 3px 100%;
+  pointer-events: none;
+  animation: crt-flicker var(--crt-flicker-speed) infinite;
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.95; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.95; }
+}
+
+/* --- Typography & Content Styling --- */
 .about-me-title {
   font-size: 2.5rem;
-  color: #FF00FF; /* Magenta */
-  text-shadow: 3px 3px #00FFFF; /* Cyan shadow */
+  color: var(--glow-magenta);
+  text-shadow: 3px 3px var(--glow-cyan);
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
+  position: relative; /* For z-index to work */
+  z-index: 3;
+  animation: text-flicker 3s infinite alternate; /* Added subtle flicker */
+}
+
+@keyframes text-flicker {
+  0% { text-shadow: 3px 3px var(--glow-cyan); }
+  50% { text-shadow: 3px 3px 2px var(--glow-cyan), 0 0 5px var(--glow-magenta); }
+  100% { text-shadow: 3px 3px var(--glow-cyan); }
 }
 
 .about-me-icon {
@@ -56,10 +103,12 @@
 }
 
 .about-me-content {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--dark-bg-transparent);
   padding: 1.5rem;
   border-radius: 5px;
-  border: 2px solid #00FFFF; /* Cyan border */
+  border: 2px solid var(--glow-cyan);
+  position: relative; /* For z-index to work */
+  z-index: 3;
 }
 
 .about-me-text {
@@ -77,46 +126,78 @@
   vertical-align: middle;
 }
 
-/* CRT screen effect */
-.about-me-container::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 2;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
+/* --- Enhanced "Hire Me" Button --- */
+.about-me-actions {
+  margin-top: 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 3;
 }
 
-/* --- OPTIMIZATIONS for Mobile --- */
+.hire-me-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: var(--glow-magenta);
+  color: #000;
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1.5rem;
+  text-decoration: none;
+  border: 2px solid var(--glow-cyan);
+  box-shadow: 0 0 10px var(--glow-magenta);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden; /* Important for glitch effect */
+}
+
+.hire-me-button:hover {
+  background-color: var(--glow-cyan);
+  color: #000;
+  box-shadow: 0 0 15px var(--glow-cyan);
+  /* Trigger glitch animation on hover */
+  animation: glitch-anim 0.3s steps(2, end) forwards;
+}
+
+/* Glitch Effect Keyframes */
+@keyframes glitch-anim {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(3px, -3px); }
+  60% { transform: translate(-3px, -3px); }
+  80% { transform: translate(3px, 3px); }
+  100% { transform: translate(0); }
+}
+
+/* --- Responsive Optimizations --- */
 @media (max-width: 768px) {
   .about-me-container {
-    margin: 1rem; /* Less margin on smaller screens */
-    padding: 0.5rem;
+    margin: 1rem;
+    padding: 1rem;
+    border-width: 2px;
   }
 
   .about-me-title {
-    font-size: 1.8rem; /* Smaller title font for mobile */
-    text-shadow: 2px 2px #00FFFF; /* A more subtle shadow */
+    font-size: 1.8rem;
+    text-shadow: 2px 2px var(--glow-cyan);
   }
 
   .about-me-icon {
-    font-size: 1.6rem; /* Scale down the title icon */
+    font-size: 1.6rem;
   }
 
   .about-me-content {
-    padding: 1rem; /* Reduce padding inside the content box */
+    padding: 1rem;
   }
 
   .about-me-text {
-    font-size: 1rem; /* More readable body font size for mobile */
+    font-size: 1rem;
   }
 
   .about-me-text .about-me-icon {
-    font-size: 1rem; /* Match the text size */
+    font-size: 1rem;
+  }
+
+  .hire-me-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
   }
 }

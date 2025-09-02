@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaUser, FaCode, FaCoffee } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // Import Link
 import './AboutMe.css';
 
 function AboutMe() {
@@ -18,6 +19,11 @@ function AboutMe() {
         <p className="about-me-text">
           <FaCoffee className="about-me-icon inline mr-2" /> When I'm not coding, you can find me sipping on coffee and playing classic video games.
         </p>
+      </div>
+      <div className="about-me-actions">
+        <Link to="/services" className="hire-me-button">
+          Book a Consultation
+        </Link>
       </div>
     </div>
   );
