@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { getFunctions, httpsCallable } from "firebase/functions";
 import DOMPurify from 'dompurify'; // Import DOMPurify
 import './contact.css';
+import { getFunctionsClient } from '../../../firebase';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -49,9 +49,10 @@ function Contact() {
         message: DOMPurify.sanitize(formData.message),
       };
 
-      const functions = getFunctions();
+      const functions = await getFunctionsClient();
+      const { httpsCallable } = await import('firebase/functions');
       const submitContactForm = httpsCallable(functions, 'submitContactForm');
-      
+
       const result = await submitContactForm(sanitizedFormData);
       
       if (result.data.success) {

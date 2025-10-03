@@ -5,120 +5,133 @@ import {
   Routes,
   Link,
   useLocation,
-  // Removed unused imports: useParams, useNavigate (unless used elsewhere)
 } from 'react-router-dom';
 import { useTransition, animated } from '@react-spring/web';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-// Component imports
+// --- Custom Hooks ---
+import { useOrientation } from './components/bottle_V1.1/hooks/useOrientation'; // <-- 1. IMPORT THE NEW HOOK
+
+// --- Core Components ---
 import Menu from './components/bottle_V1.1/Main/Menu';
-import AboutMe from './components/bottle_V1.1/AboutMe/AboutMe';
-import Projects from './components/bottle_V1.1/Projects/Projects';
-import Skills from './components/bottle_V1.1/Skills/Skills';
-import Contact from './components/bottle_V1.1/ContactMe/Contact';
-import Terminal from './components/bottle_V1.1/routes/Terminal/Terminal';
-import Services from './components/bottle_V1.1/Services/Service';
 import Footer from './components/bottle_V1.1/Footer/Footer';
+import { ChatProvider } from './components/bottle_V1.1/context/useContext';
 
-// Agent system imports - KEEP these for now, might be used by modal or context
-import { ChatProvider, useChat } from './components/bottle_V1.1/context/useContext';
-import ChatModal from './components/bottle_V1.1/AI_components/common/ChatModal';
+// --- Lazy-Loaded Page Components ---
+const AboutMe = React.lazy(() => import('./components/bottle_V1.1/AboutMe/AboutMe'));
+const Projects = React.lazy(() => import('./components/bottle_V1.1/Projects/Projects'));
+const Skills = React.lazy(() => import('./components/bottle_V1.1/Skills/Skills'));
+const Contact = React.lazy(() => import('./components/bottle_V1.1/ContactMe/Contact'));
+const Terminal = React.lazy(() => import('./components/bottle_V1.1/routes/Terminal/Terminal'));
+const Services = React.lazy(() => import('./components/bottle_V1.1/Services/Service'));
+const ChatInterface = React.lazy(() => import('./components/bottle_V1.1/AI_components/ChatInterface'));
 
-// Import the NEW Chat Interface component
-import ChatInterface from './components/bottle_V1.1/AI_components/ChatInterface'; // Adjust path if needed
+// --- Framework Providers ---
+const AgentSessionProvider = React.lazy(() =>
+  import('./components/bottle_V1.1/AI_components/framework/agentFramework').then(m => ({ default: m.AgentSessionProvider }))
+);
 
-// REMOVE the direct import of the old Chat/TechChat component
-// import Chat from './components/bottle_V1.1/AI_components/agents/chat';
-
+// --- Styles ---
 import './App.css';
 
+// --- AnimatedRoutes Component ---
 function AnimatedRoutes() {
   const location = useLocation();
+  const [isMotionReduced] = useState(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
   const transitions = useTransition(location, {
-    // Stagger: 50, // Optional: add stagger if needed
-    from: { opacity: 0, transform: 'translateY(50px)' },
+    from: { opacity: 0, transform: 'translateY(30px)' },
     enter: { opacity: 1, transform: 'translateY(0px)' },
-    leave: { opacity: 0, transform: 'translateY(-50px)' },
-    config: { tension: 220, friction: 20 }, // Example config
+    leave: { opacity: 0, transform: 'translateY(-30px)' },
+    config: { tension: 220, friction: 20 },
+    immediate: isMotionReduced,
   });
 
   return transitions((props, item) => (
-    // MODIFIED LINE: Using spread syntax for the style prop
-    // This allows you to easily merge the animated props with other styles if needed.
-    // For example: style={{ ...props, yourCustomProperty: 'value' }}
-    <animated.div style={{ ...props }} className="animated-route-wrapper"> {/* Added class for potential styling */}
-      {/* Use Suspense if any routed components use React.lazy */}
-      {/* <Suspense fallback={<div>Loading Page...</div>}> */}
+    <animated.div style={props} className="animated-route-wrapper">
+      <Suspense fallback={<div className="route-fallback" aria-busy="true">Loading Blueprint...</div>}>
         <Routes location={item}>
           <Route path="/" element={<AboutMe />} />
           <Route path="/about" element={<AboutMe />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/contact" element={<Contact />} />
-          {/* MODIFIED ROUTE: Use ChatInterface for the /chat path */}
-          <Route path="/chat" element={<ChatInterface />} />
           <Route path="/terminal" element={<Terminal />} />
           <Route path="/services" element={<Services />} />
-          {/* Add other routes as needed */}
-          {/* Optional: Add a 404 Not Found route */}
-          {/* <Route path="*" element={<NotFoundComponent />} /> */}
+          <Route
+            path="/chat"
+            element={
+              <Suspense fallback={<div>Loading Chat Framework...</div>}>
+                <AgentSessionProvider>
+                  <ChatInterface />
+                </AgentSessionProvider>
+              </Suspense>
+            }
+          />
         </Routes>
-      {/* </Suspense> */}
+      </Suspense>
     </animated.div>
   ));
 }
 
+// --- Main App Component ---
 function App() {
+  const orientation = useOrientation(); // <-- 2. USE THE HOOK
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [showMenu, setShowMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setIsMenuOpen(false);
+      }
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
 
-  // Assuming ChatProvider should wrap the part of the app using the chat context
-  // If it needs to wrap everything, move it outside <Router> or inside <div id="appContainer">
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+  }, []);
+
   return (
-    <ChatProvider> {/* Example: Wrap with ChatProvider if needed globally or for modal */}
+    <ChatProvider>
       <Router>
-        <div id="appContainer">
+        {/* -- 3. APPLY THE ORIENTATION CLASS -- */}
+        <div id="appContainer" className={`${orientation}-orientation`}>
           <header id="appHeader">
-            <Link to="/" id="appHeaderLink">
-              Cruise-Thru Portfolio {/* Consider a more descriptive title */}
+            <Link to="/" id="appHeaderLink" onClick={closeMenu}>
+              J.M. Portfolio
             </Link>
+            {isMobile && (
+              <button
+                id="menuToggle"
+                onClick={toggleMenu}
+                aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
+                aria-expanded={isMenuOpen}
+              >
+                <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+              </button>
+            )}
           </header>
 
           <main id="appMain">
-            {isMobile ? (
-              <div>
-                <div id="appSidebar" className={`mobile-sidebar ${showMenu ? 'show' : ''}`}> {/* Added class */}
-                  <Menu onItemClick={() => setShowMenu(false)} />
-                </div>
-                <button id="menuToggle" onClick={toggleMenu} aria-label={showMenu ? 'Close Menu' : 'Open Menu'} aria-expanded={showMenu}>
-                   {/* Use more descriptive icons/text if possible */}
-                   {showMenu ? '✕' : '☰'}
-                </button>
-              </div>
-            ) : (
-              <div id="appSidebar">
-                <Menu />
-              </div>
-            )}
+            <aside id="appSidebar" className={isMobile && isMenuOpen ? 'show' : ''}>
+              <Menu onItemClick={isMobile ? closeMenu : undefined} />
+            </aside>
             <div id="appContent">
               <AnimatedRoutes />
             </div>
           </main>
-
-          {/* Render ChatModal here if it's meant to be a global modal triggered by context */}
-          {/* <ChatModal /> */}
 
           <Footer />
         </div>

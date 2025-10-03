@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon, faPaperPlane, faChevronDown, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import useChatAgent from '../../hooks/useChatAgent';
-import "./chat.css";
+import useChatAgent from '../hooks/useChatAgent';
+
 
 const BishopChat = ({ agentId = 'bishop-ai' }) => {
     const {
