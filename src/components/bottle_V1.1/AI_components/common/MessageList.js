@@ -6,7 +6,6 @@ import jsPDF from 'jspdf';
 import TypingEffect from './TypingEffect';
 
 // --- Sub-component for Code Blocks with a Copy Button ---
-jsx
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
   // Shows temporary "Copied!" feedback after successful copy
   const [isCopied, setIsCopied] = useState(false);
