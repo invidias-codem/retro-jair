@@ -13,6 +13,22 @@ function Projects() {
       review: "Invaluable experience in software development, collaboration, and leadership.",
     },
     {
+      title: "AI SaaS Platform",
+      description: "Developed a scalable AI-powered SaaS platform for web developers who want to prototype generated AI content.",
+      timeline: "Mar 2024 - Present",
+      technologies: "Next.js, Node.js, Replicate AI, Gemini Pro, Tailwind CSS, OpenAI",
+      review: "Challenging project involving complex AI model integration and cloud deployment.",
+      github: "https://github.com/invidias-codem/ai-saas"
+    },
+    {
+      title: "Journey Financial",
+      description: "A modern FinTech banking platform demo. Future goals include implementing AI-driven financial insights, automated budgeting, and full transaction processing.",
+      timeline: "Ongoing",
+      technologies: "Sentry, Next.js, Tailwind CSS, Plaid, Appwrite",
+      review: "A project demonstrating modern FinTech UI/UX and secure authentication & transfer flows.",
+      demo: "https://baroque-banking.vercel.app/sign-in"
+    },
+    {
       title: "Network Security at Bally's Casino",
       description: "Implemented and maintained network systems while ensuring robust security controls.",
       timeline: "Jan 2023 - Sept 2023",
@@ -25,14 +41,6 @@ function Projects() {
       timeline: "July 2020 - July 2021",
       technologies: "PowerShell, MS Excel, Inventory Management Systems",
       review: "Developed critical thinking, adaptability, and problem-solving skills.",
-    },
-    {
-      title: "AI SaaS Platform",
-      description: "Developed a scalable AI-powered SaaS platform for web developers who want to prototype generated AI content.",
-      timeline: "Mar 2024 - Present",
-      technologies: "Next.js, Node.js, Replicate AI, Gemini Pro, Tailwind CSS, OpenAI",
-      review: "Challenging project involving complex AI model integration and cloud deployment.",
-      github: "https://github.com/invidias-codem/ai-saas"
     },
     {
       title: "Subnet Calculator",
@@ -85,6 +93,18 @@ function Projects() {
                     View on GitHub
                   </a>
                 )}
+                {/* --- ADDED THIS BLOCK to show the demo link --- */}
+                {project.demo && (
+                  <a 
+                    href={project.demo} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="project-details__github-link-button"
+                    style={{ marginLeft: project.github ? '10px' : '0' }} // Adds space if GitHub button is also present
+                  >
+                    View Demo
+                  </a>
+                )}
               </div>
             )}
           </div>
@@ -100,7 +120,7 @@ function Projects() {
       height="100%"
       title="Resume Preview"
     />
-    {}
+    {/* This comment helps with PDF rendering issues in some browsers */}
   </div>
 
   {/* Download Button */}

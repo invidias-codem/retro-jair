@@ -1,17 +1,14 @@
-/*
-  ================================================================================
-  Unified Stylesheet for Gemini AI Chat Interface
-  - A single file to style all chat-related components.
-  - Uses a consistent BEM-like naming convention (e.g., .gemini-composer__input).
-  - Fully theme-aware using CSS variables.
-  ================================================================================
-*/
+/* ===================================================================
+   Gemini AI Chat Interface Stylesheet
+   =================================================================== */
+
+/* --- Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-/*
-  --- [ 1. THEMES & ROOT VARIABLES ] ---
-*/
+/* ===================================================================
+   1. ROOT & THEME VARIABLES
+   =================================================================== */
 :root {
   /* --- Default (Gemini) Theme --- */
   --theme-bg-main: #131314;
@@ -76,32 +73,35 @@
   --theme-scrollbar-thumb: #ced4da;
 }
 
-/*
-  --- [ 2. MAIN LAYOUT & DASHBOARD ] ---
-*/
+/* ===================================================================
+   2. MAIN LAYOUT & DASHBOARD
+   =================================================================== */
 .gemini-dashboard {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100vh; /* Use 100vh for full viewport height */
   width: 100%;
   font-family: var(--theme-font-family);
   background-color: var(--theme-bg-main);
   color: var(--theme-text-primary);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Refined transition */
+  overflow: hidden; /* Prevent body scroll */
 }
 
 .gemini-main-content {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  flex-grow: 1; /* Allows this section to fill remaining space */
+  overflow: hidden; /* Contains chat area scroll */
   position: relative;
-  flex-grow: 1;
 }
 
+/* --- Theme-Specific Dashboard Styles --- */
 [data-theme="retro"].gemini-dashboard {
   border: 4px solid var(--theme-border-color);
   box-shadow: inset 0 0 15px rgba(0, 255, 65, 0.2);
 }
+
 [data-theme="blueprint"].gemini-dashboard {
   background-image:
     linear-gradient(rgba(65, 90, 119, 0.2) 1px, transparent 1px),
@@ -109,26 +109,27 @@
   background-size: 20px 20px;
 }
 
-/*
-  --- [ 3. HEADER & AGENT DROPDOWN ] ---
-*/
+/* ===================================================================
+   3. HEADER & AGENT DROPDOWN
+   =================================================================== */
 .gemini-header {
   display: flex;
   align-items: center;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--theme-border-color);
-  flex-shrink: 0;
+  flex-shrink: 0; /* Prevent header from shrinking */
   position: relative;
   z-index: 10;
-  background-color: var(--theme-bg-main);
+  background-color: var(--theme-bg-main); /* Ensure background */
 }
+
 [data-theme="retro"] .gemini-header,
 [data-theme="blueprint"] .gemini-header {
   border-bottom-style: dashed;
 }
 
 .agent-dropdown {
-  position: relative;
+  position: relative; /* For dropdown positioning */
 }
 
 .agent-dropdown-toggle {
@@ -141,14 +142,18 @@
   padding: 0.5rem 1rem;
   border-radius: var(--theme-border-radius);
   font: inherit;
-  font-size: 1.3rem;
+  font-size: 1.1rem; /* Adjusted size */
   cursor: pointer;
-  transition: all 0.2s ease;
-  width: 220px;
+  transition: border-color 0.2s ease;
+  width: 220px; /* Consider using min-width if names vary */
   text-align: left;
 }
 .agent-dropdown-toggle:hover {
   border-color: var(--theme-accent-color);
+}
+/* Ensure icon spacing */
+.agent-dropdown-toggle svg:last-child {
+  margin-left: auto;
 }
 
 .agent-dropdown-menu {
@@ -171,6 +176,7 @@
   border: none;
   color: var(--theme-text-secondary);
   font: inherit;
+  font-size: 1rem; /* Consistent font size */
   padding: 0.75rem 1rem;
   width: 100%;
   text-align: left;
@@ -179,90 +185,136 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 .agent-dropdown-item button:hover,
 .agent-dropdown-item button.active {
-  background-color: var(--theme-user-message-bg);
+  background-color: var(--theme-user-message-bg); /* Use consistent bg for hover/active */
   color: var(--theme-text-primary);
 }
 
-/*
-  --- [ 4. CHAT AREA & MESSAGES ] ---
-*/
+/* ===================================================================
+   4. CHAT AREA & MESSAGES
+   =================================================================== */
 .gemini-chat-area {
-  flex-grow: 1;
-  overflow-y: auto;
+  flex-grow: 1; /* Takes up available space */
+  overflow-y: auto; /* Enables scrolling */
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.25rem; /* Space between messages */
 }
 
 .gemini-message {
   display: flex;
-  max-width: 85%;
-  animation: fadeIn 0.4s ease-out;
+  max-width: 85%; /* Max width of message bubbles */
+  animation: fadeIn 0.4s ease-out; /* Simple fade-in animation */
 }
 .gemini-message.user {
-  align-self: flex-end;
+  align-self: flex-end; /* User messages align right */
 }
 .gemini-message.model {
-  align-self: flex-start;
+  align-self: flex-start; /* Model messages align left */
 }
 
 .gemini-message-bubble {
-  position: relative;
+  position: relative; /* For action buttons */
   padding: 0.75rem 1.25rem;
   border-radius: var(--theme-border-radius);
   line-height: 1.6;
-  max-width: 100%; /* Ensures bubble doesn't overflow its flex parent */
-  
-  /* --- KEY FIXES FOR WORD WRAPPING --- */
-  word-wrap: break-word;     /* Legacy property */
-  overflow-wrap: break-word; /* Standard property */
-  word-break: break-word;    /* Force breaks for long, unbreakable strings */
+  max-width: 100%; /* Ensures bubble respects parent max-width */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word; /* Ensure long words break */
 }
 
-/* --- Ensure content inside the bubble also wraps --- */
-.gemini-message-bubble p,
-.gemini-message-bubble li,
-.gemini-message-bubble pre,
-.gemini-message-bubble code {
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-
-
+/* Bubble background colors */
 .gemini-message.user .gemini-message-bubble {
   background-color: var(--theme-user-message-bg);
 }
 .gemini-message.model .gemini-message-bubble {
   background-color: var(--theme-model-message-bg);
 }
+
+/* Theme-specific bubble borders */
 [data-theme="retro"] .gemini-message-bubble,
 [data-theme="blueprint"] .gemini-message-bubble {
   border: 1px solid var(--theme-border-color);
 }
 [data-theme="retro"] .gemini-message.user .gemini-message-bubble {
   border-color: var(--theme-accent-color);
-  color: var(--theme-accent-color);
+  color: var(--theme-accent-color); /* Retro user text matches border */
+}
+
+/* Content wrapping inside bubble */
+.gemini-message-bubble p,
+.gemini-message-bubble li,
+.gemini-message-bubble pre,
+.gemini-message-bubble code,
+.gemini-message-bubble table { /* Include table */
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%; /* Prevent wide elements from breaking layout */
 }
 
 .gemini-message-bubble .generated-image {
   max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
   border-radius: var(--theme-border-radius);
   margin-top: 0.75rem;
+  display: block; /* Avoid extra space below image */
 }
 
-/*
-  --- [ 5. COMPOSER / INPUT AREA ] ---
-*/
+/* Message Actions (Copy, PDF Export) */
+.message-actions {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0; /* Hidden by default */
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  z-index: 5; /* Above message content */
+}
+.gemini-message-bubble:hover .message-actions {
+  opacity: 1; /* Show on bubble hover */
+  visibility: visible;
+}
+
+.action-button {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--theme-text-secondary);
+  border: 1px solid var(--theme-border-color);
+  border-radius: var(--theme-border-radius);
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap; /* Prevent button text wrapping */
+}
+.action-button:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--theme-text-primary);
+}
+
+[data-theme="retro"] .action-button {
+  border-radius: 0;
+  background-color: var(--theme-bg-secondary);
+}
+
+/* ===================================================================
+   5. COMPOSER / INPUT AREA
+   =================================================================== */
 .gemini-composer-container {
-  padding: 0.5rem 1.5rem 1rem;
+  padding: 0.5rem 1.5rem 1rem; /* Reduced top padding */
   border-top: 1px solid var(--theme-border-color);
   background-color: var(--theme-bg-main);
+  flex-shrink: 0; /* Prevent shrinking */
 }
+
 [data-theme="retro"] .gemini-composer-container,
 [data-theme="blueprint"] .gemini-composer-container {
   border-top-style: dashed;
@@ -270,23 +322,22 @@
 
 .gemini-composer {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-end; /* Align items to bottom (good for multi-line text) */
   gap: 0.5rem;
   background-color: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-color);
-  border-radius: var(--theme-border-radius, 12px);
+  border-radius: var(--theme-border-radius, 12px); /* Fallback added */
   padding: 0.5rem;
-  transition: all 0.2s ease-in-out;
-  margin: 0 1rem 1rem;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  /* Centering the composer */
+  margin: 0 auto; /* Changed from margin: 0 1rem 1rem */
   max-width: 800px;
-  width: calc(100% - 2rem);
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%; /* Take full width up to max-width */
 }
-
 .gemini-composer:focus-within {
   border-color: var(--theme-accent-color);
-  box-shadow: 0 0 10px 0px rgba(var(--theme-accent-color-rgb, 138, 180, 248), 0.3);
+  /* Simplified box-shadow */
+  box-shadow: 0 0 5px 0px rgba(var(--theme-accent-color-rgb, 138, 180, 248), 0.3);
 }
 
 textarea.gemini-composer__input {
@@ -300,70 +351,85 @@ textarea.gemini-composer__input {
   font-size: 1rem;
   line-height: 1.5;
   outline: none;
-  max-height: 150px;
-  overflow-y: auto;
+  max-height: 150px; /* Limit height */
+  overflow-y: auto; /* Allow scrolling if needed */
+  scrollbar-width: thin; /* Firefox scrollbar */
 }
 .gemini-composer__input::placeholder {
   color: var(--theme-text-secondary);
   opacity: 0.8;
 }
 
-.gemini-composer__tool-button {
+/* Buttons in composer */
+.gemini-composer__tool-button,
+button.send-button {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
   flex-shrink: 0;
-  background: none;
+  border-radius: 50%; /* Consistent circular buttons */
+  cursor: pointer;
+  transition: all 0.2s ease;
   border: none;
+}
+
+.gemini-composer__tool-button {
+  background: none;
   color: var(--theme-text-secondary);
   font-size: 1.1rem;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: all 0.2s ease;
 }
 .gemini-composer__tool-button:hover:not(:disabled) {
   color: var(--theme-text-primary);
   background-color: var(--theme-bg-tertiary);
   transform: scale(1.1);
 }
+.gemini-composer__tool-button.active { /* Style for active state if needed */
+  color: var(--theme-accent-color);
+  background-color: var(--theme-bg-tertiary);
+}
 
 button.send-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
   background-color: var(--theme-accent-color);
-  color: var(--theme-bg-main);
+  color: var(--theme-bg-main); /* Ensure contrast */
+  font-size: 1.1rem; /* Match tool button */
 }
-
 button.send-button > svg {
-    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 button.send-button:hover:not(:disabled) > svg {
-    transform: translateX(2px) rotate(-15deg);
+  transform: translateX(2px) rotate(-15deg);
 }
 
-
-[data-theme="retro"] button.send-button {
-  border-radius: var(--theme-border-radius);
-  border: 1px solid var(--theme-text-primary);
-}
-
+/* Disabled states */
 .gemini-composer__input:disabled,
 .gemini-composer__tool-button:disabled,
 button.send-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: scale(1);
+  transform: none; /* Prevent hover scale on disabled */
 }
 
-/*
-  --- [ 6. UTILITIES & INDICATORS ] ---
-*/
+/* Retro Theme Composer Adjustments */
+[data-theme="retro"] .gemini-composer {
+  flex-direction: row-reverse; /* Flip layout */
+  border-radius: 0;
+}
+[data-theme="retro"] button.send-button {
+  border-radius: 0;
+  width: auto; /* Allow button to size to content */
+  padding: 0.5rem 1rem;
+  height: 40px; /* Match other buttons */
+  border: 1px solid var(--theme-text-primary);
+}
+
+/* ===================================================================
+   6. UTILITIES, INDICATORS & OVERLAYS
+   =================================================================== */
 .gemini-error-display {
   padding: 0.75rem 1.25rem;
-  margin: 0 1.5rem 1rem;
+  margin: 0 1.5rem 1rem; /* Consistent margins */
   background-color: var(--theme-error-bg);
   color: var(--theme-error-color);
   border: 1px solid var(--theme-error-color);
@@ -375,7 +441,7 @@ button.send-button:disabled {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.25rem; /* Match bubble padding */
 }
 .typing-indicator span {
   height: 8px;
@@ -387,37 +453,24 @@ button.send-button:disabled {
 }
 .typing-indicator span:nth-of-type(1) { animation-delay: -0.32s; }
 .typing-indicator span:nth-of-type(2) { animation-delay: -0.16s; }
-@keyframes bounce {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1.0); }
-}
 
+/* Typing cursor for TypingEffect component */
 .typing-cursor {
   display: inline-block;
   width: 9px;
-  height: 1.1em;
+  height: 1.1em; /* Relative to font size */
   background-color: var(--theme-text-primary);
   animation: blink 1s infinite step-end;
-  vertical-align: bottom;
+  vertical-align: bottom; /* Align with text */
   margin-left: 2px;
 }
 [data-theme="retro"] .typing-cursor,
 [data-theme="blueprint"] .typing-cursor {
   background-color: var(--theme-accent-color);
-  width: 0.5em;
-}
-@keyframes blink {
-  50% { opacity: 0; }
+  width: 0.5em; /* Thicker cursor for retro/mono fonts */
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/*
-  --- [ 7. MISC & GLOBAL ] ---
-*/
+/* Scroll to Top Button */
 .scroll-to-page-top-button {
     position: fixed;
     bottom: 20px;
@@ -437,7 +490,7 @@ button.send-button:disabled {
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     z-index: 1000;
 }
 .scroll-to-page-top-button.visible {
@@ -446,134 +499,41 @@ button.send-button:disabled {
     transform: translateY(0);
 }
 
-.gemini-chat-area::-webkit-scrollbar,
-.transcript-container::-webkit-scrollbar {
-  width: 10px;
-}
-.gemini-chat-area::-webkit-scrollbar-track,
-.transcript-container::-webkit-scrollbar-track {
-  background: var(--theme-scrollbar-track);
-}
-.gemini-chat-area::-webkit-scrollbar-thumb,
-.transcript-container::-webkit-scrollbar-thumb {
-  background-color: var(--theme-scrollbar-thumb);
-  border-radius: 5px;
-  border: 2px solid var(--theme-scrollbar-track);
-}
-
-.gemini-composer__tool-button.active {
-  color: var(--theme-accent-color);
-  background-color: var(--theme-bg-tertiary);
-}
-[data-theme="retro"] .gemini-composer {
-  flex-direction: row-reverse;
-  border-radius: 0;
-}
-
-[data-theme="retro"] button.send-button {
-  border-radius: 0;
-  width: auto;
-  padding: 0.5rem 1rem;
-  height: 100%;
-}
-.message-actions {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  display: flex;
-  gap: 4px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-  z-index: 5;
-}
-
-.gemini-message-bubble:hover .message-actions {
-  opacity: 1;
-  visibility: visible;
-}
-
-.action-button {
-  background-color: rgba(0, 0, 0, 0.3);
+/* File Preview in Composer */
+.file-preview {
+  padding: 5px 10px;
+  background: var(--theme-bg-tertiary);
   color: var(--theme-text-secondary);
-  border: 1px solid var(--theme-border-color);
-  border-radius: var(--theme-border-radius);
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 0.8rem;
+  border-radius: 4px;
+  margin: 0 1rem 5px; /* Position above composer */
+  max-width: 800px;
+  width: calc(100% - 2rem);
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 4px;
+  font-size: 0.9em;
 }
-
-.action-button:hover {
-  background-color: rgba(0, 0, 0, 0.5);
+.file-preview button { /* Style for the 'X' button */
+  background: none;
+  border: none;
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  padding: 2px 5px;
+}
+.file-preview button:hover {
   color: var(--theme-text-primary);
 }
 
-[data-theme="retro"] .action-button {
-  border-radius: 0;
-  background-color: var(--theme-bg-secondary);
-}
-
-.code-block-wrapper {
-  position: relative;
-  background-color: var(--theme-bg-main);
-  border-radius: var(--theme-border-radius);
-  margin: 0.5rem 0;
-  border: 1px solid var(--theme-border-color);
-}
-
-.code-block-wrapper pre {
-  padding: 1rem;
-  margin: 0;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-.code-copy-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background-color: var(--theme-bg-tertiary);
-  color: var(--theme-text-secondary);
-  border: 1px solid var(--theme-border-color);
-  border-radius: 6px;
-  padding: 4px 8px;
-  font-size: 0.85rem;
-  font-family: var(--theme-font-family);
-  cursor: pointer;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.code-block-wrapper:hover .code-copy-button {
-  opacity: 1;
-  visibility: visible;
-}
-
-.code-copy-button:hover {
-  background-color: var(--theme-border-color);
-  color: var(--theme-text-primary);
-}
-
-[data-theme="retro"] .code-block-wrapper,
-[data-theme="retro"] .code-copy-button {
-    border-radius: 0;
-}
-
+/* Suggestion Prompts */
 .suggestion-prompts-container {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   padding: 0 1.5rem 1rem;
   justify-content: center;
-  max-width: 800px;
+  max-width: 800px; /* Match composer max-width */
   margin: 1rem auto 0;
 }
 
@@ -589,24 +549,201 @@ button.send-button:disabled {
   font-size: 0.9rem;
   text-align: left;
 }
-
 .suggestion-prompt:hover {
   background-color: var(--theme-bg-tertiary);
   color: var(--theme-text-primary);
   border-color: var(--theme-accent-color);
   transform: translateY(-2px);
 }
-
 [data-theme="retro"] .suggestion-prompt {
     border-radius: 0;
 }
 
-/*
-  --- [ 8. MOBILE VIEW ADJUSTMENTS ] ---
-*/
+/* ===================================================================
+   7. SPECIFIC CONTENT STYLES (Code, Tables, Graphs)
+   =================================================================== */
+
+/* Code Blocks */
+.code-block-wrapper {
+  position: relative;
+  background-color: var(--theme-bg-main); /* Match main bg for contrast */
+  border-radius: var(--theme-border-radius);
+  margin: 0.75rem 0; /* Increased margin */
+  border: 1px solid var(--theme-border-color);
+  overflow: hidden; /* Ensure radius clips content */
+}
+.code-block-wrapper pre {
+  padding: 1rem;
+  margin: 0;
+  overflow-x: auto; /* Allow horizontal scroll */
+  white-space: pre-wrap; /* Wrap long lines */
+  word-break: break-all; /* Break long words/tokens */
+  font-family: var(--theme-font-family-mono); /* Use monospace font */
+  font-size: 0.9em; /* Slightly smaller */
+  line-height: 1.5;
+}
+.code-copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: var(--theme-bg-tertiary);
+  color: var(--theme-text-secondary);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  font-family: var(--theme-font-family); /* Match main font */
+  cursor: pointer;
+  opacity: 0; /* Hidden by default */
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.code-block-wrapper:hover .code-copy-button {
+  opacity: 1; /* Show on hover */
+  visibility: visible;
+}
+.code-copy-button:hover {
+  background-color: var(--theme-border-color);
+  color: var(--theme-text-primary);
+}
+
+[data-theme="retro"] .code-block-wrapper,
+[data-theme="retro"] .code-copy-button {
+    border-radius: 0;
+}
+
+/* Enhanced Table Styling */
+.gemini-message-bubble table {
+  width: 100%;
+  border-collapse: separate; /* Allows for border-radius and spacing */
+  border-spacing: 0;
+  margin: 1.5rem 0;
+  font-size: 0.9em;
+  border: 1px solid var(--theme-border-color);
+  border-radius: var(--theme-border-radius);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden; /* Keeps radius */
+  table-layout: fixed; /* Prevents columns resizing oddly */
+}
+.gemini-message-bubble th,
+.gemini-message-bubble td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--theme-border-color);
+  /* Added for potential overflow */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.gemini-message-bubble td {
+  color: var(--theme-text-secondary);
+}
+.gemini-message-bubble tbody tr:last-child td {
+  border-bottom: none; /* Remove border on last row */
+}
+.gemini-message-bubble thead th {
+  background-color: var(--theme-bg-secondary);
+  color: var(--theme-text-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--theme-border-color);
+  white-space: nowrap; /* Prevent headers wrapping */
+}
+.gemini-message-bubble tbody tr:hover {
+  background-color: var(--theme-bg-tertiary);
+}
+
+/* Table Theme Overrides */
+[data-theme="retro"] .gemini-message-bubble table {
+  border-style: dashed;
+  box-shadow: none;
+}
+[data-theme="retro"] .gemini-message-bubble thead th {
+   background-color: var(--theme-accent-color);
+   color: var(--theme-bg-main);
+   border-bottom: 2px solid var(--theme-text-primary);
+}
+[data-theme="retro"] .gemini-message-bubble tbody tr:hover {
+   background-color: rgba(0, 255, 65, 0.15);
+}
+[data-theme="academic"] .gemini-message-bubble table {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+[data-theme="academic"] .gemini-message-bubble thead th {
+  background-color: #e9ecef;
+}
+[data-theme="academic"] .gemini-message-bubble tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Graph Container */
+.graph-container {
+  margin-top: 1rem;
+  /* Ensure charts have dimensions */
+  width: 100%;
+  min-height: 300px; /* Provide a minimum height */
+}
+/* Recharts specific overrides if needed */
+.recharts-tooltip-wrapper {
+  z-index: 10; /* Ensure tooltip is above other elements */
+}
+
+/* ===================================================================
+   8. SCROLLBARS
+   =================================================================== */
+.gemini-chat-area::-webkit-scrollbar,
+.transcript-container::-webkit-scrollbar,
+textarea.gemini-composer__input::-webkit-scrollbar, /* Added for textarea */
+.code-block-wrapper pre::-webkit-scrollbar { /* Added for code blocks */
+  width: 10px;
+  height: 10px; /* For horizontal scrollbars */
+}
+.gemini-chat-area::-webkit-scrollbar-track,
+.transcript-container::-webkit-scrollbar-track,
+textarea.gemini-composer__input::-webkit-scrollbar-track,
+.code-block-wrapper pre::-webkit-scrollbar-track {
+  background: var(--theme-scrollbar-track);
+}
+.gemini-chat-area::-webkit-scrollbar-thumb,
+.transcript-container::-webkit-scrollbar-thumb,
+textarea.gemini-composer__input::-webkit-scrollbar-thumb,
+.code-block-wrapper pre::-webkit-scrollbar-thumb {
+  background-color: var(--theme-scrollbar-thumb);
+  border-radius: 5px;
+  border: 2px solid var(--theme-scrollbar-track);
+}
+.gemini-chat-area::-webkit-scrollbar-thumb:hover,
+textarea.gemini-composer__input::-webkit-scrollbar-thumb:hover,
+.code-block-wrapper pre::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--theme-scrollbar-thumb) 80%, white); /* Slightly lighter on hover */
+}
+
+/* ===================================================================
+   9. ANIMATIONS
+   =================================================================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ===================================================================
+   10. MOBILE VIEW ADJUSTMENTS (@media query)
+   =================================================================== */
 @media (max-width: 600px) {
+    /* Reduce padding and gaps */
     .gemini-chat-area {
       padding: 1rem 0.75rem;
+      gap: 0.75rem;
     }
     .gemini-message {
       max-width: 95%;
@@ -614,22 +751,53 @@ button.send-button:disabled {
     .gemini-message-bubble {
       padding: 0.6rem 1rem;
     }
+    .gemini-composer-container {
+      padding: 0.5rem 0.75rem;
+    }
     .gemini-composer {
-        margin: 0 0.5rem 0.5rem;
-        width: calc(100% - 1rem);
+        /* Remove horizontal margins */
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0.5rem; /* Add some bottom margin */
+        width: 100%; /* Take full width */
         padding: 0.375rem;
         gap: 0.25rem;
     }
-    .gemini-composer__input {
+    textarea.gemini-composer__input {
         padding: 0.5rem;
+        font-size: 0.95rem; /* Slightly smaller text on mobile */
     }
+    /* Smaller buttons */
     .gemini-composer__tool-button,
     button.send-button {
         width: 36px;
         height: 36px;
     }
    .suggestion-prompts-container {
-    justify-content: flex-start;
-    padding: 0 0.75rem 1rem;
-  }
+     justify-content: flex-start; /* Align suggestions left */
+     padding: 0 0.75rem 1rem;
+     margin-top: 0.5rem; /* Reduced top margin */
+   }
+   .suggestion-prompt {
+     font-size: 0.85rem;
+     padding: 6px 12px;
+   }
+   /* Table adjustments */
+   .gemini-message-bubble table {
+     font-size: 0.8em; /* Smaller font in tables */
+   }
+   .gemini-message-bubble th,
+   .gemini-message-bubble td {
+     padding: 8px 10px;
+   }
+   /* Header adjustments */
+   .gemini-header {
+     padding: 0.5rem 0.75rem;
+   }
+   .agent-dropdown-toggle {
+     font-size: 1rem;
+     padding: 0.4rem 0.8rem;
+     width: auto; /* Allow dropdown to size naturally */
+     min-width: 180px;
+   }
 }
