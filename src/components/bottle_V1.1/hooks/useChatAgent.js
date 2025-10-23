@@ -5,7 +5,38 @@ import { agentConfig as allAgentConfigs } from '../config/agent-config'; //
 import { startChatSession, sendMessage, generateImage } from '../api/gemini'; // Corrected path assuming api/index.js exports from gemini.js
 
 // fileToGenerativePart function remains the same
-const fileToGenerativePart = async (file) => { /* ... */ };
+const fileToGenerativePart = (file) => {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      // If file is null/undefined, resolve with null to filter out later
+      resolve(null);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      // Ensure result is a string and remove the data URL prefix
+      const base64Data = typeof reader.result === 'string'
+        ? reader.result.split(',')[1] // Get base64 part after "data:...;base64,"
+        : null;
+
+      if (base64Data) {
+        resolve({
+          inlineData: {
+            mimeType: file.type,
+            data: base64Data
+          }
+        });
+      } else {
+        reject(new Error("Failed to read file or convert to base64."));
+      }
+    };
+    reader.onerror = (error) => {
+      reject(new Error(`FileReader error: ${error}`));
+    };
+    reader.readAsDataURL(file); // Read the file as a data URL (includes base64)
+  });
+};
 
 const useChatAgent = ({ agentId }) => {
     // --- Use agentId directly to get the config ---
