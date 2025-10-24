@@ -45,12 +45,12 @@ const ChatButton = memo(({ onClick, isDesktopSidebarCollapsed }) => (
   <Link
     to="/chat"
     className="menu-item chat-button-link" // Use "menu-item" for sidebar styling, specific class for other contexts
-    aria-label="Open GenAIe Chat"
+    aria-label="Open Nexus Chat"
     onClick={onClick}
-    title={isDesktopSidebarCollapsed ? "GenAIe Chat" : undefined}
+    title={isDesktopSidebarCollapsed ? "Nexus Chat" : undefined}
   >
     <FontAwesomeIcon icon={faRobot} className="menu-item-icon" fixedWidth />
-    <span className="menu-item-text">GenAIe</span>
+    <span className="menu-item-text">Nexus</span>
   </Link>
 ));
 

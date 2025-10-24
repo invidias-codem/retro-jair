@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import {
   BrowserRouter as Router,
@@ -11,14 +12,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // --- Custom Hooks ---
-import { useOrientation } from './components/bottle_V1.1/hooks/useOrientation'; // <-- 1. IMPORT THE NEW HOOK
+import { useOrientation } from './components/bottle_V1.1/hooks/useOrientation';
 
 // --- Core Components ---
 import Menu from './components/bottle_V1.1/Main/Menu';
 import Footer from './components/bottle_V1.1/Footer/Footer';
 import { ChatProvider } from './components/bottle_V1.1/context/useContext';
+import ScrollToTop from './components/bottle_V1.1/common/ScrollToTop';
 
 // --- Lazy-Loaded Page Components ---
+const Home = React.lazy(() => import('./components/bottle_V1.1/Main/Home')); // <-- ADDED HOME LAZY LOAD
 const AboutMe = React.lazy(() => import('./components/bottle_V1.1/AboutMe/AboutMe'));
 const Projects = React.lazy(() => import('./components/bottle_V1.1/Projects/Projects'));
 const Skills = React.lazy(() => import('./components/bottle_V1.1/Skills/Skills'));
@@ -54,8 +57,8 @@ function AnimatedRoutes() {
     <animated.div style={props} className="animated-route-wrapper">
       <Suspense fallback={<div className="route-fallback" aria-busy="true">Loading Blueprint...</div>}>
         <Routes location={item}>
-          <Route path="/" element={<AboutMe />} />
-          <Route path="/about" element={<AboutMe />} />
+          <Route path="/" element={<Home />} /> {/* <-- MAPPED ROOT TO HOME */}
+          <Route path="/about" element={<AboutMe />} /> {/* <-- KEPT ABOUTME ON /ABOUT */}
           <Route path="/projects" element={<Projects />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/contact" element={<Contact />} />
@@ -79,7 +82,7 @@ function AnimatedRoutes() {
 
 // --- Main App Component ---
 function App() {
-  const orientation = useOrientation(); // <-- 2. USE THE HOOK
+  const orientation = useOrientation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -105,10 +108,11 @@ function App() {
 
   return (
     <ChatProvider>
-      <Router>
-        {/* -- 3. APPLY THE ORIENTATION CLASS -- */}
+      <Router> {/* Renamed BrowserRouter import */}
+         <ScrollToTop /> {/* <-- 2. ADD COMPONENT HERE */}
         <div id="appContainer" className={`${orientation}-orientation`}>
           <header id="appHeader">
+             {/* ... (keep existing header content) */}
             <Link to="/" id="appHeaderLink" onClick={closeMenu}>
               J.M. Portfolio
             </Link>

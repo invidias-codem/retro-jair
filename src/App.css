@@ -1,4 +1,3 @@
-
 /* ===================================================================
    1. ROOT & THEME VARIABLES (BLUEPRINT THEME)
    =================================================================== */
@@ -41,7 +40,6 @@
                      linear-gradient(to right, var(--c-brand-line) 1px, transparent 1px);
 }
 
-
 /* ===================================================================
    2. GLOBAL RESETS & BASE STYLES
    =================================================================== */
@@ -53,8 +51,9 @@ body {
   background-color: var(--c-bg-body);
   font-family: var(--font-family-sans);
   color: var(--c-text-body);
+  /* MODIFIED: Remove body padding that interferes with full-screen effects */
   margin: 0;
-  padding: 2rem 1rem; /* Add padding to body */
+  padding: 0;
   overflow-x: hidden;
   line-height: 1.6;
 }
@@ -80,7 +79,11 @@ img { max-width: 100%; height: auto; display: block; }
    =================================================================== */
 
 #appContainer {
+  /* MODIFIED: Use 100% width and height to fill the screen on the Home page, 
+     but retain max-width for other routes. */
+  width: 100%;
   max-width: 1400px;
+  /* MODIFIED: Margin set to 0 for a cleaner edge. */
   margin: 0 auto;
   background-color: var(--c-bg-app);
   /* Blueprint Grid Background */
@@ -89,7 +92,10 @@ img { max-width: 100%; height: auto; display: block; }
   border: 2px solid var(--c-brand-line);
   border-radius: var(--radius);
   box-shadow: var(--shadow-main);
-  overflow: hidden;
+  /* Keep overflow hidden to contain transitions/animations */
+  overflow: hidden; 
+  /* Added min-height to ensure the container spans the viewport when body padding is removed */
+  min-height: 100vh;
 }
 
 #appHeader {
@@ -146,14 +152,17 @@ img { max-width: 100%; height: auto; display: block; }
 
 #appMain {
   display: flex;
-  min-height: calc(100vh - 200px); /* Adjusted for body padding */
+  /* MODIFIED: Change min-height calculation to rely on the viewport minus header/footer height */
+  min-height: calc(100vh - 100px); 
 }
 
 #appContent {
   flex-grow: 1;
-  padding: var(--spacing-md, 1rem);
+  /* MODIFIED: Remove default padding so the Home component can manage its own edges */
+  padding: 0; 
   background-color: transparent; /* Let grid show through */
-  overflow-y: auto;
+  /* MODIFIED: Remove vertical scroll, as the horizontal Home page manages its own height */
+  overflow-y: hidden;
 }
 
 /* ===================================================================

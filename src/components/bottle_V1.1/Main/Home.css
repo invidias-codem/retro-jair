@@ -1,0 +1,250 @@
+/* src/components/bottle_V1.1/Main/Home.css */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap'); 
+
+/* --- Retro Color Palette & Base --- */
+:root {
+  --home-bg: #000000;
+  --home-fg: #00ff00; 
+  --home-accent-1: #ff00ff; 
+  --home-accent-2: #00ffff; 
+  --home-border-color: #008f11; /* Darker Green for borders */
+  --home-box-bg: #0a0a14; /* Slightly different dark bg for boxes */
+  --home-font: 'VT323', monospace;
+  --home-mono-font: 'Roboto Mono', monospace;
+}
+
+/* --- Main Container --- */
+.home-bento-container {
+  background-color: var(--home-bg);
+  color: var(--home-fg);
+  font-family: var(--home-font);
+  padding: 1rem; /* Padding around the grid */
+  position: relative;
+  min-height: 85vh; /* Ensure it fills most of the content area */
+  border-left: 4px solid var(--home-border-color);
+  border-right: 4px solid var(--home-border-color);
+  box-sizing: border-box;
+}
+
+/* Optional: Keep CRT effect if desired */
+.home-bento-container::after {
+  content: " ";
+  display: block;
+  position: absolute; 
+  inset: 0;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+  z-index: 100; 
+  background-size: 100% 2px;
+  pointer-events: none;
+  opacity: 0.7;
+  animation: crt-flicker 0.1s infinite alternate;
+}
+@keyframes crt-flicker {
+    0% { opacity: 0.7; } 50% { opacity: 0.75; } 100% { opacity: 0.7; }
+}
+
+/* =======================================
+   BENTO GRID LAYOUT
+   ======================================= */
+.bento-grid {
+  display: grid;
+  /* Define columns - adapt number and fr units as needed */
+  grid-template-columns: repeat(4, 1fr); 
+  /* Define rows - auto height based on content */
+  grid-auto-rows: minmax(100px, auto); 
+  gap: 1rem; /* Spacing between boxes */
+  max-width: 1000px; /* Limit grid width */
+  margin: 1rem auto; /* Center the grid */
+  position: relative; /* For z-index stacking */
+  z-index: 50;
+}
+
+/* Define Grid Areas for Placement */
+.bento-box.welcome { grid-area: welcome; }
+.bento-box.ai      { grid-area: ai; }
+.bento-box.projects{ grid-area: projects; }
+.bento-box.skills  { grid-area: skills; }
+.bento-box.terminal{ grid-area: terminal; }
+.bento-box.about   { grid-area: about; }
+.bento-box.services{ grid-area: services; }
+.bento-box.contact { grid-area: contact; }
+
+/* Desktop Grid Template Areas (Example) */
+.bento-grid {
+  grid-template-areas:
+    "welcome welcome ai ai"
+    "projects projects ai ai"
+    "skills terminal about services"
+    "contact contact contact contact"; /* Contact spans full width */
+}
+
+/* =======================================
+   BENTO BOX STYLING
+   ======================================= */
+.bento-box {
+  background-color: var(--home-box-bg);
+  border: 2px solid var(--home-border-color);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  text-decoration: none;
+  color: var(--home-fg);
+  box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.15); /* Inner glow */
+}
+
+.bento-box:hover {
+  border-color: var(--home-accent-1);
+  box-shadow: 0 0 15px var(--home-accent-1), inset 0 0 15px rgba(255, 0, 255, 0.2);
+  transform: translateY(-3px); /* Slight lift effect */
+}
+
+.box-icon {
+  font-size: 2.5rem;
+  color: var(--home-accent-2);
+  margin-bottom: 0.5rem;
+  align-self: flex-start; /* Align icon to the top left */
+}
+
+.box-title {
+  font-size: 1.6rem;
+  color: var(--home-fg);
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  text-shadow: 0 0 5px var(--home-fg);
+}
+.box-subtitle {
+    font-size: 1rem;
+    color: var(--home-accent-2);
+    margin: 0 0 1rem 0;
+}
+.box-content {
+    font-family: var(--home-mono-font);
+    font-size: 1rem;
+    color: #ccc; /* Lighter color for content text */
+    margin-bottom: 1rem;
+    flex-grow: 1; /* Allow content to push CTA down */
+}
+
+/* Sub-items list (e.g., AI agents, project names) */
+.box-subitems {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+    font-family: var(--home-mono-font);
+    font-size: 0.9rem;
+    color: #bbb;
+    flex-grow: 1; /* Push CTA down */
+}
+.box-subitems li {
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+}
+.subitem-icon {
+    margin-right: 0.5rem;
+    color: var(--home-accent-2);
+    font-size: 0.8em;
+}
+
+
+.box-cta {
+  display: inline-block;
+  align-self: flex-end; /* Position CTA at the bottom right */
+  margin-top: auto; /* Push CTA to bottom */
+  padding: 0.5rem 1rem;
+  background-color: var(--home-border-color);
+  color: var(--home-bg);
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  border: 1px solid var(--home-fg);
+}
+
+.bento-box:hover .box-cta {
+  background-color: var(--home-accent-1);
+  border-color: var(--home-accent-1);
+  color: #fff;
+}
+
+/* Specific Box Styling (Example: Welcome Box) */
+.bento-box.welcome {
+    /* Larger text or different color */
+    color: var(--home-accent-1);
+}
+.bento-box.welcome .box-title {
+    font-size: 2rem;
+}
+.bento-box.welcome .box-content {
+    font-size: 1.2rem;
+    color: var(--home-fg);
+}
+
+
+/* =======================================
+   RESPONSIVENESS
+   ======================================= */
+@media (max-width: 900px) {
+  .bento-grid {
+    /* Switch to 2 columns on medium screens */
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-areas:
+      "welcome welcome"
+      "ai ai"
+      "projects projects"
+      "skills terminal"
+      "about services"
+      "contact contact"; 
+  }
+}
+
+@media (max-width: 600px) {
+  .home-bento-container {
+    padding: 0.5rem;
+    border-width: 2px;
+  }
+  .bento-grid {
+    /* Stack to 1 column on small screens */
+    grid-template-columns: 1fr; 
+    grid-template-areas:
+      "welcome"
+      "ai"
+      "projects"
+      "skills"
+      "terminal"
+      "about"
+      "services"
+      "contact"; 
+    gap: 0.8rem;
+  }
+  .bento-box {
+    padding: 1rem;
+  }
+  .box-title {
+    font-size: 1.3rem;
+  }
+  .box-icon {
+    font-size: 2rem;
+  }
+  .box-content, .box-subtitle, .box-subitems {
+    font-size: 0.9rem;
+  }
+  .box-cta {
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* =======================================
+   ACCESSIBILITY: REDUCED MOTION
+   ======================================= */
+@media (prefers-reduced-motion: reduce) {
+  .bento-box, .bento-box:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
