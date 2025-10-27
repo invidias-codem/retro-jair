@@ -15,9 +15,9 @@ const BENTO_MODULES = [
   { 
     id: 'welcome', 
     area: 'welcome', 
-    title: 'JAIR.OS v3.1', 
-    subtitle: '// System Mainframe', 
-    content: 'Welcome, User. Select a module to access system functions.', 
+    title: 'Jairs.Portfolio v1.1', 
+    subtitle: 'A custom built web app', 
+    content: 'Feel free to explore and learn more about me.', 
     size: 'large' 
   },
   { 

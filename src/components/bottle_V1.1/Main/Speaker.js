@@ -4,11 +4,7 @@ import './Speaker.css';
 function Speaker() {
   const [messages] = useState([
     "Welcome to my Portfolio!",
-    "Check out this awesome menu!",
-    "Sheeeeesh!",
-    "Don't forget to peep my special projects!",
-    "Looking to collab?",
-    "Feel free to contact Me anytime!"
+    
   ]);
 
   return (

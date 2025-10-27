@@ -18,7 +18,8 @@ function Projects() {
       timeline: "Mar 2024 - Present",
       technologies: "Next.js, Node.js, Replicate AI, Gemini Pro, Tailwind CSS, OpenAI",
       review: "Challenging project involving complex AI model integration and cloud deployment.",
-      github: "https://github.com/invidias-codem/ai-saas"
+      github: "https://github.com/invidias-codem/ai-saas",
+      demo: "https://ai-saas-sigma-lilac.vercel.app/"
     },
     {
       title: "Journey Financial",
