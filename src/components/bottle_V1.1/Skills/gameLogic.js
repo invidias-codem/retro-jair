@@ -1,714 +1,580 @@
-import { skillsData, antiSkillsData, mysteryItemsData, eventModifiers } from './gameData';
+import { skillsData, antiSkillsData } from './gameData';
 
+// --- GAME_CONFIG for Skill Flyer ---
 export const GAME_CONFIG = {
-    // Core game settings
-    BASE_SKILL_SPAWN_INTERVAL: 2000,
-    MAX_ITEMS_ON_SCREEN: 10,
-    INITIAL_ITEMS: 5,
-    BASE_WINNING_SCORE: 50,
-    WINNING_SCORE_DIFFICULTY_MULTIPLIER: 5,
-
-    // Player settings
-    PLAYER_SPEED: {
-        DESKTOP: 250, // Units per second
-        MOBILE: 300   // Units per second
-    },
+    // --- Physics ---
+    GRAVITY: 980, // pixels per second squared
+    PLAYER_FLAP_STRENGTH: 350, // upward velocity on tap
+    PLAYER_MAX_FALL_SPEED: 600, // Terminal velocity
+    
+    // --- Game Speed ---
+    SCROLL_SPEED: 150, // pixels per second (how fast items move left)
+    ITEM_SPAWN_INTERVAL: 2.0, // seconds between spawns
+    
+    // --- Entity Stats ---
     PLAYER_SIZE: {
-        LANDSCAPE: { WIDTH: 30, HEIGHT: 30 },
-        PORTRAIT: { WIDTH: 40, HEIGHT: 40 }
+        WIDTH: 32,
+        HEIGHT: 32
     },
-
-    // Item settings
-    ITEM_RADIUS: {
-        LANDSCAPE: 18,
-        PORTRAIT: 24
-    },
-    BASE_ITEM_SPEED: 100, // Units per second
-    ITEM_LIFETIME_DEFAULT: 20000,
-    HOMING_STRENGTH: 2.0, 
-
-    // Touch controls
-    TOUCH: {
-        SENSITIVITY: 1.2,
-        DEAD_ZONE: 0,
-        SMOOTHING: 0.9,
-        OFFSET: {
-            PORTRAIT: { X: -40, Y: -40 },
-            LANDSCAPE: { X: -30, Y: -30 }
-        }
-    },
-
-    // Keyboard controls
-    KEYBOARD: {
-        DIAGONAL_COMPENSATION: 0.707
-    },
-
-    // Events & Difficulty
-    EVENT_TRIGGER_SCORE_MILESTONE: 25,
-    DYNAMIC_DIFFICULTY_TIME_INTERVAL: 10000, // ms
-    DYNAMIC_DIFFICULTY_SPEED_INCREMENT: 0.05, 
-    DYNAMIC_DIFFICULTY_SPAWN_DECREMENT: 100, // ms
+    PLAYER_FIXED_X: 100, // Player's fixed horizontal position
+    
+    // --- Scoring ---
+    BASE_WINNING_SCORE: 50,
+    WINNING_SCORE_DIFFICULTY_MULTIPLIER: 25
 };
 
-function detectMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
+// --- Main GameState Class ---
 export class GameState {
     constructor(canvas, difficultyLevel = 1) {
-        if (!canvas) {
-            console.error('Canvas is required for GameState initialization');
-            throw new Error('Canvas is required');
-        }
+        if (!canvas) throw new Error('Canvas is required');
+        
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        if (!this.ctx) throw new Error('Failed to get 2D context');
 
-        try {
-            this.canvas = canvas;
-            this.ctx = canvas.getContext('2d');
-            this.isMobile = detectMobile();
-            this.isPortrait = window.innerHeight > window.innerWidth;
-
-            this.difficultyLevel = difficultyLevel;
-            this.currentWinningScore = GAME_CONFIG.BASE_WINNING_SCORE + (this.difficultyLevel - 1) * GAME_CONFIG.WINNING_SCORE_DIFFICULTY_MULTIPLIER;
-            this.score = 0;
-
-            this.items = [];
-            this.lastSpawnTime = Date.now();
-            this.activeKeys = new Set();
-            this.touchState = {}; 
-
-            this.activeEvent = null;
-            this.eventTimer = 0;
-            this.eventMessage = ""; 
-            this.statusMessage = ""; 
-            this.statusMessageTimer = 0;
-            this.specificBonusSkillName = null;
-
-            this.gameTimeElapsed = 0;
-            this.lastDynamicDifficultyUpdateTime = 0;
-            this.currentSkillSpawnInterval = GAME_CONFIG.BASE_SKILL_SPAWN_INTERVAL;
-            this.currentItemSpeedMultiplier = 1.0; 
-
-            this.nextMilestoneScore = GAME_CONFIG.EVENT_TRIGGER_SCORE_MILESTONE;
-
-            if (!this.ctx) throw new Error('Failed to get 2D context');
-            this.offscreenCanvas = document.createElement('canvas');
-            this.offscreenCanvas.width = canvas.width;
-            this.offscreenCanvas.height = canvas.height;
-            this.offscreenCtx = this.offscreenCanvas.getContext('2d');
-            if (!this.offscreenCtx) throw new Error('Failed to get offscreen 2D context');
-
-            this.initializePlayer();
-            this.initializeTouchState(); 
-            this.initializeItems();
-            this.triggerRandomEvent();
-
-        } catch (error) {
-            console.error('Error during GameState construction:', error);
-            throw error;
-        }
-    }
-
-    initializePlayer() {
-        const canvasWidth = this.canvas?.width || 800;
-        const canvasHeight = this.canvas?.height || 600;
-        const playerSize = this.isPortrait ? GAME_CONFIG.PLAYER_SIZE.PORTRAIT : GAME_CONFIG.PLAYER_SIZE.LANDSCAPE;
+        this.difficultyLevel = difficultyLevel;
+        
+        // Adjust difficulty
+        this.scrollSpeed = GAME_CONFIG.SCROLL_SPEED + (difficultyLevel - 1) * 20;
+        this.spawnInterval = Math.max(0.8, GAME_CONFIG.ITEM_SPAWN_INTERVAL - (difficultyLevel - 1) * 0.2);
+        
+        // Game State
+        this.score = 0;
+        this.gameTimeElapsed = 0;
+        this.isPaused = false;
+        
+        // Collections
+        this.skills = [];
+        this.enemies = [];
+        
+        // Player State
         this.player = {
-            x: canvasWidth / 2 - playerSize.WIDTH / 2,
-            y: canvasHeight / 2 - playerSize.HEIGHT / 2,
-            width: playerSize.WIDTH,
-            height: playerSize.HEIGHT,
-            speed: this.isMobile ? GAME_CONFIG.PLAYER_SPEED.MOBILE : GAME_CONFIG.PLAYER_SPEED.DESKTOP,
-            direction: { x: 0, y: 0 },
-            isMoving: false,
-            isShielded: false,
-            shieldTimer: 0,
-            nextItemModifier: null
+            x: GAME_CONFIG.PLAYER_FIXED_X,
+            y: canvas.height / 2,
+            vy: 0,
+            width: GAME_CONFIG.PLAYER_SIZE.WIDTH,
+            height: GAME_CONFIG.PLAYER_SIZE.HEIGHT
         };
+        
+        // Spawning
+        this.spawnTimer = this.spawnInterval;
+        
+        // Status Messages
+        this.statusMessage = "";
+        this.statusMessageTimer = 0;
+        
+        // Input State
+        this.activeKeys = new Set();
+        
+        // --- NEW: Refactored Boundaries ---
+        // Moved from local vars to class properties
+        this.deathZoneTop = 30;
+        this.deathZoneBottom = this.canvas.height - 30;
+        // --- END NEW ---
     }
-
-    initializeTouchState() {
-        this.touchState = {
-            active: false,
-            position: null, 
-            lastPosition: null, 
-        };
+    
+    // --- Input Handler ---
+    handlePlayerFlap() {
+        if (!this.isPaused) {
+            this.player.vy = -GAME_CONFIG.PLAYER_FLAP_STRENGTH;
+        }
     }
+    
+    handleKeyDown(key) {
+        this.activeKeys.add(key);
+        
+        // Handle pause
+        if (key === 'p' || key === 'P' || key === 'Escape') {
+            this.isPaused = !this.isPaused;
+            return;
+        }
+        
+        // Handle flap
+        if (key === ' ' || key === 'ArrowUp') {
+            this.handlePlayerFlap();
+        }
+    }
+    
+    handleKeyUp(key) {
+        this.activeKeys.delete(key);
+    }
+    
     handleTouchStart(event) {
         event.preventDefault();
-        const touch = event.touches[0];
-        if (!touch) return;
-
-        const rect = this.canvas.getBoundingClientRect();
-        const scaleX = this.canvas.width / rect.width;
-        const scaleY = this.canvas.height / rect.height;
-
-        const offset = this.isPortrait ?
-            GAME_CONFIG.TOUCH.OFFSET.PORTRAIT :
-            GAME_CONFIG.TOUCH.OFFSET.LANDSCAPE;
-
-        this.touchState.active = true;
-        this.touchState.position = {
-            x: (touch.clientX - rect.left) * scaleX + offset.X,
-            y: (touch.clientY - rect.top) * scaleY + offset.Y
-        };
-        this.player.isMoving = true; 
-    }
-
-    handleTouchMove(event) {
-        event.preventDefault();
-        if (!this.touchState.active) return;
-
-        const touch = event.touches[0];
-        const rect = this.canvas.getBoundingClientRect();
-        const scaleX = this.canvas.width / rect.width;
-        const scaleY = this.canvas.height / rect.height;
-        const offset = this.isPortrait ? GAME_CONFIG.TOUCH.OFFSET.PORTRAIT : GAME_CONFIG.TOUCH.OFFSET.LANDSCAPE;
-
-        this.touchState.position = {
-            x: (touch.clientX - rect.left) * scaleX + offset.X,
-            y: (touch.clientY - rect.top) * scaleY + offset.Y
-        };
+        // Any touch triggers a flap
+        this.handlePlayerFlap();
     }
     
     handleTouchEnd(event) {
         event.preventDefault();
-        this.touchState.active = false;
-        this.player.isMoving = false;
-    }
-
-
-    updatePlayerToTouchPosition(deltaTime) { 
-        if (!this.touchState.active || !this.touchState.position) {
-            this.player.isMoving = false;
-            return;
-        }
-        this.player.isMoving = true;
-
-        const targetX = this.touchState.position.x - (this.player.width / 2);
-        const targetY = this.touchState.position.y - (this.player.height / 2);
-
-        const smoothingFactor = 1.0 - GAME_CONFIG.TOUCH.SMOOTHING; 
-
-        this.player.x = this.player.x * GAME_CONFIG.TOUCH.SMOOTHING + targetX * smoothingFactor;
-        this.player.y = this.player.y * GAME_CONFIG.TOUCH.SMOOTHING + targetY * smoothingFactor;
-
-        this.player.x = Math.max(0, Math.min(this.player.x, this.canvas.width - this.player.width));
-        this.player.y = Math.max(0, Math.min(this.player.y, this.canvas.height - this.player.height));
-    }
-
-
-    handleKeyDown(key) {
-        if (this.isMobile) return;
-        this.activeKeys.add(key);
-        this.updatePlayerDirection();
-    }
-
-    handleKeyUp(key) {
-        if (this.isMobile) return;
-        this.activeKeys.delete(key);
-        this.updatePlayerDirection();
-    }
-
-    updatePlayerDirection() { 
-        const direction = { x: 0, y: 0 };
-        if (this.activeKeys.has('ArrowLeft')) direction.x -= 1;
-        if (this.activeKeys.has('ArrowRight')) direction.x += 1;
-        if (this.activeKeys.has('ArrowUp')) direction.y -= 1;
-        if (this.activeKeys.has('ArrowDown')) direction.y += 1;
-
-        if (direction.x !== 0 && direction.y !== 0) {
-            direction.x *= GAME_CONFIG.KEYBOARD.DIAGONAL_COMPENSATION;
-            direction.y *= GAME_CONFIG.KEYBOARD.DIAGONAL_COMPENSATION;
-        }
-        this.player.direction = direction;
-        this.player.isMoving = direction.x !== 0 || direction.y !== 0;
+        // Not needed for this simple mechanic
     }
     
-    updatePlayerPosition(deltaTime) { 
-        if (this.player.direction.x === 0 && this.player.direction.y === 0) {
-             if (!this.isMobile) this.player.isMoving = false; 
-            return;
-        }
-         if (!this.isMobile) this.player.isMoving = true;
-
-        const moveAmount = this.player.speed * deltaTime;
-        this.player.x += this.player.direction.x * moveAmount;
-        this.player.y += this.player.direction.y * moveAmount;
-
-        this.player.x = Math.max(0, Math.min(this.player.x, this.canvas.width - this.player.width));
-        this.player.y = Math.max(0, Math.min(this.player.y, this.canvas.height - this.player.height));
-    }
-
-
-    handleCanvasResize(canvas) {
-        const oldWidth = this.canvas.width;
-        const oldHeight = this.canvas.height;
-
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.isPortrait = window.innerHeight > window.innerWidth;
-        const playerSize = this.isPortrait ? GAME_CONFIG.PLAYER_SIZE.PORTRAIT : GAME_CONFIG.PLAYER_SIZE.LANDSCAPE;
-        const widthRatio = canvas.width / oldWidth;
-        const heightRatio = canvas.height / oldHeight;
-
-        this.player.x *= widthRatio;
-        this.player.y *= heightRatio;
-        this.player.width = playerSize.WIDTH;
-        this.player.height = playerSize.HEIGHT;
-
-        this.items.forEach(item => {
-            item.x *= widthRatio;
-            item.y *= heightRatio;
-            item.radius = this.isPortrait ? GAME_CONFIG.ITEM_RADIUS.PORTRAIT : GAME_CONFIG.ITEM_RADIUS.LANDSCAPE;
-        });
-
-        if (this.offscreenCanvas) {
-            this.offscreenCanvas.width = canvas.width;
-            this.offscreenCanvas.height = canvas.height;
-        }
-    }
-
-    triggerRandomEvent() {
-        if (this.activeEvent && this.activeEvent.type !== 'NONE') {
-            this.revertEventEffects();
-        }
-
-        const availableEvents = eventModifiers.filter(event => event.type !== (this.activeEvent ? this.activeEvent.type : null));
-        this.activeEvent = availableEvents.length > 0 ?
-            availableEvents[Math.floor(Math.random() * availableEvents.length)] :
-            { type: 'NONE', name: 'Normal', duration: Infinity, description: 'Standard conditions.' };
+    // --- Physics & Updates ---
+    updatePlayer(deltaTime) {
+        // Apply gravity
+        this.player.vy += GAME_CONFIG.GRAVITY * deltaTime;
         
-        this.eventTimer = this.activeEvent.duration;
-        this.specificBonusSkillName = null; 
-
-        if (this.activeEvent.type === 'SPECIFIC_SKILL_BONUS' && skillsData.length > 0) {
-            const randomSkill = skillsData[Math.floor(Math.random() * skillsData.length)];
-            this.specificBonusSkillName = randomSkill.name;
-            this.eventMessage = `Hunt: ${this.specificBonusSkillName}! (${Math.ceil(this.eventTimer / 1000)}s)`;
-        } else {
-             this.eventMessage = this.activeEvent.type !== 'NONE' ? `${this.activeEvent.name} (${Math.ceil(this.eventTimer / 1000)}s)` : "";
+        // Cap fall speed
+        if (this.player.vy > GAME_CONFIG.PLAYER_MAX_FALL_SPEED) {
+            this.player.vy = GAME_CONFIG.PLAYER_MAX_FALL_SPEED;
         }
-        this.applyEventEffects();
-        console.log("Event triggered:", this.activeEvent.name);
-    }
-
-    applyEventEffects() {
-        if (!this.activeEvent) return;
-        this.updateDynamicDifficulty(0, true); 
-
-        switch (this.activeEvent.type) {
-            case 'FRENZY_MODE':
-                this.currentSkillSpawnInterval = Math.max(200, this.currentSkillSpawnInterval * 0.5);
-                this.currentItemSpeedMultiplier *= 1.5;
-                break;
-            // HIGH_STAKES, SAFE_ZONE, SPECIFIC_SKILL_BONUS are handled elsewhere
-            case 'NONE':
-                 // No specific effect for 'NONE' event, bases are already set by updateDynamicDifficulty
-                break;
-            default:
-                console.warn(`Unknown event type in applyEventEffects: ${this.activeEvent.type}`);
-                break;
+        
+        // Update vertical position
+        this.player.y += this.player.vy * deltaTime;
+        
+        // Check for deadly boundaries (instant death if hit)
+        // --- MODIFIED: Use class properties ---
+        if (this.player.y < this.deathZoneTop || this.player.y + this.player.height > this.deathZoneBottom) {
+        // --- END MODIFIED ---
+            // Player hit the boundary - game over!
+            return true; // Signal death
         }
-    }
-
-    revertEventEffects() {
-        console.log("Event ended:", this.activeEvent ? this.activeEvent.name : "None");
-        this.updateDynamicDifficulty(0, true); 
-        this.activeEvent = null;
-        this.eventMessage = ""; 
-        this.specificBonusSkillName = null;
-    }
-
-    initializeItems() {
-        for (let i = 0; i < GAME_CONFIG.INITIAL_ITEMS; i++) {
-            this.spawnItem(Math.random() < 0.7); 
-        }
-    }
-
-    generateNewItem(isSkillType = true, isMystery = false) {
-        try {
-            let dataSource, itemData;
-            const itemRadius = this.isPortrait ? GAME_CONFIG.ITEM_RADIUS.PORTRAIT : GAME_CONFIG.ITEM_RADIUS.LANDSCAPE;
-            const margin = itemRadius * 2.5; 
-            const safeDistance = this.player.width * 3;
-            let x, y, attempts = 0, maxAttempts = 20; 
-
-            if (isMystery) {
-                dataSource = mysteryItemsData;
-                if (dataSource.length === 0) return null; 
-                itemData = { ...dataSource[Math.floor(Math.random() * dataSource.length)] };
-                itemData.isSkill = false; itemData.isMystery = true;
-            } else if (isSkillType) {
-                dataSource = skillsData;
-                if (dataSource.length === 0) return null;
-                itemData = { ...dataSource[Math.floor(Math.random() * dataSource.length)] };
-                itemData.isSkill = true; itemData.isMystery = false;
-            } else {
-                dataSource = antiSkillsData;
-                if (dataSource.length === 0) return null;
-                itemData = { ...dataSource[Math.floor(Math.random() * dataSource.length)] };
-                itemData.isSkill = false; itemData.isMystery = false;
-            }
-            if (!itemData) throw new Error('Failed to get item data.');
-
-            do {
-                x = margin + Math.random() * (this.canvas.width - 2 * margin);
-                y = margin + Math.random() * (this.canvas.height - 2 * margin);
-                attempts++;
-            } while (this.isNearPlayer(x, y, safeDistance) && attempts < maxAttempts);
-
-            if (attempts >= maxAttempts) {
-                x = (Math.random() < 0.5) ? margin : this.canvas.width - margin; 
-                y = margin + Math.random() * (this.canvas.height - 2 * margin);
-            }
-            
-            const baseSpeed = GAME_CONFIG.BASE_ITEM_SPEED;
-            let dirX = (Math.random() - 0.5);
-            let dirY = (Math.random() - 0.5);
-            const mag = Math.sqrt(dirX * dirX + dirY * dirY);
-            if (mag > 0) {
-                dirX = (dirX / mag); 
-                dirY = (dirY / mag);
-            } else {
-                dirX = 1; dirY = 0; 
-            }
-
-            let behavior = 'bounce';
-            let lifetime = null;
-            const randBehavior = Math.random();
-            if (!isMystery && randBehavior < 0.15) { 
-                behavior = isSkillType ? 'homing_player_skill' : 'homing_player_anti_skill';
-            } else if (!isMystery && randBehavior < 0.25) { 
-                behavior = 'timed_explode';
-                lifetime = GAME_CONFIG.ITEM_LIFETIME_DEFAULT * (0.75 + Math.random() * 0.5); 
-            }
-
-            return {
-                x, y,
-                name: itemData.name,
-                originalPoints: itemData.points,
-                isSkill: itemData.isSkill,
-                isMystery: itemData.isMystery,
-                effect: itemData.effect,
-                radius: itemRadius,
-                velocity: { x: dirX * baseSpeed, y: dirY * baseSpeed }, 
-                behavior: behavior,
-                lifeTimer: lifetime,
-                creationTime: Date.now()
-            };
-        } catch (error) {
-            console.error('Error in generateNewItem:', error);
-            return null;
-        }
-    }
-
-    isNearPlayer(x, y, distance) {
-        const playerCenterX = this.player.x + this.player.width / 2;
-        const playerCenterY = this.player.y + this.player.height / 2;
-        const dx = x - playerCenterX;
-        const dy = y - playerCenterY;
-        return Math.sqrt(dx * dx + dy * dy) < distance;
-    }
-
-    updateItems(deltaTime) {
-        const itemsToRemove = [];
-        this.items.forEach((item, index) => {
-            let currentVelX = item.velocity.x;
-            let currentVelY = item.velocity.y;
-
-            if (item.behavior === 'homing_player_skill' || item.behavior === 'homing_player_anti_skill') {
-                const playerCenterX = this.player.x + this.player.width / 2;
-                const playerCenterY = this.player.y + this.player.height / 2;
-                let dxToPlayer = playerCenterX - item.x;
-                let dyToPlayer = playerCenterY - item.y;
-                const distToPlayer = Math.sqrt(dxToPlayer * dxToPlayer + dyToPlayer * dyToPlayer);
-
-                const baseSpeedForItem = GAME_CONFIG.BASE_ITEM_SPEED; 
-
-                if (distToPlayer > 0) {
-                    dxToPlayer /= distToPlayer; 
-                    dyToPlayer /= distToPlayer;
-
-                    const targetVelX = dxToPlayer * baseSpeedForItem;
-                    const targetVelY = dyToPlayer * baseSpeedForItem;
-                    
-                    const lerpAmount = Math.min(GAME_CONFIG.HOMING_STRENGTH * deltaTime, 1.0);
-
-                    currentVelX = currentVelX * (1 - lerpAmount) + targetVelX * lerpAmount;
-                    currentVelY = currentVelY * (1 - lerpAmount) + targetVelY * lerpAmount;
-                    
-                    const newMag = Math.sqrt(currentVelX * currentVelX + currentVelY * currentVelY);
-                    if (newMag > 0) {
-                        currentVelX = (currentVelX / newMag) * baseSpeedForItem;
-                        currentVelY = (currentVelY / newMag) * baseSpeedForItem;
-                    }
-                    item.velocity.x = currentVelX;
-                    item.velocity.y = currentVelY;
-                }
-            }
-            
-            const moveX = currentVelX * this.currentItemSpeedMultiplier * deltaTime;
-            const moveY = currentVelY * this.currentItemSpeedMultiplier * deltaTime;
-            item.x += moveX;
-            item.y += moveY;
-
-            if (item.lifeTimer !== null) {
-                item.lifeTimer -= deltaTime * 1000;
-                if (item.lifeTimer <= 0) {
-                    if (item.behavior === 'timed_explode') {
-                        console.log(`${item.name} exploded (removed).`);
-                    }
-                    itemsToRemove.push(index);
-                    return;
-                }
-            }
-
-            if (item.x <= item.radius || item.x >= this.canvas.width - item.radius) {
-                item.velocity.x *= -1;
-                item.x = Math.max(item.radius, Math.min(item.x, this.canvas.width - item.radius));
-            }
-            if (item.y <= item.radius || item.y >= this.canvas.height - item.radius) {
-                item.velocity.y *= -1;
-                item.y = Math.max(item.radius, Math.min(item.y, this.canvas.height - item.radius));
-            }
-        });
-        for (let i = itemsToRemove.length - 1; i >= 0; i--) {
-            this.items.splice(itemsToRemove[i], 1);
-        }
-    }
-
-    checkCollisions() {
-        const itemsToRemove = new Set();
-        this.items.forEach((item, index) => {
-            const dx = this.player.x + this.player.width / 2 - item.x;
-            const dy = this.player.y + this.player.height / 2 - item.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < item.radius + Math.max(this.player.width, this.player.height) / 2) {
-                if (item.isMystery) {
-                    this.handleMysteryItemCollision(item);
-                } else {
-                    if (item.isSkill || (!item.isSkill && !this.player.isShielded)) {
-                        let pointsEarned = item.originalPoints;
-                        if (this.activeEvent?.type === 'HIGH_STAKES') pointsEarned *= 2;
-                        if (this.activeEvent?.type === 'SPECIFIC_SKILL_BONUS' && item.name === this.specificBonusSkillName && item.isSkill) {
-                            pointsEarned += 5; 
-                            this.setStatusMessage(`${this.specificBonusSkillName} Bonus! +5`, 2000);
-                        }
-                        if (this.player.nextItemModifier === 'double') pointsEarned *= 2;
-                        if (this.player.nextItemModifier === 'half') pointsEarned = Math.ceil(pointsEarned / 2);
-                        this.player.nextItemModifier = null;
-                        this.score += pointsEarned;
-                    } else if (!item.isSkill && this.player.isShielded) {
-                        this.setStatusMessage(`Blocked ${item.name}!`, 1500);
-                    }
-                }
-                itemsToRemove.add(index);
-            }
-        });
-        this.items = this.items.filter((_, index) => !itemsToRemove.has(index));
+        
+        return false; // Player is safe
     }
     
+    updateSpawning(deltaTime) {
+        this.spawnTimer -= deltaTime;
+        
+        if (this.spawnTimer <= 0) {
+            this.spawnTimer = this.spawnInterval;
+            
+            // Increase difficulty with level - more complex patterns
+            const pattern = Math.random();
+            const safeZoneTop = 60;
+            const safeZoneBottom = this.canvas.height - 60;
+            const spawnRange = safeZoneBottom - safeZoneTop;
+            
+            // --- MODIFIED: Spawn Ratios (More Obstacles) ---
+            if (pattern < 0.2) { // 20% chance for skill (was 0.3)
+                // Single skill
+                const skill = skillsData[Math.floor(Math.random() * skillsData.length)];
+                this.skills.push({
+                    x: this.canvas.width,
+                    y: safeZoneTop + Math.random() * spawnRange,
+                    width: 40,
+                    height: 40,
+                    ...skill,
+                    id: Date.now() + Math.random()
+                });
+            } else if (pattern < 0.4) { // 20% chance for enemy (was 0.5)
+                // Single enemy
+                const antiSkill = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                this.enemies.push({
+                    x: this.canvas.width,
+                    y: safeZoneTop + Math.random() * spawnRange,
+                    width: 40,
+                    height: 40,
+                    ...antiSkill,
+                    id: Date.now() + Math.random()
+                });
+            } else if (pattern < 0.6 && this.difficultyLevel >= 2) { // 20% chance for wall (was 0.7)
+                // Wall of enemies with a gap (harder pattern)
+                const gapY = safeZoneTop + Math.random() * (spawnRange - 100);
+                const gapSize = Math.max(80, 120 - this.difficultyLevel * 10); // Gap gets smaller with difficulty
+                
+                // Top wall
+                for (let y = safeZoneTop; y < gapY; y += 45) {
+                    const antiSkill = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                    this.enemies.push({
+                        x: this.canvas.width,
+                        y: y,
+                        width: 40,
+                        height: 40,
+                        ...antiSkill,
+                        id: Date.now() + Math.random() + y
+                    });
+                }
+                
+                // Bottom wall
+                for (let y = gapY + gapSize; y < safeZoneBottom; y += 45) {
+                    const antiSkill = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                    this.enemies.push({
+                        x: this.canvas.width,
+                        y: y,
+                        width: 40,
+                        height: 40,
+                        ...antiSkill,
+                        id: Date.now() + Math.random() + y
+                    });
+                }
+                
+                // Place a skill in the gap as reward
+                const skill = skillsData[Math.floor(Math.random() * skillsData.length)];
+                this.skills.push({
+                    x: this.canvas.width + 20,
+                    y: gapY + gapSize / 2 - 20,
+                    width: 40,
+                    height: 40,
+                    points: skill.points * 2, // Double points for navigating the gap
+                    ...skill,
+                    id: Date.now() + Math.random()
+                });
+            } else if (pattern < 0.8 && this.difficultyLevel >= 3) { // 20% chance for sine (was 0.85)
+                // Moving obstacle pattern (sine wave)
+                const baseY = this.canvas.height / 2;
+                for (let i = 0; i < 3; i++) {
+                    const antiSkill = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                    this.enemies.push({
+                        x: this.canvas.width + i * 50,
+                        y: baseY + Math.sin(i) * 100,
+                        width: 40,
+                        height: 40,
+                        vx: 0,
+                        vy: 100 * (Math.random() > 0.5 ? 1 : -1), // Vertical movement
+                        ...antiSkill,
+                        id: Date.now() + Math.random() + i
+                    });
+                }
+            // --- NEW: Crossing Pattern ---
+            } else if (pattern < 0.9 && this.difficultyLevel >= 4) { // 10% chance
+                // Two enemies that cross paths
+                const antiSkill1 = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                const antiSkill2 = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                
+                this.enemies.push({
+                    x: this.canvas.width,
+                    y: safeZoneTop + 50,
+                    width: 40, height: 40,
+                    vy: 75, // Moves down
+                    ...antiSkill1,
+                    id: Date.now() + Math.random() + 1
+                });
+                
+                this.enemies.push({
+                    x: this.canvas.width + 10, // Slightly offset
+                    y: safeZoneBottom - 50,
+                    width: 40, height: 40,
+                    vy: -75, // Moves up
+                    ...antiSkill2,
+                    id: Date.now() + Math.random() + 2
+                });
+            // --- END NEW ---
+            } else { // 10% chance
+                // Mixed pattern - skill with enemies above and below
+                const centerY = safeZoneTop + spawnRange / 2;
+                
+                // Skill in center
+                const skill = skillsData[Math.floor(Math.random() * skillsData.length)];
+                this.skills.push({
+                    x: this.canvas.width,
+                    y: centerY,
+                    width: 40,
+                    height: 40,
+                    ...skill,
+                    id: Date.now() + Math.random()
+                });
+                
+                // Enemies above and below
+                if (this.difficultyLevel >= 2) {
+                    const antiSkill1 = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                    const antiSkill2 = antiSkillsData[Math.floor(Math.random() * antiSkillsData.length)];
+                    
+                    this.enemies.push({
+                        x: this.canvas.width,
+                        y: centerY - 80,
+                        width: 40,
+                        height: 40,
+                        ...antiSkill1,
+                        id: Date.now() + Math.random() + 1
+                    });
+                    
+                    this.enemies.push({
+                        x: this.canvas.width,
+                        y: centerY + 80,
+                        width: 40,
+                        height: 40,
+                        ...antiSkill2,
+                        id: Date.now() + Math.random() + 2
+                    });
+                }
+            }
+            // --- END MODIFIED ---
+        }
+    }
+    
+    updateItems(deltaTime) {
+        // Update skills
+        this.skills = this.skills.filter(skill => {
+            skill.x -= this.scrollSpeed * deltaTime;
+            return skill.x > -skill.width; // Keep if still on screen
+        });
+        
+        // Update enemies
+        this.enemies = this.enemies.filter(enemy => {
+            enemy.x -= this.scrollSpeed * deltaTime;
+            
+            // --- NEW: Update vertical velocity for moving enemies ---
+            if (enemy.vy) {
+                enemy.y += enemy.vy * deltaTime;
+                // Bounce off the *death zones*
+                if (enemy.y < this.deathZoneTop || enemy.y + enemy.height > this.deathZoneBottom) {
+                    enemy.vy *= -1; // Invert velocity
+                }
+            }
+            // --- END NEW ---
+            
+            return enemy.x > -enemy.width;
+        });
+    }
+    
+    // --- Collision Detection ---
+    checkCollision(rect1, rect2) {
+        return (
+            rect1.x < rect2.x + rect2.width &&
+            rect1.x + rect1.width > rect2.x &&
+            rect1.y < rect2.y + rect2.height &&
+            rect1.y + rect1.height > rect2.y
+        );
+    }
+    
+    checkGameCollisions() {
+        let gameOver = false;
+        
+        // Check player vs skills
+        this.skills = this.skills.filter(skill => {
+            if (this.checkCollision(this.player, skill)) {
+                this.score += skill.points;
+                this.setStatusMessage(`+${skill.points} ${skill.name}!`, 1000);
+                return false; // Remove the skill
+            }
+            return true; // Keep the skill
+        });
+        
+        // Check player vs enemies
+        this.enemies.forEach(enemy => {
+            if (this.checkCollision(this.player, enemy)) {
+                gameOver = true;
+                this.setStatusMessage(`Hit by ${enemy.name}!`, 2000);
+            }
+        });
+        
+        return gameOver;
+    }
+    
+    // --- Status Message ---
     setStatusMessage(message, duration) {
         this.statusMessage = message;
         this.statusMessageTimer = duration;
     }
-
-    handleMysteryItemCollision(item) {
-        this.setStatusMessage(`Mystery: ${item.name}!`, 2500); 
-        switch(item.effect) {
-            case 'random_score_change':
-                const scoreChange = Math.floor(Math.random() * 11) - 5;
-                this.score += scoreChange;
-                setTimeout(()=> this.setStatusMessage(`Score ${scoreChange > 0 ? '+' : ''}${scoreChange}pt!`, 2000), 100); 
-                break;
-            case 'temp_shield':
-                this.player.isShielded = true;
-                this.player.shieldTimer = 5000;
-                break;
-            case 'clear_some_antis':
-                const antiSkillItems = this.items.filter(i => !i.isSkill && !i.isMystery);
-                let clearedCount = 0;
-                for(let i=0; i < Math.min(2, antiSkillItems.length); i++) {
-                    const idxToRemove = this.items.indexOf(antiSkillItems[i]);
-                    if (idxToRemove > -1) {
-                        this.items.splice(idxToRemove, 1);
-                        clearedCount++;
-                    }
-                }
-                if(clearedCount > 0) setTimeout(()=> this.setStatusMessage(`${clearedCount} Anti-Skill${clearedCount > 1 ? 's' : ''} Cleared!`, 2000), 100);
-                break;
-            case 'double_or_half_next':
-                this.player.nextItemModifier = Math.random() < 0.5 ? 'double' : 'half';
-                setTimeout(()=> this.setStatusMessage(`Next item x${this.player.nextItemModifier === 'double' ? 2 : 0.5} points!`, 2500),100);
-                break;
-            default:
-                console.warn(`Unknown mystery item effect: ${item.effect} for item ${item.name}`);
-                this.setStatusMessage(`Unusual effect from ${item.name}!`, 2000);
-                break;
-        }
-    }
-
-    spawnNewItems() {
-        const currentTime = Date.now();
-        if (currentTime - this.lastSpawnTime > this.currentSkillSpawnInterval) {
-            if (this.items.length < GAME_CONFIG.MAX_ITEMS_ON_SCREEN) {
-                const rand = Math.random();
-                if (rand < 0.08 && mysteryItemsData.length > 0) { 
-                     this.spawnItem(true, true);
-                } else {
-                    const isSafeZone = this.activeEvent?.type === 'SAFE_ZONE';
-                    this.spawnItem(isSafeZone || (Math.random() < 0.65), false); 
-                }
-            }
-            this.lastSpawnTime = currentTime;
-        }
-    }
     
-    spawnItem(isSkillType, isMystery = false) {
-        const newItem = this.generateNewItem(isSkillType, isMystery);
-        if (newItem) this.items.push(newItem);
-    }
-
-    updateDynamicDifficulty(deltaTime, forceUpdateBase = false) {
-        if (!forceUpdateBase) this.gameTimeElapsed += deltaTime * 1000;
-
-        if (forceUpdateBase || this.gameTimeElapsed - this.lastDynamicDifficultyUpdateTime > GAME_CONFIG.DYNAMIC_DIFFICULTY_TIME_INTERVAL) {
-            const difficultyFactorTime = Math.floor(this.gameTimeElapsed / GAME_CONFIG.DYNAMIC_DIFFICULTY_TIME_INTERVAL);
-            
-            let baseSpawnInterval = GAME_CONFIG.BASE_SKILL_SPAWN_INTERVAL - (difficultyFactorTime * GAME_CONFIG.DYNAMIC_DIFFICULTY_SPAWN_DECREMENT);
-            this.currentSkillSpawnInterval = Math.max(500, baseSpawnInterval); 
-
-            let baseSpeedMultiplier = 1.0 + (difficultyFactorTime * GAME_CONFIG.DYNAMIC_DIFFICULTY_SPEED_INCREMENT);
-            this.currentItemSpeedMultiplier = Math.min(2.5, baseSpeedMultiplier); 
-            
-            if (!forceUpdateBase) {
-                 this.lastDynamicDifficultyUpdateTime = this.gameTimeElapsed;
-                 console.log(`Dynamic Difficulty: Speed Multi: ${this.currentItemSpeedMultiplier.toFixed(2)}, Spawn Interval: ${this.currentSkillSpawnInterval}ms`);
-            }
-        }
-    }
-    
-    update(deltaTime) {
-        deltaTime = Math.min(deltaTime, 0.1); 
-
-        this.updateDynamicDifficulty(deltaTime);
-
-        if (this.isMobile) { 
-            this.updatePlayerToTouchPosition(deltaTime);
-        } else {
-            this.updatePlayerPosition(deltaTime); 
-        }
-
-        this.updateItems(deltaTime);
-        this.checkCollisions();
-        this.spawnNewItems();
-
+    updateStatusMessage(deltaTime) {
         if (this.statusMessageTimer > 0) {
             this.statusMessageTimer -= deltaTime * 1000;
             if (this.statusMessageTimer <= 0) {
                 this.statusMessage = "";
             }
         }
-
-        if (this.activeEvent && this.activeEvent.type !== 'NONE') {
-            this.eventTimer -= deltaTime * 1000;
-            if (this.eventTimer <= 0) {
-                this.revertEventEffects();
-            } else {
-                if (this.activeEvent.type === 'SPECIFIC_SKILL_BONUS' && this.specificBonusSkillName) {
-                     this.eventMessage = `Hunt: ${this.specificBonusSkillName}! (${Math.ceil(this.eventTimer / 1000)}s)`;
-                } else {
-                    this.eventMessage = `${this.activeEvent.name} (${Math.ceil(this.eventTimer / 1000)}s)`;
-                }
-            }
+    }
+    
+    // --- Main Update Loop ---
+    update(deltaTime) {
+        if (this.isPaused) {
+            return { gameOver: false, won: false, score: this.score };
         }
         
-        if (this.player.isShielded) {
-            this.player.shieldTimer -= deltaTime * 1000;
-            if (this.player.shieldTimer <= 0) {
-                this.player.isShielded = false;
-                this.setStatusMessage("Shield Deactivated!", 1500);
-            } else {
-                this.statusMessage = `Shield: ${Math.ceil(this.player.shieldTimer / 1000)}s`;
-                this.statusMessageTimer = 50; 
-            }
+        deltaTime = Math.min(deltaTime, 0.1);
+        this.gameTimeElapsed += deltaTime;
+        
+        // Check if player hit boundaries
+        const hitBoundary = this.updatePlayer(deltaTime);
+        if (hitBoundary) {
+            this.setStatusMessage("Hit the boundary!", 2000);
+            return { gameOver: true, won: false, score: this.score };
         }
-
-        if (this.score >= this.nextMilestoneScore && this.activeEvent?.type === 'NONE') { 
-            this.triggerRandomEvent();
-            this.nextMilestoneScore += GAME_CONFIG.EVENT_TRIGGER_SCORE_MILESTONE + Math.floor(this.difficultyLevel * 3);
-        }
+        
+        this.updateItems(deltaTime);
+        this.updateSpawning(deltaTime);
+        this.updateStatusMessage(deltaTime);
+        
+        const gameOver = this.checkGameCollisions();
+        
+        // Win condition: survive for 60 seconds or reach target score
+        const targetScore = GAME_CONFIG.BASE_WINNING_SCORE + (this.difficultyLevel - 1) * GAME_CONFIG.WINNING_SCORE_DIFFICULTY_MULTIPLIER;
+        const won = this.score >= targetScore;
         
         return {
-            gameOver: this.score < 0,
-            won: this.score >= this.currentWinningScore,
+            gameOver: gameOver,
+            won: won,
             score: this.score
         };
     }
-
+    
+    // --- Drawing Methods ---
     draw() {
+        // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.offscreenCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.items.forEach(item => {
-            let itemColor = item.isMystery ? '#FF00FF' : (item.isSkill ? '#FFFF00' : '#FF0000');
-            if (item.behavior === 'homing_player_skill' || item.behavior === 'homing_player_anti_skill') {
-                this.offscreenCtx.fillStyle = 'rgba(0, 255, 255, 0.15)'; 
-                this.offscreenCtx.beginPath();
-                this.offscreenCtx.arc(item.x, item.y, item.radius + 4, 0, Math.PI * 2);
-                this.offscreenCtx.fill();
-            }
-            if (item.behavior === 'timed_explode' && item.lifeTimer !== null && item.lifeTimer < 3000) {
-                itemColor = (Math.floor(item.lifeTimer / 200) % 2 === 0) ? '#FFA500' : (item.isSkill ? '#FFFF00' : '#FF0000'); 
-            }
-            this.offscreenCtx.fillStyle = itemColor;
-            this.offscreenCtx.beginPath();
-            this.offscreenCtx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
-            this.offscreenCtx.fill();
-            this.offscreenCtx.fillStyle = '#000000';
-            const fontSizeItemName = Math.max(9, this.canvas.width / 70);
-            this.offscreenCtx.font = `${fontSizeItemName}px Arial`;
-            this.offscreenCtx.textAlign = 'center';
-            this.offscreenCtx.fillText(item.name, item.x, item.y + (fontSizeItemName / 3));
+        
+        // Draw background gradient
+        const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+        gradient.addColorStop(0, '#1a1a2e');
+        gradient.addColorStop(1, '#16213e');
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Draw danger zones (death boundaries)
+        // --- MODIFIED: Use class properties ---
+        // Top danger zone
+        const topGradient = this.ctx.createLinearGradient(0, 0, 0, this.deathZoneTop);
+        topGradient.addColorStop(0, 'rgba(255, 0, 0, 0.6)');
+        topGradient.addColorStop(1, 'rgba(255, 0, 0, 0.1)');
+        this.ctx.fillStyle = topGradient;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.deathZoneTop);
+        
+        // Bottom danger zone
+        const bottomGradient = this.ctx.createLinearGradient(0, this.deathZoneBottom, 0, this.canvas.height);
+        bottomGradient.addColorStop(0, 'rgba(255, 0, 0, 0.1)');
+        bottomGradient.addColorStop(1, 'rgba(255, 0, 0, 0.6)');
+        this.ctx.fillStyle = bottomGradient;
+        this.ctx.fillRect(0, this.deathZoneBottom, this.canvas.width, this.canvas.height - this.deathZoneBottom);
+        
+        // Draw danger zone boundaries
+        this.ctx.strokeStyle = '#ff0000';
+        this.ctx.lineWidth = 3;
+        this.ctx.setLineDash([10, 5]);
+        
+        // Top boundary
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, this.deathZoneTop);
+        this.ctx.lineTo(this.canvas.width, this.deathZoneTop);
+        this.ctx.stroke();
+        
+        // Bottom boundary
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, this.deathZoneBottom);
+        this.ctx.lineTo(this.canvas.width, this.deathZoneBottom);
+        this.ctx.stroke();
+        
+        this.ctx.setLineDash([]); // Reset line dash
+        // --- END MODIFIED ---
+        
+        // Draw skills
+        this.ctx.fillStyle = '#4fbf26';
+        this.ctx.font = '12px monospace';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        
+        this.skills.forEach(skill => {
+            // Draw skill box
+            this.ctx.fillStyle = '#4fbf26';
+            this.ctx.fillRect(skill.x, skill.y, skill.width, skill.height);
+            
+            // Draw skill border
+            this.ctx.strokeStyle = '#7fff00';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(skill.x, skill.y, skill.width, skill.height);
+            
+            // Draw skill initial
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.font = 'bold 16px monospace';
+            this.ctx.fillText(skill.name[0], skill.x + skill.width/2, skill.y + skill.height/2);
         });
-        this.ctx.drawImage(this.offscreenCanvas, 0, 0);
-
-        let playerColor = this.player.isMoving ? '#00DD66' : '#00FF00'; 
-        if (this.player.isShielded) playerColor = '#00FFFF';
-        this.ctx.fillStyle = playerColor;
+        
+        // Draw enemies
+        this.enemies.forEach(enemy => {
+            // Draw enemy box
+            this.ctx.fillStyle = '#e94560';
+            this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            
+            // Draw enemy border
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            
+            // Draw X symbol
+            this.ctx.strokeStyle = '#ffffff';
+            this.ctx.lineWidth = 3;
+            this.ctx.beginPath();
+            this.ctx.moveTo(enemy.x + 10, enemy.y + 10);
+            this.ctx.lineTo(enemy.x + enemy.width - 10, enemy.y + enemy.height - 10);
+            this.ctx.moveTo(enemy.x + enemy.width - 10, enemy.y + 10);
+            this.ctx.lineTo(enemy.x + 10, enemy.y + enemy.height - 10);
+            this.ctx.stroke();
+        });
+        
+        // Draw player
+        this.ctx.fillStyle = '#00d9ff';
         this.ctx.fillRect(this.player.x, this.player.y, this.player.width, this.player.height);
         
-        if (this.isMobile && this.player.isMoving && this.touchState.active && this.touchState.position) {
-             this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-             this.ctx.beginPath();
-             this.ctx.moveTo(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2);
-             this.ctx.lineTo(this.touchState.position.x, this.touchState.position.y);
-             this.ctx.stroke();
-        }
-
-        const uiFontSize = Math.max(16, this.canvas.width / 35);
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.font = `${uiFontSize}px VT323`;
-        this.ctx.textAlign = 'left';
-        this.ctx.fillText(`Score: ${this.score} / ${this.currentWinningScore}`, 10, uiFontSize);
-        this.ctx.textAlign = 'right';
-        this.ctx.fillText(`Diff: ${this.difficultyLevel}`, this.canvas.width - 10, uiFontSize);
-
-        if (this.eventMessage) {
-            this.ctx.fillStyle = 'rgba(200, 200, 50, 0.9)'; 
-            this.ctx.font = `${Math.max(14, uiFontSize * 0.8)}px VT323`;
-            this.ctx.textAlign = 'center';
-            this.ctx.fillText(this.eventMessage, this.canvas.width / 2, uiFontSize);
-        }
-        if (this.statusMessage) {
-            this.ctx.fillStyle = 'rgba(180, 180, 255, 0.9)'; 
-            this.ctx.font = `${Math.max(12, uiFontSize * 0.75)}px VT323`;
-            this.ctx.textAlign = 'center';
-            const statusY = this.eventMessage ? uiFontSize + Math.max(14, uiFontSize * 0.8) * 0.8 : uiFontSize;
-            this.ctx.fillText(this.statusMessage, this.canvas.width / 2, statusY);
+        // Draw player border
+        this.ctx.strokeStyle = '#ffffff';
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeRect(this.player.x, this.player.y, this.player.width, this.player.height);
+        
+        // Draw UI
+        this.drawUI();
+        
+        // Draw pause overlay
+        if (this.isPaused) {
+            this.drawPauseMenu();
         }
     }
-
-    cleanup() { }
+    
+    drawUI() {
+        const uiFontSize = Math.max(20, this.canvas.width / 30);
+        
+        // Draw score
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = `${uiFontSize}px monospace`;
+        this.ctx.textAlign = 'left';
+        this.ctx.textBaseline = 'top';
+        this.ctx.fillText(`Score: ${this.score}`, 20, 20);
+        
+        // Draw level
+        this.ctx.textAlign = 'right';
+        this.ctx.fillText(`Level: ${this.difficultyLevel}`, this.canvas.width - 20, 20);
+        
+        // Draw status message
+        if (this.statusMessage && !this.isPaused) {
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            this.ctx.font = `${Math.max(16, uiFontSize * 0.8)}px monospace`;
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.statusMessage, this.canvas.width / 2, 60);
+        }
+        
+        // Draw instructions (mobile)
+        if (this.canvas.width <= 768) {
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            this.ctx.font = '14px monospace';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText('Tap anywhere to fly', this.canvas.width / 2, this.canvas.height - 30);
+        }
+    }
+    
+    drawPauseMenu() {
+        // Dark overlay
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Pause text
+        const fontSize = Math.max(32, this.canvas.width / 20);
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = `${fontSize}px monospace`;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText('PAUSED', this.canvas.width / 2, this.canvas.height / 2 - fontSize);
+        
+        this.ctx.font = `${fontSize * 0.5}px monospace`;
+        this.ctx.fillText('Press P or ESC to resume', this.canvas.width / 2, this.canvas.height / 2 + fontSize);
+    }
+    
+    // --- Resize Handler ---
+    handleCanvasResize(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        
+        // --- MODIFIED: Update boundary on resize ---
+        this.deathZoneBottom = this.canvas.height - 30;
+        // --- END MODIFIED ---
+        
+        // Adjust player position if needed
+        if (this.player.y > canvas.height - this.player.height - 10) {
+            this.player.y = canvas.height / 2;
+        }
+    }
+    
+    cleanup() {
+        // Clean up any resources if needed
+    }
 }

@@ -1,16 +1,16 @@
 /* General Game Styles */
 .skill-game {
-  background-color: rgba(0, 0, 0, 0.92); /* Slightly deeper black */
+  background-color: rgba(0, 0, 0, 0.92);
   padding: 1.25rem;
   border: 3px solid rgba(0, 255, 0, 0.7);
-  box-shadow: 0 0 8px rgba(0, 255, 0, 0.5), 0 0 12px rgba(0, 255, 0, 0.3) inset; /* Added inset shadow */
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.5), 0 0 12px rgba(0, 255, 0, 0.3) inset;
   font-family: 'VT323', monospace;
   color: rgba(0, 255, 0, 0.9);
   text-align: center;
   max-width: 800px;
   margin: 0 auto;
   box-sizing: border-box;
-  position: relative;
+  position: relative; /* This is important for positioning the mute button */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -18,25 +18,47 @@
   width: 100%;
   height: 100%;
   touch-action: none;
-  transition: border-color 0.5s ease-out, box-shadow 0.5s ease-out; /* Smooth transitions for event changes */
 }
 
+/* --- NEW: Mute Button Styling --- */
+.mute-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 100; /* Ensure it's above canvas, but below messages if needed */
+  background-color: #080808;
+  color: #00ff00;
+  border: 2px solid #00dd00;
+  padding: 5px 10px;
+  font-family: 'VT323', monospace; /* Use game font */
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.15s ease-in-out;
+}
+.mute-button:hover {
+  opacity: 1;
+  background-color: #00ff00;
+  color: #000;
+  border-color: #000;
+}
+/* --- END NEW --- */
+
+
 .game-canvas {
-  background-color: #050505; /* Darker canvas bg */
+  background-color: #050505;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   width: 100%;
   height: 100%;
-  /* Add a subtle pattern or noise if desired, though this can affect canvas readability */
-  /* background-image: url('data:image/svg+xml,...'); */
 }
 
 .skill-game h2 {
-  font-size: 2.35rem; /* Slightly larger */
+  font-size: 2.35rem;
   margin-bottom: 0.75rem;
-  text-shadow: 1px 1px rgba(0, 255, 255, 0.7), 0 0 5px rgba(0, 255, 255, 0.4); /* Enhanced glow */
+  text-shadow: 1px 1px rgba(0, 255, 255, 0.7), 0 0 5px rgba(0, 255, 255, 0.4);
   letter-spacing: 0.05em;
 }
 
@@ -49,14 +71,14 @@
 
 .canvas-container {
   width: 100%;
-  height: 60vh;
-  max-height: 450px; /* Slightly increased max-height */
+  height: 65vh; /* Slightly taller */
+  max-height: 550px; /* Increased max-height for platformer */
   margin: 1rem auto;
   position: relative;
   overflow: hidden;
   border: 2px solid rgba(0, 255, 0, 0.6);
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5) inset, 0 0 5px rgba(0, 255, 0, 0.3); /* Enhanced inset shadow */
-  background-color: rgba(0, 0, 0, 0.97); /* Darker */
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5) inset, 0 0 5px rgba(0, 255, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.97);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -73,51 +95,8 @@
   image-rendering: pixelated;
 }
 
-/* --- Game Event Modifier Styling --- */
-/* These classes would be added to .skill-game via JavaScript */
-
-/* Frenzy Mode: Rapid pulsing, slight red tint */
-.skill-game.event-frenzy-mode {
-  border-color: rgba(255, 100, 0, 0.8);
-  box-shadow: 0 0 15px rgba(255, 100, 0, 0.7), 0 0 20px rgba(255, 100, 0, 0.4) inset, 0 0 30px rgba(255, 0, 0, 0.5);
-  animation: pulse-frenzy 0.5s infinite alternate;
-}
-@keyframes pulse-frenzy {
-  from { opacity: 0.8; transform: scale(1); }
-  to { opacity: 1; transform: scale(1.01); }
-}
-
-/* High Stakes: Intense gold/red border, subtle glow */
-.skill-game.event-high-stakes {
-  border-color: rgba(255, 215, 0, 0.9); /* Gold */
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 25px rgba(255, 69, 0, 0.5) inset, 0 0 40px rgba(255, 0, 0, 0.6); /* Gold and red glow */
-}
-.skill-game.event-high-stakes::before { /* Add a subtle animated gradient overlay */
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(45deg, rgba(255,0,0,0.1), rgba(255,215,0,0.1), rgba(255,0,0,0.1));
-  background-size: 200% 200%;
-  animation: gradient-flow 3s ease infinite;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Safe Zone: Calming cyan/blue border */
-.skill-game.event-safe-zone {
-  border-color: rgba(0, 200, 255, 0.8);
-  box-shadow: 0 0 15px rgba(0, 200, 255, 0.6), 0 0 20px rgba(0, 150, 255, 0.4) inset;
-}
-
-/* Specific Skill Bonus: Pulsing targeted color (e.g., magenta if not used elsewhere) */
-.skill-game.event-skill-bonus {
-  border-color: rgba(255, 0, 255, 0.8); /* Magenta */
-  animation: pulse-bonus 0.7s infinite alternate;
-}
-@keyframes pulse-bonus {
-  from { box-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 15px rgba(255, 0, 255, 0.3) inset; }
-  to { box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 25px rgba(255, 0, 255, 0.5) inset; }
-}
+/* --- Game Event Modifier Styling (REMOVED) --- */
+/* .skill-game.event-frenzy-mode, .skill-game.event-high-stakes, etc. removed as they are no longer used. */
 
 
 /* --- Message Styling --- */
@@ -127,12 +106,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.85rem; /* Slightly larger */
-  padding: 1.5rem;  /* More padding */
-  border-radius: 10px; /* More rounded */
+  font-size: 1.85rem;
+  padding: 1.5rem;
+  border-radius: 10px;
   z-index: 10;
-  backdrop-filter: blur(4px); /* Stronger blur */
-  border: 3px solid; /* Thicker border */
+  backdrop-filter: blur(4px);
+  border: 3px solid;
   animation: fadeInMessage 0.5s ease-out;
   width: 80%;
   max-width: 500px;
@@ -144,18 +123,18 @@
 }
 
 .win-message {
-  color: rgba(255, 255, 50, 0.95); /* Brighter yellow */
+  color: rgba(255, 255, 50, 0.95);
   border-color: rgba(255, 255, 100, 0.7);
-  text-shadow: 1px 1px rgba(255, 100, 255, 0.7), 0 0 8px rgba(255,255,0,0.5); /* More prominent shadow */
-  background-color: rgba(10, 20, 10, 0.9); /* Darker, slightly green background */
+  text-shadow: 1px 1px rgba(255, 100, 255, 0.7), 0 0 8px rgba(255,255,0,0.5);
+  background-color: rgba(10, 20, 10, 0.9);
   box-shadow: 0 0 15px rgba(255, 255, 0, 0.4), 0 0 5px rgba(255,255,255,0.2) inset;
 }
 
 .lose-message {
-  color: rgba(255, 50, 50, 0.95); /* Brighter red */
+  color: rgba(255, 50, 50, 0.95);
   border-color: rgba(255, 100, 100, 0.7);
   text-shadow: 1px 1px rgba(100, 0, 0, 0.7), 0 0 8px rgba(255,0,0,0.5);
-  background-color: rgba(30, 10, 10, 0.9); /* Darker, slightly red background */
+  background-color: rgba(30, 10, 10, 0.9);
   box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), 0 0 5px rgba(100,0,0,0.2) inset;
 }
 
@@ -170,30 +149,24 @@
   right: 0;
   background: linear-gradient(
       rgba(18, 16, 16, 0) 50%,
-      rgba(0, 0, 0, 0.18) 50%  /* Slightly more visible scanlines */
+      rgba(0, 0, 0, 0.18) 50%
   ),
   linear-gradient(
       90deg,
-      rgba(255, 0, 0, 0.04), /* More pronounced color aberration */
+      rgba(255, 0, 0, 0.04),
       rgba(0, 255, 0, 0.02),
       rgba(0, 0, 255, 0.04)
   );
-  z-index: 2; /* Ensure it's above background, below messages */
-  background-size: 100% 2px, 4px 100%; /* Thicker color aberration lines */
+  z-index: 2;
+  background-size: 100% 2px, 4px 100%;
   pointer-events: none;
   opacity: 0.75;
-  animation: flickerCRT 0.05s infinite alternate; /* Subtle flicker */
+  animation: flickerCRT 0.05s infinite alternate;
 }
 @keyframes flickerCRT {
     from { opacity: 0.72; }
     to { opacity: 0.78; }
 }
-@keyframes gradient-flow { /* For high-stakes background */
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -202,91 +175,81 @@
       border-width: 2px;
   }
   .skill-game h2 {
-      font-size: 1.85rem; /* Adjusted */
+      font-size: 1.85rem;
   }
   .skill-game p {
       font-size: 1rem;
   }
   .canvas-container {
-      height: 55vh; /* Adjusted */
+      height: 60vh; /* Adjusted for mobile */
       margin: 0.75rem auto;
   }
   .win-message,
   .lose-message {
-      font-size: 1.35rem; /* Adjusted */
+      font-size: 1.35rem;
       padding: 1rem;
   }
+  /* --- NEW: Adjust mute button for mobile --- */
+  .mute-button {
+    top: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
+  /* --- END NEW --- */
 }
 
 /* Game focus states */
 .canvas-container canvas:focus {
   outline: none;
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.4), 0 0 15px rgba(0, 255, 255, 0.3) inset; /* Enhanced focus */
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.4), 0 0 15px rgba(0, 255, 255, 0.3) inset;
 }
 
 /* --- Button Styling --- */
-.start-button { /* This specific class for start button if it needs unique styling from .control-button */
-  /* The existing .control-button and its shine effect already apply */
-  /* If additional unique styles are needed, add them here */
+.start-button {
+  /* (No unique styles needed) */
 }
 
 .start-button:hover {
-  /* Existing hover from .control-button is good. Can add more here if needed. */
+  /* (Inherits from .control-button) */
 }
 
-.start-button::after { /* Shine animation, already defined */
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-      to bottom right,
-      rgba(0, 255, 255, 0) 0%,
-      rgba(0, 255, 255, 0.1) 50%,
-      rgba(0, 255, 255, 0) 100%
-  );
-  transform: rotate(45deg);
-  animation: shine 3s infinite;
-}
-
-@keyframes shine {
-  0% { transform: translateX(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) rotate(45deg); }
-}
+/* (Shine animation removed as it's not used by default buttons) */
+/* If you want to add it back, you can, but it was tied to .start-button::after */
 
 .skill-game.idle .canvas-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.85); /* Slightly darker */
+  background-color: rgba(0, 0, 0, 0.85);
 }
 
 @media (max-width: 768px) {
-  .start-button { /* This will also affect other .control-buttons due to cascade */
+  .start-button { /* This will also affect other .control-buttons */
       font-size: 1.25rem;
       padding: 0.75rem 1.5rem;
   }
 }
 
 .control-button {
-  background-color: #080808; /* Darker black */
-  color: #00ff00; /* Bright green */
-  border: 2px solid #00dd00; /* Slightly darker green border */
-  padding: 12px 24px; /* Slightly larger padding */
+  background-color: #080808;
+  color: #00ff00;
+  border: 2px solid #00dd00;
+  padding: 12px 24px;
   font-family: 'Press Start 2P';
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.15s ease-in-out; /* Faster transition */
-  box-shadow: 0px 4px 0px #008000, 0px 6px 0px #000; /* Double shadow for depth */
-  text-transform: uppercase; /* common for retro games */
+  transition: all 0.15s ease-in-out;
+  box-shadow: 0px 4px 0px #008000, 0px 6px 0px #000;
+  text-transform: uppercase;
   letter-spacing: 1px;
-  outline: none; /* Remove default browser outline */
+  outline: none;
+  position: relative; /* Added for shine if you re-add it */
+  overflow: hidden;   /* Added for shine if you re-add it */
 }
-.control-button .difficulty-level { /* Class for the (Level X) span */
+.control-button .difficulty-level {
     font-size: 0.8em;
-    color: #00cc00; /* Slightly different green */
+    color: #00cc00;
     margin-left: 5px;
     opacity: 0.8;
 }
@@ -295,24 +258,23 @@
   background-color: #00ff00;
   color: #000;
   border-color: #000;
-  box-shadow: 0px 2px 0px #009900, 0px 4px 0px #000; /* Adjust shadow on hover */
+  box-shadow: 0px 2px 0px #009900, 0px 4px 0px #000;
   transform: translateY(2px);
-  text-shadow: 0 0 3px #000; /* Add text shadow on hover for black text */
+  text-shadow: 0 0 3px #000;
 }
 .control-button:active {
-  background-color: #00cc00; /* Slightly darker green for active state */
-  box-shadow: 0px 0px 0px #006600, 0px 2px 0px #000; /* Further adjust shadow */
+  background-color: #00cc00;
+  box-shadow: 0px 0px 0px #006600, 0px 2px 0px #000;
   transform: translateY(4px);
 }
 
 .replay-button { 
-  margin-right: 15px; /* Increased spacing */
-  /* Existing glow is fine */
+  margin-right: 15px;
 }
 
 .exit-button {
-    border-color: #cc0000; /* Reddish border for exit */
-    color: #ff3333; /* Reddish text */
+    border-color: #cc0000;
+    color: #ff3333;
 }
 .exit-button:hover {
     background-color: #ff3333;
@@ -323,4 +285,39 @@
 .exit-button:active {
     background-color: #cc0000;
     box-shadow: 0px 0px 0px #660000, 0px 2px 0px #000;
+}
+
+/* --- NEW: Pause Menu (for future HTML version) --- */
+.pause-menu-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20; /* High z-index to overlay canvas */
+  color: #FFF;
+  font-family: 'VT323', monospace;
+  font-size: 2rem;
+  /* This class would be added to a div in Skills.js when isPaused is true */
+  /* e.g., {isPaused && <div className="pause-menu-container">...</div>} */
+}
+
+.pause-menu-container h2 {
+  font-size: 3rem;
+  color: #FFFF00;
+  text-shadow: 0 0 5px #FFFF00;
+}
+
+.pause-menu-container .settings-option {
+  font-size: 1.5rem;
+  margin: 10px;
+  cursor: pointer;
+}
+.pause-menu-container .settings-option:hover {
+  color: #00FFFF;
 }

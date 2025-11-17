@@ -1,17 +1,26 @@
+// Skills/GameMessages.js
+
 export const GameMessages = ({ gameState, countdown, isMobile, currentWinningScore, score }) => {
+    // Mobile-first flyer game instructions
+    const instructions = isMobile 
+        ? "Tap anywhere to fly up!"
+        : "Press Spacebar or Up Arrow to fly!";
+    
+    const objective = "Collect skills and avoid the anti-skills!";
+
     return (
         <>
             <h2>Skill Collector</h2>
-            <p>{isMobile ? "Drag to move" : "Use arrow keys to move"}. 
-               Collect skills (yellow) and avoid anti-skills (red)!</p>
-            {/* Display current winning score, updated by difficulty */}
-            <p>Goal: Reach {currentWinningScore} points</p>
+            <p>{instructions}</p>
+            <p>{objective}</p>
             
+            {/* The win/loss messages are still perfectly valid! */}
+            {/* The 'gameState' prop from Skills.js handles this */}
             {gameState === 'won' && (
                 <div className="win-message">
-                    Congratulations! You've mastered the skills with a score of {score}!
+                    Level Complete! You're fixing the program!
                     <br />
-                    Next game will be harder. Restarting in {countdown} seconds...
+                    Next level loading in {countdown} seconds...
                 </div>
             )}
             {gameState === 'lost' && (

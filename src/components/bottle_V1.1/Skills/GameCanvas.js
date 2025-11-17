@@ -213,36 +213,27 @@ export const GameCanvas = forwardRef(({ onStateChange, gameState, difficultyLeve
 
 
         const handleTouch = (event) => {
-            // Use currentGameInstance captured at the time of listener attachment
-            switch (event.type) {
-                case 'touchstart': currentGameInstance.handleTouchStart?.(event); break;
-                case 'touchmove': currentGameInstance.handleTouchMove?.(event); break;
-                case 'touchend': case 'touchcancel': currentGameInstance.handleTouchEnd?.(event); break;
-                default: console.warn(`Unexpected touch event: ${event.type}`);
+            // Any touch triggers a flap
+            if (event.type === 'touchstart') {
+                currentGameInstance.handleTouchStart?.(event);
             }
         };
-        const handleKeyDown = (e) => currentGameInstance.handleKeyDown?.(e.key);
-        const handleKeyUp = (e) => currentGameInstance.handleKeyUp?.(e.key);
-        const preventDefaultKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '];
-        const preventScroll = (e) => {
-            if (preventDefaultKeys.includes(e.key)) e.preventDefault();
+        const handleKeyDown = (e) => {
+            // Only handle spacebar, arrow up, and pause keys
+            if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+                e.preventDefault();
+                currentGameInstance.handleKeyDown?.(e.key);
+            }
         };
+        const handleKeyUp = (e) => currentGameInstance.handleKeyUp?.(e.key);
 
         canvas.addEventListener('touchstart', handleTouch, { passive: false });
-        canvas.addEventListener('touchmove', handleTouch, { passive: false });
-        canvas.addEventListener('touchend', handleTouch, { passive: false });
-        canvas.addEventListener('touchcancel', handleTouch, { passive: false });
-        window.addEventListener('keydown', preventScroll, false);
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
 
         return () => {
             console.log("GameCanvas: Cleaning up input event listeners (due to gameInstanceReady change or unmount).");
             canvas.removeEventListener('touchstart', handleTouch);
-            canvas.removeEventListener('touchmove', handleTouch);
-            canvas.removeEventListener('touchend', handleTouch);
-            canvas.removeEventListener('touchcancel', handleTouch);
-            window.removeEventListener('keydown', preventScroll);
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('keyup', handleKeyUp);
         };

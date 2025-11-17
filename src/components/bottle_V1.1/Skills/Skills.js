@@ -16,6 +16,11 @@ const SkillGame = () => {
     const [currentWinningScore, setCurrentWinningScore] = useState(
         GAME_CONFIG.BASE_WINNING_SCORE + (difficultyLevel - 1) * GAME_CONFIG.WINNING_SCORE_DIFFICULTY_MULTIPLIER
     );
+    
+    // --- NEW: Audio State ---
+    const [isMuted, setIsMuted] = useState(false);
+    const audioRef = useRef(null);
+    // --- END NEW ---
 
     // Ref to store the countdown value at the moment the game ends, for logging purposes
     const initialCountdownForLogRef = useRef(countdown);
@@ -106,6 +111,26 @@ const SkillGame = () => {
     }, [gameState, handleReplay]); // `countdown` is NOT needed here for the timer logic itself due to `setCountdown(prev => ...)`.
                                    // `initialCountdownForLogRef.current` is used for the log, which is stable within this effect's run.
 
+    // --- NEW: Audio Playback Effect ---
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.muted = isMuted;
+            if (gameState === 'playing' && audioRef.current.paused) {
+                audioRef.current.play().catch(e => console.warn("Audio play failed:", e));
+            } else if (gameState !== 'playing' && !audioRef.current.paused) {
+                audioRef.current.pause();
+                // audioRef.current.currentTime = 0; // Optional: reset music on game over
+            }
+        }
+    }, [gameState, isMuted]);
+    // --- END NEW ---
+    
+    // --- NEW: Toggle Mute Function ---
+    const toggleMute = () => {
+        setIsMuted(prevMuted => !prevMuted);
+    };
+    // --- END NEW ---
+
     // GameCanvas instance cleanup on unmount
     useEffect(() => {
         const gameInst = gameInstanceRef.current;
@@ -119,6 +144,13 @@ const SkillGame = () => {
 
     return (
         <div className={`skill-game ${gameState === 'idle' ? 'idle' : ''}`}>
+            {/* --- NEW: Audio Element and Mute Button --- */}
+            <audio ref={audioRef} src="/retro.wav" loop preload="auto" />
+            <button onClick={toggleMute} className="mute-button" aria-label="Toggle Mute">
+                {isMuted ? 'Unmute' : 'Mute'}
+            </button>
+            {/* --- END NEW --- */}
+            
             <GameMessages
                 gameState={gameState}
                 countdown={countdown}
