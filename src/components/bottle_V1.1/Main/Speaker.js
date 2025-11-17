@@ -4,7 +4,7 @@ import './Speaker.css';
 function Speaker() {
   const [messages] = useState([
     "Welcome to my Portfolio!",
-    
+    "Now Featuring TradeFlow: The AI-Powered Job Management Tool"
   ]);
 
   return (
