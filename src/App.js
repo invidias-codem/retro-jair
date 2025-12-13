@@ -19,6 +19,8 @@ import Menu from './components/bottle_V1.1/Main/Menu';
 import Footer from './components/bottle_V1.1/Footer/Footer';
 import { ChatProvider } from './components/bottle_V1.1/context/useContext';
 import ScrollToTop from './components/bottle_V1.1/common/ScrollToTop';
+import Header from './components/bottle_V1.1/common/Header';
+import './components/bottle_V1.1/common/Header.css';
 
 // --- Lazy-Loaded Page Components ---
 const Home = React.lazy(() => import('./components/bottle_V1.1/Main/Home')); // <-- ADDED HOME LAZY LOAD
@@ -29,14 +31,21 @@ const Contact = React.lazy(() => import('./components/bottle_V1.1/ContactMe/Cont
 const Terminal = React.lazy(() => import('./components/bottle_V1.1/routes/Terminal/Terminal'));
 const Services = React.lazy(() => import('./components/bottle_V1.1/Services/Service'));
 const ChatInterface = React.lazy(() => import('./components/bottle_V1.1/AI_components/ChatInterface'));
+const ChatModal = React.lazy(() => import('./components/bottle_V1.1/AI_components/ChatModal')); // Import ChatModal
+const ChatRoute = React.lazy(() => import('./components/bottle_V1.1/AI_components/ChatRoute'));
+const Settings = React.lazy(() => import('./components/bottle_V1.1/routes/Settings/Settings'));
 
 // --- Framework Providers ---
 const AgentSessionProvider = React.lazy(() =>
   import('./components/bottle_V1.1/AI_components/framework/agentFramework').then(m => ({ default: m.AgentSessionProvider }))
 );
 
+// --- Config ---
+import { agentConfig as allAgentConfigs } from './components/bottle_V1.1/config/agent-config';
+
 // --- Styles ---
 import './App.css';
+import './components/bottle_V1.1/AI_components/ChatModal.css'; // Import the new CSS
 
 // --- AnimatedRoutes Component ---
 function AnimatedRoutes() {
@@ -64,12 +73,23 @@ function AnimatedRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/terminal" element={<Terminal />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/chat/:agentId"
+            element={
+              <Suspense fallback={<div>Loading Chat Framework...</div>}>
+                <AgentSessionProvider>
+                  <ChatRoute />
+                </AgentSessionProvider>
+              </Suspense>
+            }
+          />
           <Route
             path="/chat"
             element={
               <Suspense fallback={<div>Loading Chat Framework...</div>}>
                 <AgentSessionProvider>
-                  <ChatInterface />
+                  <ChatRoute />
                 </AgentSessionProvider>
               </Suspense>
             }
@@ -108,37 +128,37 @@ function App() {
 
   return (
     <ChatProvider>
-      <Router> {/* Renamed BrowserRouter import */}
-         <ScrollToTop /> {/* <-- 2. ADD COMPONENT HERE */}
+      <Router>
+         <ScrollToTop />
         <div id="appContainer" className={`${orientation}-orientation`}>
-          <header id="appHeader">
-             {/* ... (keep existing header content) */}
-            <Link to="/" id="appHeaderLink" onClick={closeMenu}>
-              J.M. Portfolio
-            </Link>
-            {isMobile && (
-              <button
-                id="menuToggle"
-                onClick={toggleMenu}
-                aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
-                aria-expanded={isMenuOpen}
-              >
-                <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
-              </button>
-            )}
-          </header>
+          <div className={`crt-effect ${isMenuOpen ? 'menu-open' : ''}`}></div>
 
-          <main id="appMain">
-            <aside id="appSidebar" className={isMobile && isMenuOpen ? 'show' : ''}>
-              <Menu onItemClick={isMobile ? closeMenu : undefined} />
-            </aside>
-            <div id="appContent">
-              <AnimatedRoutes />
-            </div>
+          <Header
+            isMobile={isMobile}
+            onOpenChat={() => {
+              // open chat modal via context
+              const evt = new CustomEvent('open-chat');
+              window.dispatchEvent(evt);
+            }}
+            onToggleTheme={() => {
+              // simple theme toggle event; existing theme management can hook into this
+              const evt = new CustomEvent('toggle-theme');
+              window.dispatchEvent(evt);
+            }}
+            onOpenMenu={toggleMenu}
+          />
+
+          <Menu isMobile={isMobile} isMenuOpen={isMenuOpen} onLinkClick={closeMenu} />
+
+          <main id="mainContent" className={isMenuOpen ? 'menu-shifted' : ''}>
+            <AnimatedRoutes />
           </main>
 
           <Footer />
         </div>
+        <Suspense fallback={null}>
+          <ChatModal />
+        </Suspense>
       </Router>
     </ChatProvider>
   );

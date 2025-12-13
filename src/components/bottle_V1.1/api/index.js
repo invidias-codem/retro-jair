@@ -4,4 +4,4 @@
 export * from './gemini';
 
 // When we add the Vapi service, we'll export it from here as well:
-// export * from './vapi';
+export * from './vapi';

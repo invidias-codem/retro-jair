@@ -1,0 +1,10 @@
+/* Settings placeholder */
+.settings-page {
+  padding: 24px;
+  color: var(--text-main, #c9d1d9);
+}
+.settings-page h1 {
+  font-family: var(--font-header, inherit);
+  color: var(--text-header, #e6edf3);
+  margin-bottom: 12px;
+}

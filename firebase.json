@@ -26,6 +26,30 @@
     ],
     "rewrites": [
       {
+        "source": "/api/search",
+        "function": "search"
+      },
+      {
+        "source": "/api/vector-search",
+        "function": "vectorSearch"
+      },
+      {
+        "source": "/api/fetch",
+        "function": "fetch"
+      },
+      {
+        "source": "/api/calendar/create-event",
+        "function": "calendarCreateEvent"
+      },
+      {
+        "source": "/api/github/create-issue",
+        "function": "githubCreateIssue"
+      },
+      {
+        "source": "/api/email/send",
+        "function": "emailSend"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

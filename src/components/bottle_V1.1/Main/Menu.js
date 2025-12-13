@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect, memo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useCallback, useEffect, memo, useRef } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser,
@@ -10,6 +10,8 @@ import {
   faRobot
 } from '@fortawesome/free-solid-svg-icons';
 import './Menu.css'; // Original Menu.css, styles will be overridden by App.css for sidebar context
+import { lockBodyScroll } from '../common/scrollLock';
+import { useChat } from '../context/useContext';
 
 const SHADOW_COLORS = {
   red: '0 0 25px 5px rgba(204, 76, 61, 0.7)',
@@ -68,7 +70,7 @@ const TerminalLink = memo(({ isUnlocked, onClick, isDesktopSidebarCollapsed }) =
   </Link>
 ));
 
-const Menu = ({ onItemClick, isDesktopSidebarCollapsed }) => {
+const Menu = ({ onItemClick, isDesktopSidebarCollapsed, isMobile, isMenuOpen }) => {
   const [gameState, setGameState] = useState({
     pattern: [],
     currentStep: 0,
@@ -166,6 +168,59 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed }) => {
   }, [gameState.showSuccess]);
 
 
+  // Mobile side panel overlay + focus trap
+  const panelRef = useRef(null);
+  const restoreScrollRef = useRef(null);
+  const lastFocusRef = useRef(null);
+  const navigate = useNavigate();
+  const { openChatModal, toggleTheme } = useChat();
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    if (isMenuOpen) {
+      lastFocusRef.current = document.activeElement;
+      restoreScrollRef.current = lockBodyScroll();
+      setTimeout(() => {
+        const panel = panelRef.current;
+        if (!panel) return;
+        const focusable = panel.querySelector('button, [href], [tabindex]:not([tabindex="-1"])');
+        focusable?.focus();
+      }, 0);
+
+      const onKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          onItemClick?.();
+        }
+        if (e.key === 'Tab') {
+          const focusables = panelRef.current?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          if (!focusables || focusables.length === 0) return;
+          const els = Array.from(focusables);
+          const first = els[0];
+          const last = els[els.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      };
+      document.addEventListener('keydown', onKeyDown);
+      return () => {
+        document.removeEventListener('keydown', onKeyDown);
+        restoreScrollRef.current?.();
+        lastFocusRef.current?.focus?.();
+      };
+    }
+  }, [isMobile, isMenuOpen, onItemClick]);
+
+  const onOverlayClick = (e) => {
+    if (e.target === e.currentTarget) onItemClick?.();
+  };
+
   return (
     <div id="menuContainer"> {/* Styled by App.css when inside #appSidebar */}
       {gameState.countdown && (
@@ -180,59 +235,37 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed }) => {
         </div>
       )}
 
-      {/* This .menu-grid will be overridden by #appSidebar .menu-grid in App.css for sidebar context */}
-      {/* MODIFICATION: Added flexbox and overflow classes for mobile view */}
-      <div className="menu-grid flex items-center justify-center overflow-x-hidden md:justify-start">
-        {MENU_ITEMS.map(item => (
-          <MenuItem
-            key={item.id}
-            item={item}
-            isActive={gameState.activeButton === item.color}
-            onClick={(e) => {
-              if (gameState.isPlaying && gameState.canAcceptInput) {
-                handleGameClick(e, item.color);
-              } else if (!gameState.isPlaying) {
-                // Standard click, allow navigation and call onItemClick (for mobile menu)
-                handleStandardItemClick(e); // Pass event if needed, or just call
-              } else {
-                // Game is playing but input not yet accepted (e.g., during pattern display)
-                e.preventDefault();
-              }
-            }}
-            isDesktopSidebarCollapsed={isDesktopSidebarCollapsed}
-          />
-        ))}
+      {/* Mobile overlay side panel */}
+      {isMobile && isMenuOpen && (
+        <div className="menu-overlay" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle" onClick={onOverlayClick}>
+          <aside className="side-panel" ref={panelRef} onClick={(e) => e.stopPropagation()}>
+            <h2 id="mobileMenuTitle" className="sr-only">Navigation</h2>
 
-        {/* The ChatButton and TerminalLink will also be treated as .menu-item by App.css in sidebar context */}
-        <ChatButton
-            onClick={handleStandardItemClick}
-            isDesktopSidebarCollapsed={isDesktopSidebarCollapsed}
-        />
+            <nav className="menu-section" aria-label="Primary">
+              <NavLink to="/" end className="menu-link" onClick={onItemClick}>Home</NavLink>
+              <NavLink to="/about" className="menu-link" onClick={onItemClick}>About</NavLink>
+              <NavLink to="/projects" className="menu-link" onClick={onItemClick}>Projects</NavLink>
+              <NavLink to="/skills" className="menu-link" onClick={onItemClick}>Skills</NavLink>
+              <NavLink to="/services" className="menu-link" onClick={onItemClick}>Services</NavLink>
+              <NavLink to="/terminal" className="menu-link" onClick={onItemClick}>Terminal</NavLink>
+              <NavLink to="/contact" className="menu-link" onClick={onItemClick}>Contact</NavLink>
+            </nav>
 
-        {gameState.isUnlocked ? (
-          <TerminalLink
-            isUnlocked={gameState.isUnlocked}
-            onClick={handleStandardItemClick}
-            isDesktopSidebarCollapsed={isDesktopSidebarCollapsed}
-          />
-        ) : (
-          !gameState.isPlaying && (
-            // This button might need specific styling if it's to appear like other .menu-items in the sidebar
-            // Or it could be a more prominent button at the end.
-            // For sidebar consistency, you might want to make it a MenuItem-like component too.
-            // For now, it keeps its .start-game-button class from Menu.css
-            <div className="menu-item start-game-button-container"> {/* Wrapper to help with layout if needed */}
-                <button
-                className="start-game-button" // Styled by Menu.css
-                onClick={startGame}
-                aria-label="Start Memory Game"
-                >
-                Start Memory Game
-                </button>
-            </div>
-          )
-        )}
-      </div>
+            <hr />
+
+            <nav className="menu-section" aria-label="Actions">
+              <button className="menu-action" onClick={() => { openChatModal('tech-genie'); onItemClick?.(); }}>Chat</button>
+              <button className="menu-action" onClick={() => { toggleTheme(); }}>Theme</button>
+              <button className="menu-action" onClick={() => { navigate('/settings'); onItemClick?.(); }}>Settings</button>
+            </nav>
+
+            <button className="menu-close" onClick={onItemClick}>Close</button>
+          </aside>
+        </div>
+      )}
+
+      {/* Legacy grid hidden (new header handles primary navigation) */}
+      {/* <div className="menu-grid flex items-center justify-center overflow-x-hidden md:justify-start"> ... </div> */}
     </div>
   );
 };

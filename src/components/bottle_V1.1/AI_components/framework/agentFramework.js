@@ -8,6 +8,10 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { agentConfig as allAgentConfigs } from '../../config/agent-config';
 import { startChatSession, generateImage } from '../../api'; // Using the actual API functions
+import { SearchTool } from '../../tools/searchTool';
+import { WebFetchTool } from '../../tools/webFetch';
+import { IntegrationTool } from '../../tools/integrationTool';
+import { runToolOrchestration } from '../../tools/toolOrchestrator';
 
 // --- Message Normalization Utilities ---
 export const MessageRoles = {
@@ -171,31 +175,58 @@ export function createAgentAdapter(agentId) {
         },
 
         async sendMessage(parts = []) {
-            // Default behavior for Tech Genie and Bishop AI
+            const hasTools = !!(config.tools?.search || config.tools?.webFetch);
+
+            if (hasTools) {
+                const llmSend = async (contextMessages) => {
+                    const text = contextMessages.map(m => m.text).join('\n\n');
+                    return sendGeminiMessage([{ text }]);
+                };
+
+                const tools = {
+                    searchTool: config.tools?.search ? new SearchTool({}) : null,
+                    webFetchTool: config.tools?.webFetch ? new WebFetchTool({}) : null,
+                };
+
+                const { text } = await runToolOrchestration({
+                    llmSend,
+                    tools,
+                    config,
+                    userText: parts.filter(p => p.text).map(p => p.text).join(' '),
+                });
+
+                // Preserve Professor AI image generation behavior
+                if (agentId === 'professor-ai') {
+                    const textInput = parts.filter(p => p.text).map(p => p.text).join(' ');
+                    const wantsImage = config.api.imageModel
+                        && ['draw', 'diagram', 'sketch', 'illustrate', 'visualize'].some(k => textInput.toLowerCase().includes(k));
+                    let imageUrl = null;
+                    if (wantsImage) {
+                        try { imageUrl = await generateImage(textInput, config.api.imageModel); } catch (_) {}
+                    }
+                    return { text, imageUrl };
+                }
+
+                return { text };
+            }
+
+            // Default behavior when tools are disabled
             if (agentId === 'tech-genie' || agentId === 'bishop-ai') {
                 return sendGeminiMessage(parts);
             }
 
-            // Professor AI: Custom logic for image generation
             if (agentId === 'professor-ai') {
                 const textInput = parts.filter(p => p.text).map(p => p.text).join(' ');
-                const wantsImage = config.api.imageModel && ['draw', 'diagram', 'sketch', 'illustrate', 'visualize'].some(k => textInput.toLowerCase().includes(k));
-                
+                const wantsImage = config.api.imageModel
+                    && ['draw', 'diagram', 'sketch', 'illustrate', 'visualize'].some(k => textInput.toLowerCase().includes(k));
                 let imageUrl = null;
                 if (wantsImage) {
-                    try {
-                        imageUrl = await generateImage(textInput, config.api.imageModel);
-                    } catch (err) {
-                        console.error("Image generation failed:", err);
-                        // Non-fatal, will proceed to get a text response anyway
-                    }
+                    try { imageUrl = await generateImage(textInput, config.api.imageModel); } catch (_) {}
                 }
-                
                 const textResponse = await sendGeminiMessage(parts);
                 return { ...textResponse, imageUrl };
             }
 
-            // Fallback for any other agent
             return sendGeminiMessage(parts);
         },
 

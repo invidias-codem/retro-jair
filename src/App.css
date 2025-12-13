@@ -96,6 +96,12 @@ img { max-width: 100%; height: auto; display: block; }
   overflow: hidden; 
   /* Added min-height to ensure the container spans the viewport when body padding is removed */
   min-height: 100vh;
+  /* Ensure content sits below floating header */
+  padding-top: 56px;
+}
+
+@media (max-width: 768px) {
+  #appContainer { padding-top: 52px; }
 }
 
 #appHeader {
@@ -261,35 +267,83 @@ img { max-width: 100%; height: auto; display: block; }
 
 .agent-selector {
   display: flex;
-  gap: 5px;
-  padding: 0px;
-  border-bottom: 2px dashed var(--c-brand-line);
-  margin-bottom: 20px;
-  justify-content: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .selector-button {
-  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
   font-family: var(--font-family-header);
-  font-size: 1.1rem;
-  letter-spacing: 1px;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--c-brand-text-muted);
-  background-color: transparent;
+  background-color: rgba(60, 79, 118, 0.3);
   border: 1px solid var(--c-brand-line);
-  border-radius: var(--radius);
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 200ms ease;
+  white-space: nowrap;
+  min-height: 36px;
 }
+
 .selector-button:hover {
-  background-color: var(--c-bg-header);
+  background-color: rgba(60, 79, 118, 0.5);
   color: var(--c-text-header);
-}
-.selector-button.active {
-  background-color: var(--c-brand-accent);
-  color: var(--c-brand-text-dark);
   border-color: var(--c-brand-accent);
+}
+
+.selector-button.active {
+  background: linear-gradient(135deg, #f2cc60 0%, #ffd452 100%);
+  color: var(--c-brand-text-dark);
+  border-color: #f2cc60;
+  box-shadow: 0 2px 8px rgba(242, 204, 96, 0.3);
+}
+
+.selector-button.active:hover {
+  box-shadow: 0 4px 12px rgba(242, 204, 96, 0.4);
+}
+
+.agent-emoji {
+  font-size: 1.2rem;
+  display: inline-block;
+}
+
+.agent-label {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Mobile optimization for agent selector */
+@media (max-width: 640px) {
+  .agent-selector {
+    gap: 0.4rem;
+  }
+
+  .selector-button {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+    min-height: 32px;
+  }
+
+  .agent-emoji {
+    font-size: 1rem;
+  }
+
+  .agent-label {
+    display: none;
+  }
+
+  .selector-button.active .agent-label {
+    display: inline;
+  }
 }
 
 /* --- Optimized Chat Open Button --- */

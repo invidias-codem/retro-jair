@@ -1,12 +1,12 @@
 .speaker-banner {
-    background-color: #000;
-    color: #FFC72C; /* McDonald's yellow */
+    background-color: #0b1220; /* deep navy */
+    color: #d8efff; /* light blueprint ink */
     overflow: hidden;
     width: 100%;
     height: 40px;
     position: relative;
-    border-top: 2px solid #DA291C; /* McDonald's red */
-    border-bottom: 2px solid #DA291C;
+    border-top: 2px solid #35c0ff; /* cyan accent */
+    border-bottom: 2px solid #35c0ff;
   }
   
   .speaker-content {
@@ -18,11 +18,11 @@
   .speaker-message {
     display: inline-block;
     padding-right: 50px; /* Space between messages */
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 1.2rem;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.05em;
   }
   
   @keyframes scroll {

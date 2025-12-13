@@ -1,7 +1,15 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
 import { agentConfig } from '../config/agent-config';
 
-const ChatContext = createContext();
+const ChatContext = createContext(null);
+
+export const useChat = () => {
+  const context = useContext(ChatContext);
+  if (!context) {
+    throw new Error('useChat must be used within a ChatProvider');
+  }
+  return context;
+};
 
 export const ChatProvider = ({ children }) => {
   const [activeAgentId, setActiveAgentId] = useState(null);
@@ -12,6 +20,8 @@ export const ChatProvider = ({ children }) => {
   
   const [theme, setTheme] = useState(null);
   const [userSubscription, setUserSubscription] = useState('free');
+
+  // --- REMOVED: The call to useChatAgent is removed to break the circular dependency ---
 
   const openChatModal = useCallback((agentId) => {
     if (agentConfig.hasAgent(agentId)) {
@@ -31,14 +41,23 @@ export const ChatProvider = ({ children }) => {
   }, [theme]);
 
   const closeChatModal = useCallback(() => {
+    // Reset the agent ID immediately. This tells useChatAgent to clean up.
+    setActiveAgentId(null); 
+    
+    // Now, close the modal.
     setIsModalOpen(false);
     
     // --- OPTIMIZATION 3: Show the button again when the modal closes ---
     setIsChatButtonVisible(true);
-    
-    // Reset active agent after a delay to allow modal fade-out
-    setTimeout(() => setActiveAgentId(null), 300);
   }, []);
+
+  const toggleChatModal = useCallback((agentId) => {
+    if (isModalOpen) {
+      closeChatModal();
+    } else {
+      openChatModal(agentId);
+    }
+  }, [isModalOpen, openChatModal, closeChatModal]);
 
   const toggleTheme = useCallback(() => {
     if (!activeAgentId) return;
@@ -72,13 +91,16 @@ export const ChatProvider = ({ children }) => {
     // Actions
     openChatModal,
     closeChatModal,
+    toggleChatModal,
     toggleTheme,
     updateSubscription,
     
     // Helper methods
     getAgentById: agentConfig.getById,
     hasAgent: agentConfig.hasAgent,
-    getAgentByMode: agentConfig.getByMode
+    getAgentByMode: agentConfig.getByMode,
+
+    // --- REMOVED: Chat session state is no longer managed here ---
   };
 
   return (
@@ -86,12 +108,4 @@ export const ChatProvider = ({ children }) => {
       {children}
     </ChatContext.Provider>
   );
-};
-
-export const useChat = () => {
-  const context = useContext(ChatContext);
-  if (context === undefined) {
-    throw new Error('useChat must be used within a ChatProvider');
-  }
-  return context;
 };

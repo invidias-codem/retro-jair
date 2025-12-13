@@ -2,16 +2,30 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap'); 
 
-/* --- Retro Color Palette & Base --- */
+/* --- Blueprint Palette & Base --- */
 :root {
-  --home-bg: #000000;
-  --home-fg: #00ff00; 
-  --home-accent-1: #ff00ff; 
-  --home-accent-2: #00ffff; 
-  --home-border-color: #008f11; /* Darker Green for borders */
-  --home-box-bg: #0a0a14; /* Slightly different dark bg for boxes */
-  --home-font: 'VT323', monospace;
-  --home-mono-font: 'Roboto Mono', monospace;
+  /* Blueprint aesthetic palette */
+  --home-bg: #0b1220;            /* deep navy */
+  --home-fg: #d8efff;            /* light blueprint ink */
+  --home-accent-1: #35c0ff;      /* cyan accent */
+  --home-accent-2: #7fd1ff;      /* soft cyan */
+  --home-border-color: #1e4e78;  /* blueprint line */
+  --home-box-bg: #0e1a2b;        /* darker panel */
+
+  /* Typography: technical monospace */
+  --home-font: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --home-mono-font: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Storytelling additions tuned to blueprint */
+  --story-dim: rgba(3, 9, 20, 0.6);
+  --story-glow-ai: #35c0ff;
+  --story-glow-projects: #66a6ff;
+  --story-glow-skills: #7ee0ff;
+  --story-glow-terminal: #3df7ff;
+  --story-glow-about: #9cc9ff;
+  --story-glow-services: #8be4ff;
+  --story-glow-contact: #57b7ff;
+  --story-path: rgba(80, 200, 255, 0.9);
 }
 
 /* --- Main Container --- */
@@ -27,22 +41,90 @@
   box-sizing: border-box;
 }
 
+/* Story mode root flag that JS can toggle */
+.home-bento-container.story-seq {
+  overflow: clip; /* keep overlays bounded */
+}
+
+/* Dim the world while focusing a node */
+.story-mask {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, var(--story-dim) 65%);
+  mix-blend-mode: multiply;
+  opacity: 0; /* GSAP -> to 1 during focus */
+  pointer-events: none;
+  z-index: 60;
+}
+
+/* Optional vignette edges in story mode */
+.story-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,0,0,0) 60%, rgba(3,9,20,0.5) 100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 55;
+}
+
+/* Container for route connectors (SVG) */
+.route-connections {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 58;
+}
+
+/* SVG path default (hidden to allow draw with GSAP) */
+.route-path {
+  stroke: var(--story-path);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-dasharray: 4 8; /* blueprint dashed lines */
+  fill: none;
+  opacity: 0; /* GSAP can fade in + drawSVG or stroke-dasharray tween */
+}
+
+/* Label that accompanies focus for each route */
+.route-label {
+  position: absolute;
+  padding: 0.25rem 0.5rem;
+  background: rgba(10, 10, 20, 0.85);
+  border: 1px solid var(--home-border-color);
+  color: var(--home-fg);
+  font-family: var(--home-mono-font);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  border-radius: 2px;
+  opacity: 0; /* GSAP -> 1 when showing narration */
+  transform: translateY(6px);
+  z-index: 70;
+}
+
+/* Utility class GSAP can toggle */
+.is-active { opacity: 1 !important; }
+.is-hidden { opacity: 0 !important; }
+.is-dimmed { filter: brightness(0.5) saturate(0.8); }
+
 /* Optional: Keep CRT effect if desired */
 .home-bento-container::after {
   content: " ";
   display: block;
   position: absolute; 
   inset: 0;
-  background: 
-    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+  background:
+    linear-gradient(rgba(255,255,255,0.02) 1px, rgba(0,0,0,0) 1px) top/100% 24px,
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, rgba(0,0,0,0) 1px) left/24px 100%;
   z-index: 100; 
-  background-size: 100% 2px;
   pointer-events: none;
-  opacity: 0.7;
-  animation: crt-flicker 0.1s infinite alternate;
+  opacity: 0.5;
+  animation: blueprint-float 10s linear infinite;
 }
-@keyframes crt-flicker {
-    0% { opacity: 0.7; } 50% { opacity: 0.75; } 100% { opacity: 0.7; }
+@keyframes blueprint-float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(24px); }
 }
 
 /* =======================================
@@ -85,7 +167,7 @@
    ======================================= */
 .bento-box {
   background-color: var(--home-box-bg);
-  border: 2px solid var(--home-border-color);
+  border: 1.5px solid var(--home-border-color);
   padding: 1.5rem;
   transition: all 0.3s ease;
   position: relative;
@@ -94,12 +176,52 @@
   flex-direction: column; /* Stack content vertically */
   text-decoration: none;
   color: var(--home-fg);
-  box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.15); /* Inner glow */
+  box-shadow: inset 0 0 0 1px rgba(127, 209, 255, 0.08), 0 0 0 0 rgba(53, 192, 255, 0); /* subtle blueprint */
+}
+
+/* Treat each bento as a route node targetable by [data-route] */
+.bento-box.route-node {
+  isolation: isolate; /* keep glow overlay above contents only */
+}
+
+/* Overlay glow that GSAP can pulse */
+.route-glow {
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(53,192,255,0.20), rgba(0,0,0,0) 70%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0; /* GSAP animates to ~0.8 during focus */
+  transform: scale(0.96);
+  z-index: 1;
+  outline: 1px dashed rgba(127, 209, 255, 0.1);
+  outline-offset: -10px;
+}
+
+/* Per-route color tints for the glow */
+.route-node[data-route="ai"] .route-glow { background: radial-gradient(60% 60% at 50% 50%, rgba(53,192,255,0.25), rgba(0,0,0,0) 70%); }
+.route-node[data-route="projects"] .route-glow { background: radial-gradient(60% 60% at 50% 50%, rgba(102,166,255,0.25), rgba(0,0,0,0) 70%); }
+.route-node[data-route="skills"] .route-glow { background: radial-gradient(60% 60% at 50% 50%, rgba(126,224,255,0.25), rgba(0,0,0,0) 70%); }
+.route-node[data-route="terminal"] .route-glow { background: radial-gradient(60% 60% at 50% 50%, rgba(61,247,255,0.25), rgba(0,0,0,0) 70%); }
+.route-node[data-route="about"] .route-glow { background: radial-gradient(60% 60% at 50% 50%, rgba(156,201,255,0.25), rgba(0,0,0,0) 70%); }
+.route-node[data-route="services"] .route-glow { background: radial-gradient(60% 60% at 50% 50%, rgba(139,228,255,0.25), rgba(0,0,0,0) 70%); }
+.route-node[data-route="contact"] .route-glow { background: radial-gradient(60% 60% at 50% 50%, rgba(87,183,255,0.25), rgba(0,0,0,0) 70%); }
+
+/* When a node is focused in the story */
+.route-node.is-focused {
+  border-color: var(--home-accent-1);
+  box-shadow: 0 0 18px var(--home-accent-1), inset 0 0 15px rgba(127, 209, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+/* De-emphasize non-focused nodes during story */
+.story-seq .route-node.is-muted {
+  filter: grayscale(0.2) brightness(0.7) contrast(0.9);
 }
 
 .bento-box:hover {
   border-color: var(--home-accent-1);
-  box-shadow: 0 0 15px var(--home-accent-1), inset 0 0 15px rgba(255, 0, 255, 0.2);
+  box-shadow: 0 0 24px rgba(53, 192, 255, 0.25), inset 0 0 20px rgba(127, 209, 255, 0.12);
   transform: translateY(-3px); /* Slight lift effect */
 }
 
@@ -108,6 +230,7 @@
   color: var(--home-accent-2);
   margin-bottom: 0.5rem;
   align-self: flex-start; /* Align icon to the top left */
+  text-shadow: 0 0 8px rgba(127, 209, 255, 0.25);
 }
 
 .box-title {
@@ -115,17 +238,19 @@
   color: var(--home-fg);
   margin: 0 0 0.5rem 0;
   text-transform: uppercase;
-  text-shadow: 0 0 5px var(--home-fg);
+  letter-spacing: 0.04em;
 }
 .box-subtitle {
     font-size: 1rem;
     color: var(--home-accent-2);
     margin: 0 0 1rem 0;
+    letter-spacing: 0.03em;
 }
 .box-content {
     font-family: var(--home-mono-font);
-    font-size: 1rem;
-    color: #ccc; /* Lighter color for content text */
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: #b6d7f5; /* blueprint text */
     margin-bottom: 1rem;
     flex-grow: 1; /* Allow content to push CTA down */
 }
@@ -157,24 +282,25 @@
   align-self: flex-end; /* Position CTA at the bottom right */
   margin-top: auto; /* Push CTA to bottom */
   padding: 0.5rem 1rem;
-  background-color: var(--home-border-color);
-  color: var(--home-bg);
+  background-color: transparent;
+  color: var(--home-accent-1);
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
   transition: all 0.2s ease;
-  border: 1px solid var(--home-fg);
+  border: 1px dashed var(--home-accent-1);
 }
 
 .bento-box:hover .box-cta {
-  background-color: var(--home-accent-1);
+  background-color: rgba(53, 192, 255, 0.08);
   border-color: var(--home-accent-1);
-  color: #fff;
+  color: var(--home-fg);
 }
 
 /* Specific Box Styling (Example: Welcome Box) */
 .bento-box.welcome {
-    /* Larger text or different color */
+    /* Blueprint callout */
     color: var(--home-accent-1);
+    background-image: linear-gradient(135deg, rgba(53, 192, 255, 0.06) 0%, rgba(0,0,0,0) 45%);
 }
 .bento-box.welcome .box-title {
     font-size: 2rem;
@@ -247,4 +373,10 @@
     animation: none !important;
     transform: none !important;
   }
+  /* Storytelling reduced motion: use static states only */
+  .story-mask, .story-vignette, .route-glow, .route-label, .route-path {
+    transition: none !important;
+    animation: none !important;
+  }
+  .route-path { opacity: 1; }
 }

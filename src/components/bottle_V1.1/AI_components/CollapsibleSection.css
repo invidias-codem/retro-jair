@@ -1,0 +1,142 @@
+/* CollapsibleSection.css - Expandable content sections with smooth animations */
+
+.collapsible-section {
+  margin: 0.75rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(60, 79, 118, 0.2);
+  border: 1px solid rgba(95, 125, 180, 0.3);
+}
+
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(60, 79, 118, 0.3);
+  border: none;
+  color: #f2cc60;
+  font-weight: 600;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: all 200ms ease;
+  text-align: left;
+}
+
+.collapsible-header:hover {
+  background: rgba(60, 79, 118, 0.5);
+}
+
+.collapsible-header:focus {
+  outline: 2px solid #f2cc60;
+  outline-offset: -2px;
+}
+
+.collapsible-title {
+  flex: 1;
+}
+
+.collapsible-icon {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  transition: transform 300ms ease;
+}
+
+.collapsible-icon.open {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  max-height: 200px;
+  overflow: hidden;
+  transition: max-height 300ms ease, opacity 300ms ease;
+  opacity: 0.8;
+}
+
+.collapsible-content.open {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.collapsible-inner {
+  padding: 1rem;
+  color: #e0e5f0;
+  line-height: 1.6;
+}
+
+.collapsible-inner p {
+  margin: 0.5rem 0;
+}
+
+.collapsible-inner p:first-child {
+  margin-top: 0;
+}
+
+.collapsible-inner p:last-child {
+  margin-bottom: 0;
+}
+
+/* Mobile optimization */
+@media (max-width: 640px) {
+  .collapsible-section {
+    margin: 0.5rem 0;
+    border-radius: 6px;
+  }
+
+  .collapsible-header {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9em;
+  }
+
+  .collapsible-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .collapsible-inner {
+    padding: 0.75rem;
+    font-size: 0.95em;
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .collapsible-header {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .collapsible-inner {
+    padding: 0.9rem;
+  }
+}
+
+/* Desktop optimization */
+@media (min-width: 1024px) {
+  .collapsible-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .collapsible-inner {
+    padding: 1rem;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .collapsible-header,
+  .collapsible-content,
+  .collapsible-icon {
+    transition: none;
+  }
+
+  .collapsible-icon.open {
+    transform: none;
+  }
+}
+
+/* Accessibility */
+.collapsible-header:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
