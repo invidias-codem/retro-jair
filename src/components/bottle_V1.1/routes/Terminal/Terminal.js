@@ -5,16 +5,61 @@ import journalEntries, { getAllEntries } from '../../TermJourn/journalLogs';
 import TypingText from './TypingText'; // Import the new component
 import './Terminal.css';        // Your main terminal styles
 import './TypingText.css';      // Import styles for TypingText (or ensure it's globally available)
+const JournalEntryRow = React.memo(({ entry, isSelected, onClick }) => {
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onClick(entry);
+      }
+    },
+    [onClick, entry]
+  );
+
+  if (!entry || typeof entry !== 'object' || !entry.id) {
+    return (
+      <div className="journal-entry-list-item error" role="alert">
+        <span>INVALID ENTRY DATA</span>
+      </div>
+    );
+  }
+
+  const {
+    id = 'N/A',
+    date = 'Unknown Date',
+    title = 'Untitled Entry',
+  } = entry;
+
+  const displayDate = new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  return (
+    <div
+      className={`journal-entry-list-item${isSelected ? ' selected' : ''}`}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      aria-label={`Journal entry: ${title}, dated ${displayDate}`}
+      title={`Select to view: ${title}`}
+    >
+      <span>{id}</span>
+      <span>{displayDate}</span>
+      <span>{title}</span>
+    </div>
+  );
+});
+JournalEntryRow.displayName = 'JournalEntryRow';
 
 const Terminal = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showJournal, setShowJournal] = useState(false);
   const [entries, setEntries] = useState([]);
-  const [selectedEntryId, setSelectedEntryId] = useState(null); // To highlight selected item
-
-  // New state for the content to be typed
+  const [selectedEntryId, setSelectedEntryId] = useState(null);
   const [activeTypingContent, setActiveTypingContent] = useState('');
-  // Key to force re-render of TypingText when new content is selected
   const [typingInstanceKey, setTypingInstanceKey] = useState(0);
 
   useEffect(() => {
@@ -35,12 +80,10 @@ const Terminal = () => {
 
   const handleEntrySelect = useCallback((entry) => {
     setSelectedEntryId(entry.id);
-    // Format the content for typing. Explicitly use '\n' for newlines.
     const formattedContent = `ENTRY ID: ${entry.id}\nDATE    : ${new Date(entry.date).toLocaleDateString()} ${new Date(entry.date).toLocaleTimeString()}\nTITLE   : ${entry.title}\n----------------------------------------\n${entry.content}`;
     setActiveTypingContent(formattedContent);
-    setTypingInstanceKey(prevKey => prevKey + 1); // Increment key to reset TypingText
+    setTypingInstanceKey((prevKey) => prevKey + 1);
   }, []);
-
 
   return (
     <div className="terminal-container">
@@ -66,45 +109,33 @@ const Terminal = () => {
               <div className="journal-section">
                 <div className="journal-header-title">SYSTEM JOURNAL LOGS - SELECT AN ENTRY TO VIEW</div>
                 <div className="entries-list">
-                  {entries.length > 0 ? entries.map(entry => (
-                    <div
+                  {entries.length > 0 ? entries.map((entry) => (
+                    <JournalEntryRow
                       key={entry.id}
-                      className={`journal-entry-list-item ${selectedEntryId === entry.id ? 'selected' : ''}`}
-                      onClick={() => handleEntrySelect(entry)}
-                      role="button"
-                      tabIndex="0"
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handleEntrySelect(entry);
-                        }
-                      }}
-                    >
-                      <span>{entry.id}</span>
-                      <span>{new Date(entry.date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
-                      <span>{entry.title}</span>
-                    </div>
+                      entry={entry}
+                      isSelected={selectedEntryId === entry.id}
+                      onClick={handleEntrySelect}
+                    />
                   )) : <div className="terminal-line">NO JOURNAL ENTRIES FOUND.</div>}
                 </div>
               </div>
             )}
           </div>
 
-          {/* Area for displaying the typed journal content */}
           {activeTypingContent && !isLoading && showJournal && (
             <div className="typed-journal-output-area">
               <div className="journal-output-section-header">--- SELECTED JOURNAL ENTRY ---</div>
               <TypingText
-                key={typingInstanceKey} // Use key to reset component on content change
+                key={typingInstanceKey}
                 fullText={activeTypingContent}
-                typingSpeed={25} // Adjust speed (ms per character)
+                typingSpeed={25}
               />
             </div>
           )}
 
           {!isLoading && (
             <div className="terminal-command-line">
-              <span>CMD&gt;</span> <span className="typing-effect-cursor">_</span> {/* Re-using cursor style */}
+              <span>CMD&gt;</span> <span className="typing-effect-cursor">_</span>
             </div>
           )}
         </div>

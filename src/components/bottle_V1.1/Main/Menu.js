@@ -243,6 +243,7 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed, isMobile, isMenuOpen }) 
 
             <nav className="menu-section" aria-label="Primary">
               <NavLink to="/" end className="menu-link" onClick={onItemClick}>Home</NavLink>
+              <NavLink to="/autobiography" className="menu-link" onClick={onItemClick}>Autobiography</NavLink>
               <NavLink to="/about" className="menu-link" onClick={onItemClick}>About</NavLink>
               <NavLink to="/projects" className="menu-link" onClick={onItemClick}>Projects</NavLink>
               <NavLink to="/skills" className="menu-link" onClick={onItemClick}>Skills</NavLink>

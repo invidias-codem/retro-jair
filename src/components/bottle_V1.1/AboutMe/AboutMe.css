@@ -121,56 +121,76 @@
 
 .journal-chapter-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.45rem;
 }
 
 .journal-chapter-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.7rem 0.85rem;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid var(--glow-cyan);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 0.65rem;
+  row-gap: 0.2rem;
+  align-items: center;
+  padding: 0.5rem 0.7rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 255, 0.22);
   color: var(--text-green);
-  text-align: left;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
 }
 
 .journal-chapter-card:hover {
   transform: translateY(-1px);
-  background: rgba(0, 255, 255, 0.08);
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.25);
+  background: rgba(0, 255, 255, 0.06);
+  border-color: rgba(0, 255, 255, 0.7);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.16);
 }
 
 .journal-chapter-card.selected {
-  background: rgba(0, 255, 255, 0.14);
+  background: rgba(0, 255, 255, 0.1);
   border-color: var(--glow-magenta);
-  box-shadow: 0 0 14px rgba(255, 0, 255, 0.35);
+  box-shadow: 0 0 12px rgba(255, 0, 255, 0.22);
 }
 
 .journal-chapter-meta {
+  grid-column: 1;
+  grid-row: 1 / span 2;
   display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  color: var(--fg-muted, #9fb3cf);
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 6.5rem;
 }
 
 .journal-chapter-id {
   color: var(--glow-magenta);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+}
+
+.journal-chapter-date {
+  color: var(--fg-muted, #9fb3cf);
+  font-size: 0.82rem;
 }
 
 .journal-chapter-title {
-  font-size: 1.15rem;
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 1rem;
   color: var(--text-green);
+  line-height: 1.25;
 }
 
 .journal-chapter-status {
-  font-size: 0.85rem;
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font-size: 0.7rem;
   color: var(--glow-cyan);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
+  opacity: 0.9;
+  white-space: nowrap;
 }
 
 /* --- Detail View --- */

@@ -3,59 +3,61 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { GameCanvas } from './GameCanvas';
 import { GameMessages } from './GameMessages';
 import { GameControls } from './GameControls';
+import MinigameCanvas from './minigame/MinigameCanvas';
+import RPGViewport from './rpg/RPGViewport';
 import './Skills.css';
 import { GAME_CONFIG } from './gameLogic';
 
+const SKILLS_CONTENT = [
+  { group: 'frontend', items: ['React', 'JavaScript', 'TypeScript', 'Vue.js', 'HTML/CSS'] },
+  { group: 'backend', items: ['Node.js', 'Python', 'REST API', 'GraphQL'] },
+  { group: 'data', items: ['SQL', 'MongoDB'] },
+  { group: 'cloud', items: ['AWS', 'Docker'] },
+  { group: 'methodology', items: ['Testing', 'Git'] }
+];
+
 const SkillGame = () => {
-    const [gameState, setGameState] = useState('idle');
+    const [mode, setMode] = useState('content'); // 'content' | 'minigame' | 'rpg'
     const [isMobile, setIsMobile] = useState(false);
-    const [countdown, setCountdown] = useState(10);
-    const gameInstanceRef = useRef(null);
+    const [gameState, setGameState] = useState('idle');
     const [score, setScore] = useState(0);
     const [difficultyLevel, setDifficultyLevel] = useState(1);
     const [currentWinningScore, setCurrentWinningScore] = useState(
         GAME_CONFIG.BASE_WINNING_SCORE + (difficultyLevel - 1) * GAME_CONFIG.WINNING_SCORE_DIFFICULTY_MULTIPLIER
     );
-    
-    // --- NEW: Audio State ---
+
     const [isMuted, setIsMuted] = useState(false);
     const audioRef = useRef(null);
-    // --- END NEW ---
+    const minigameRef = useRef(null);
 
-    // Ref to store the countdown value at the moment the game ends, for logging purposes
-    const initialCountdownForLogRef = useRef(countdown);
+    // Keep existing countdown/replay logic for minigame mode
+    const initialCountdownForLogRef = useRef(10);
 
     useEffect(() => {
         setCurrentWinningScore(GAME_CONFIG.BASE_WINNING_SCORE + (difficultyLevel - 1) * GAME_CONFIG.WINNING_SCORE_DIFFICULTY_MULTIPLIER);
     }, [difficultyLevel]);
 
-    const handleStateChange = useCallback(({ gameOver, won, score: newScore }) => {
-        setScore(newScore);
-        if (gameOver) {
-            setGameState('lost');
-            setCountdown(10); // Reset countdown for the message
-        } else if (won) {
+    const handleMinigameEnd = useCallback(({ kind, score: endScore = 0 }) => {
+        setScore(endScore);
+        if (kind === 'won') {
             setGameState('won');
-            setDifficultyLevel(prevDifficulty => prevDifficulty + 1);
-            setCountdown(10); // Reset countdown for the message
+            setDifficultyLevel(prev => prev + 1);
+        } else if (kind === 'lost' || kind === 'errored') {
+            setGameState('lost');
         }
-    }, []); // No dependencies needed as it only uses setters or prev values
+    }, []);
 
     const handleStart = useCallback(() => {
         console.log("Skills.js: handleStart called");
         setGameState('playing');
-        // Countdown is primarily for win/loss messages, reset by handleStateChange.
     }, []);
 
     const handleReplay = useCallback(() => {
-        console.log("Skills.js: handleReplay called");
-        if (gameInstanceRef.current?.resetGame) {
-            gameInstanceRef.current.resetGame(difficultyLevel);
+        if (minigameRef.current?.reset) {
+            minigameRef.current.reset(difficultyLevel);
             setGameState('playing');
-            // Countdown state will be reset by handleStateChange when the next game ends.
         } else {
-            console.error("Skills.js: gameInstanceRef.current.resetGame is not available. Attempting fallback.");
-            setGameState('idle'); // Go to idle then playing to try to force re-mount/re-init of GameCanvas
+            setGameState('idle');
             setTimeout(() => setGameState('playing'), 0);
         }
     }, [difficultyLevel]);
@@ -64,116 +66,95 @@ const SkillGame = () => {
         const handleResize = () => {
             const isMobileView = window.innerWidth <= 768;
             setIsMobile(isMobileView);
-            gameInstanceRef.current?.handleResize?.();
         };
-        handleResize(); // Initial check
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Effect to update the initialCountdownForLogRef when game state changes to won/lost
-    useEffect(() => {
-        if (gameState === 'won' || gameState === 'lost') {
-            // `countdown` state would have just been set to 10 by `handleStateChange`
-            initialCountdownForLogRef.current = countdown;
-        }
-    }, [gameState, countdown]); // This effect correctly depends on countdown for updating the ref
-
-    // Countdown timer for win/loss states and auto-restart
-    // This is the effect previously around line 100
     useEffect(() => {
         let timerId = null;
-
         if (gameState === 'won' || gameState === 'lost') {
-            // Log the countdown value that was current when this state began
             console.log(`Skills.js: Game ended (${gameState}). Starting countdown from ${initialCountdownForLogRef.current}.`);
-
             timerId = setInterval(() => {
                 setCountdown(prevCountdown => {
                     if (prevCountdown <= 1) {
                         clearInterval(timerId);
                         console.log("Skills.js: Countdown finished. Calling handleReplay.");
                         handleReplay();
-                        return 0; // Visually show 0 briefly
+                        return 0;
                     }
                     return prevCountdown - 1;
                 });
             }, 1000);
         }
-        // No else block needed to clear timer; the cleanup function handles it.
-
-        return () => { // Cleanup function
+        return () => {
             if (timerId) {
                 clearInterval(timerId);
-                // console.log("Skills.js: Countdown timer cleared."); // Optional: for debugging
             }
         };
-    }, [gameState, handleReplay]); // `countdown` is NOT needed here for the timer logic itself due to `setCountdown(prev => ...)`.
-                                   // `initialCountdownForLogRef.current` is used for the log, which is stable within this effect's run.
-
-    // --- NEW: Audio Playback Effect ---
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.muted = isMuted;
-            if (gameState === 'playing' && audioRef.current.paused) {
-                audioRef.current.play().catch(e => console.warn("Audio play failed:", e));
-            } else if (gameState !== 'playing' && !audioRef.current.paused) {
-                audioRef.current.pause();
-                // audioRef.current.currentTime = 0; // Optional: reset music on game over
-            }
-        }
-    }, [gameState, isMuted]);
-    // --- END NEW ---
-    
-    // --- NEW: Toggle Mute Function ---
-    const toggleMute = () => {
-        setIsMuted(prevMuted => !prevMuted);
-    };
-    // --- END NEW ---
-
-    // GameCanvas instance cleanup on unmount
-    useEffect(() => {
-        const gameInst = gameInstanceRef.current;
-        return () => {
-            if (gameInst?.cleanup) {
-                console.log("Skills.js: Cleaning up game instance on unmount");
-                gameInst.cleanup();
-            }
-        };
-    }, []); // Empty dependency array means this runs once on mount and cleans up on unmount.
+    }, [gameState, handleReplay]);
 
     return (
-        <div className={`skill-game ${gameState === 'idle' ? 'idle' : ''}`}>
-            {/* --- NEW: Audio Element and Mute Button --- */}
+        <div className={`skill-game ${mode === 'minigame' ? 'minigame-mode' : ''}`}>
             <audio ref={audioRef} src="/retro.wav" loop preload="auto" />
-            <button onClick={toggleMute} className="mute-button" aria-label="Toggle Mute">
+            <button onClick={() => setIsMuted(m => !m)} className="mute-button" aria-label="Toggle Mute">
                 {isMuted ? 'Unmute' : 'Mute'}
             </button>
-            {/* --- END NEW --- */}
-            
-            <GameMessages
-                gameState={gameState}
-                countdown={countdown}
-                isMobile={isMobile}
-                currentWinningScore={currentWinningScore}
-                score={score}
-            />
-            <div className="canvas-container">
-                {gameState !== 'idle' && (
-                    <GameCanvas
-                        onStateChange={handleStateChange}
+
+            <div className="mode-bar">
+                <button className="mode-button active" onClick={() => setMode('content')}>Skills</button>
+                <button className="mode-button" onClick={() => setMode('minigame')}>Skill Game</button>
+                <button className="mode-button" onClick={() => setMode('rpg')}>RPG Explorer</button>
+            </div>
+
+            {mode === 'content' && (
+                <div className="skills-content">
+                    <h2>Skills</h2>
+                    <p>These are the skills powering my work.</p>
+                    <div className="skills-grid">
+                        {SKILLS_CONTENT.map(group => (
+                            <div className="skills-group" key={group.group}>
+                                <h3>{group.group}</h3>
+                                <ul>
+                                    {group.items.map(item => <li key={item}>{item}</li>)}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {mode === 'minigame' && (
+                <>
+                    <GameMessages
+                        gameState={gameState}
+                        countdown={10}
+                        isMobile={isMobile}
+                        currentWinningScore={currentWinningScore}
+                        score={score}
+                    />
+                    <div className="canvas-container">
+                        {gameState !== 'idle' && (
+                            <MinigameCanvas
+                                ref={minigameRef}
+                                difficultyLevel={difficultyLevel}
+                                onEnd={handleMinigameEnd}
+                                onScore={setScore}
+                                muted={isMuted}
+                            />
+                        )}
+                    </div>
+                    <GameControls
+                        onReplay={handleReplay}
+                        onStart={handleStart}
                         gameState={gameState}
                         difficultyLevel={difficultyLevel}
-                        ref={gameInstanceRef}
                     />
-                )}
-            </div>
-            <GameControls
-                onReplay={handleReplay}
-                onStart={handleStart}
-                gameState={gameState}
-                difficultyLevel={difficultyLevel}
-            />
+                </>
+            )}
+
+            {mode === 'rpg' && <RPGViewport />}
         </div>
     );
 };

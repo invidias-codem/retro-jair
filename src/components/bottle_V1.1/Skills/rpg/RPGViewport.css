@@ -1,0 +1,135 @@
+/* RPG Retro Viewport */
+.rpg-shell {
+  background-color: #000015;
+  color: #00ff41;
+  font-family: 'VT323', 'Courier New', monospace;
+  border: 3px solid #00ffff;
+  border-radius: 12px;
+  box-shadow: 0 0 18px rgba(0, 255, 255, 0.25);
+  max-width: 840px;
+  margin: 2rem auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rpg-viewport {
+  background-color: #00001a;
+  border: 2px solid rgba(0, 255, 255, 0.35);
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 220px;
+}
+
+.rpg-grid {
+  display: grid;
+  gap: 2px;
+}
+
+.rpg-row {
+  display: flex;
+  gap: 2px;
+}
+
+.rpg-tile {
+  min-width: 48px;
+  min-height: 32px;
+  border: 1px solid rgba(0, 255, 255, 0.08);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: rgba(0, 255, 255, 0.55);
+  font-size: 0.9rem;
+  padding: 6px 8px;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.rpg-tile.player {
+  color: #00ff41;
+  border-color: rgba(0, 255, 255, 0.6);
+  background-color: rgba(0, 255, 0, 0.12);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.35);
+}
+
+.rpg-tile.chapter {
+  color: #ff00ff;
+  border-color: rgba(255, 0, 255, 0.6);
+  background-color: rgba(255, 0, 255, 0.1);
+}
+
+.rpg-tile.skill {
+  color: #ffdd57;
+  border-color: rgba(255, 221, 87, 0.6);
+  background-color: rgba(255, 221, 87, 0.1);
+}
+
+.rpg-tile.void {
+  background-color: rgba(0, 0, 0, 0.85);
+  border-color: rgba(0, 255, 255, 0.15);
+  color: rgba(0, 255, 255, 0.28);
+}
+
+.rpg-dialog {
+  background-color: rgba(0, 0, 0, 0.75);
+  border: 2px solid #ff00ff;
+  border-radius: 10px;
+  padding: 1.25rem;
+  color: #00ff41;
+  box-shadow: 0 0 12px rgba(255, 0, 255, 0.25);
+}
+
+.rpg-dialog-title {
+  color: #ff00ff;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rpg-dialog-body {
+  white-space: pre-line;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.rpg-dialog-footer {
+  margin-top: 0.5rem;
+  color: #00ffff;
+  font-size: 1rem;
+}
+
+.rpg-dialog-button,
+.rpg-prompt {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #00ffff;
+  color: #000;
+  background-color: #00ffff;
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.rpg-prompt {
+  align-self: flex-start;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #00ffff;
+}
+
+.rpg-hud {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(0, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .rpg-shell {
+    padding: 1rem;
+  }
+  .rpg-tile {
+    min-width: 32px;
+    min-height: 24px;
+    font-size: 0.8rem;
+  }
+}
