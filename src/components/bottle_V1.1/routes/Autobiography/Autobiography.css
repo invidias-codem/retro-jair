@@ -1,0 +1,171 @@
+/* Autobiography Route */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+  --navy-bg: #000080;
+  --text-green: #00FF00;
+  --glow-cyan: #00FFFF;
+  --glow-magenta: #FF00FF;
+  --dark-bg-transparent: rgba(0, 0, 0, 0.6);
+}
+
+.autobiography-container {
+  background-color: var(--navy-bg);
+  color: var(--text-green);
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--glow-cyan), 0 0 20px var(--glow-cyan);
+  font-family: 'VT323', 'Courier New', monospace;
+  position: relative;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 2rem auto;
+  border: 3px solid var(--glow-cyan);
+}
+
+.autobiography-title {
+  font-size: 2.5rem;
+  color: var(--glow-magenta);
+  text-shadow: 3px 3px var(--glow-cyan);
+  margin-bottom: 0.5rem;
+}
+
+.autobiography-subtitle {
+  color: var(--glow-cyan);
+  letter-spacing: 0.14em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.autobiography-chapter-list {
+  margin-bottom: 1.5rem;
+}
+
+.autobiography-chapter {
+  background-color: var(--dark-bg-transparent);
+  padding: 1.5rem;
+  border-radius: 5px;
+  border: 2px solid var(--glow-cyan);
+}
+
+.autobiography-chapter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.autobiography-chapter-title {
+  font-size: 1.6rem;
+  color: var(--glow-magenta);
+  text-shadow: 2px 2px var(--glow-cyan);
+}
+
+.autobiography-chapter-meta {
+  color: var(--glow-cyan);
+  font-size: 1.05rem;
+}
+
+.autobiography-chapter-body {
+  margin-bottom: 1.25rem;
+}
+
+.autobiography-text {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  line-height: 1.55;
+}
+
+.autobiography-chapter-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.autobiography-alerts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.autobiography-alert {
+  padding: 0.3rem 0.6rem;
+  background: rgba(255, 221, 87, 0.12);
+  border: 1px dashed #ffdd57;
+  color: #ffdd57;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.autobiography-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.autobiography-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  color: #000;
+  font-family: 'VT323', 'Courier New', monospace;
+  font-size: 1.5rem;
+  text-decoration: none;
+  border: 2px solid var(--glow-cyan);
+  box-shadow: 0 0 10px var(--glow-magenta);
+  transition: all 0.2s ease;
+}
+
+.autobiography-button.secondary {
+  background-color: var(--glow-magenta);
+}
+
+.autobiography-button.secondary:hover {
+  background-color: var(--glow-cyan);
+  box-shadow: 0 0 15px var(--glow-cyan);
+}
+
+.autobiography-placeholder {
+  padding: 2rem;
+  border: 2px dashed var(--glow-cyan);
+  color: var(--glow-cyan);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 768px) {
+  .autobiography-container {
+    margin: 1rem;
+    padding: 1rem;
+    border-width: 2px;
+  }
+
+  .autobiography-title {
+    font-size: 1.8rem;
+  }
+
+  .autobiography-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .autobiography-chapter-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .autobiography-text {
+    font-size: 1rem;
+  }
+
+  .autobiography-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    width: 100%;
+  }
+}

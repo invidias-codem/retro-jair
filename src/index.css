@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500&family=Roboto+Mono:wght@300;400;500&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,6 +39,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--c-bg-app);
   color: var(--c-text-main);
+}
+
+/* Prevent FOUT for retro display text */
+html.fonts-pending .font-display,
+html.fonts-pending [data-font="display"] {
+  opacity: 0;
+}
+html.fonts-ready .font-display,
+html.fonts-ready [data-font="display"] {
+  opacity: 1;
+  transition: opacity 220ms cubic-bezier(.16,1,.3,1);
 }
 
 code {

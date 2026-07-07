@@ -81,133 +81,179 @@
 }
 
 /* --- Typography & Content Styling --- */
-.about-me-title {
-  font-size: 2.5rem;
-  color: var(--glow-magenta);
-  text-shadow: 3px 3px var(--glow-cyan);
+.about-me-header {
   margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  position: relative; /* For z-index to work */
+  position: relative;
   z-index: 3;
-  animation: text-flicker 3s infinite alternate; /* Added subtle flicker */
 }
 
-@keyframes text-flicker {
-  0% { text-shadow: 3px 3px var(--glow-cyan); }
-  50% { text-shadow: 3px 3px 2px var(--glow-cyan), 0 0 5px var(--glow-magenta); }
-  100% { text-shadow: 3px 3px var(--glow-cyan); }
+.about-me-subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--glow-cyan);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--glow-cyan);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
 }
 
-.about-me-icon {
-  margin-right: 0.5rem;
-  font-size: 2rem;
+.about-me-status {
+  color: var(--text-green);
 }
 
-.about-me-content {
+/* --- Journal Chapter List --- */
+.journal-chapter-list {
+  position: relative;
+  z-index: 3;
+  margin-bottom: 1.25rem;
+}
+
+.journal-chapter-label {
+  margin-bottom: 0.5rem;
+  color: var(--glow-magenta);
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.journal-chapter-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.journal-chapter-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--glow-cyan);
+  color: var(--text-green);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.journal-chapter-card:hover {
+  transform: translateY(-1px);
+  background: rgba(0, 255, 255, 0.08);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.25);
+}
+
+.journal-chapter-card.selected {
+  background: rgba(0, 255, 255, 0.14);
+  border-color: var(--glow-magenta);
+  box-shadow: 0 0 14px rgba(255, 0, 255, 0.35);
+}
+
+.journal-chapter-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--fg-muted, #9fb3cf);
+}
+
+.journal-chapter-id {
+  color: var(--glow-magenta);
+}
+
+.journal-chapter-title {
+  font-size: 1.15rem;
+  color: var(--text-green);
+}
+
+.journal-chapter-status {
+  font-size: 0.85rem;
+  color: var(--glow-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- Detail View --- */
+.about-me-detail {
+  position: relative;
+  z-index: 3;
+  min-height: 120px;
+}
+
+.about-me-chapter {
   background-color: var(--dark-bg-transparent);
   padding: 1.5rem;
   border-radius: 5px;
   border: 2px solid var(--glow-cyan);
-  position: relative; /* For z-index to work */
-  z-index: 3;
 }
 
-.about-me-text {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  line-height: 1.6;
-}
-
-.about-me-text:last-child {
-  margin-bottom: 0;
-}
-
-.about-me-text .about-me-icon {
-  font-size: 1.2rem;
-  vertical-align: middle;
-}
-
-/* --- Enhanced CTA Button Section --- */
-.about-me-actions {
-  margin-top: 2rem;
-  text-align: center;
-  position: relative;
-  z-index: 3;
-  /* Added spacing for multiple buttons */
+.about-me-chapter-header {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem; 
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
-/* --- Primary Button: Read Vector's Briefing --- */
-.read-blog-button {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background-color: var(--cta-main-color); /* Bright Gold/Yellow */
-  color: #000;
-  font-family: 'VT323', 'Courier New', monospace;
-  font-size: 1.5rem;
-  text-decoration: none;
-  border: 2px solid var(--glow-cyan);
-  /* Intense glow to highlight AI content link */
-  box-shadow: 0 0 15px var(--cta-main-color), 0 0 25px var(--cta-main-color);
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden; 
-  /* Added animation */
-  animation: subtle-pulse 2s infinite alternate;
+.about-me-chapter-title {
+  font-size: 1.6rem;
+  color: var(--glow-magenta);
+  text-shadow: 2px 2px var(--glow-cyan);
 }
 
-.read-blog-button:hover {
-  background-color: var(--glow-cyan);
-  color: var(--navy-bg);
-  box-shadow: 0 0 20px var(--glow-cyan), 0 0 30px var(--glow-cyan);
-  /* Use glitch effect on hover */
-  animation: glitch-anim 0.3s steps(2, end) forwards;
+.about-me-chapter-meta {
+  color: var(--glow-cyan);
+  font-size: 1.05rem;
 }
 
-/* Subtle Pulse Animation for Primary CTA */
-@keyframes subtle-pulse {
-  0% { transform: scale(1.0); }
-  100% { transform: scale(1.02); }
+.about-me-chapter-body {
+  margin-bottom: 1.25rem;
 }
 
-
-/* --- Secondary Button: Book a Consultation --- */
-.hire-me-button.secondary {
-  /* Inherit style from previous .hire-me-button but change name */
-  display: inline-block;
-  padding: 1rem 2rem;
-  background-color: var(--glow-magenta);
-  color: #000;
-  font-family: 'VT323', 'Courier New', monospace;
-  font-size: 1.5rem;
-  text-decoration: none;
-  border: 2px solid var(--glow-cyan);
-  box-shadow: 0 0 10px var(--glow-magenta);
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+.about-me-chapter-body .about-me-text {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  line-height: 1.55;
 }
 
-.hire-me-button.secondary:hover {
-  background-color: var(--glow-cyan);
-  color: #000;
-  box-shadow: 0 0 15px var(--glow-cyan);
-  animation: glitch-anim 0.3s steps(2, end) forwards;
+.about-me-chapter-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+.about-me-alerts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
 
-/* Glitch Effect Keyframes (Kept for both buttons on hover) */
-@keyframes glitch-anim {
-  0% { transform: translate(0); }
-  20% { transform: translate(-3px, 3px); }
-  40% { transform: translate(3px, -3px); }
-  60% { transform: translate(-3px, -3px); }
-  80% { transform: translate(3px, 3px); }
-  100% { transform: translate(0); }
+.about-me-alert {
+  padding: 0.3rem 0.6rem;
+  background: rgba(255, 221, 87, 0.12);
+  border: 1px dashed var(--semantic-warning, #ffdd57);
+  color: var(--semantic-warning, #ffdd57);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.about-me-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.about-me-placeholder {
+  padding: 2rem;
+  border: 2px dashed var(--glow-cyan);
+  color: var(--glow-cyan);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(0, 0, 0, 0.35);
 }
 
 /* --- Responsive Optimizations --- */
@@ -222,11 +268,19 @@
     font-size: 1.8rem;
     text-shadow: 2px 2px var(--glow-cyan);
   }
-  
-  /* Stack buttons vertically on small screens */
+
+  .journal-chapter-cards {
+    grid-template-columns: 1fr;
+  }
+
   .about-me-actions {
-      flex-direction: column;
-      gap: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .about-me-chapter-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .about-me-icon {
@@ -241,10 +295,9 @@
     font-size: 1rem;
   }
 
-  .read-blog-button,
   .hire-me-button.secondary {
     padding: 0.8rem 1.5rem;
     font-size: 1.2rem;
-    width: 100%; /* Make buttons full width */
+    width: 100%;
   }
 }

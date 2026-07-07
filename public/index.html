@@ -48,11 +48,63 @@
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script>
+      (function() {
+        try {
+          document.documentElement.classList.add('fonts-pending');
+          document.fonts.load('16px VT323').then(function() {
+            document.documentElement.classList.remove('fonts-pending');
+            document.documentElement.classList.add('fonts-ready');
+          });
+          setTimeout(function() {
+            document.documentElement.classList.remove('fonts-pending');
+            document.documentElement.classList.add('fonts-ready');
+          }, 2500);
+        } catch (e) {}
+      })();
+    </script>
+    <link href="/fonts/FiraCode-Regular.ttf" rel="preload" as="font" type="font/truetype" crossorigin>
+    <link href="/fonts/FiraCode-SemiBold.ttf" rel="preload" as="font" type="font/truetype" crossorigin>
+    <link href="/fonts/Teko-Medium.ttf" rel="preload" as="font" type="font/truetype" crossorigin>
+    <link href="/fonts/RobotoMono-Regular.ttf" rel="preload" as="font" type="font/truetype" crossorigin>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: 'VT323';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/VT323.ttf') format('truetype');
+      }
+      @font-face {
+        font-family: 'Fira Code';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/FiraCode-Regular.ttf') format('truetype');
+      }
+      @font-face {
+        font-family: 'Fira Code';
+        font-style: normal;
+        font-weight: 600;
+        font-display: swap;
+        src: url('/fonts/FiraCode-SemiBold.ttf') format('truetype');
+      }
+      @font-face {
+        font-family: 'Teko';
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url('/fonts/Teko-Medium.ttf') format('truetype');
+      }
+      @font-face {
+        font-family: 'Roboto Mono';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/RobotoMono-Regular.ttf') format('truetype');
+      }
+    </style>
 
     <!-- Additional Styles for TechGenie -->
     <style>

@@ -2,7 +2,6 @@
 // Terminal.js - Key modifications
 import React, { useState, useEffect, useCallback } from 'react';
 import journalEntries, { getAllEntries } from '../../TermJourn/journalLogs';
-import MemoizedJournalEntry from '../../TermJourn/Journal';
 import TypingText from './TypingText'; // Import the new component
 import './Terminal.css';        // Your main terminal styles
 import './TypingText.css';      // Import styles for TypingText (or ensure it's globally available)
@@ -68,16 +67,23 @@ const Terminal = () => {
                 <div className="journal-header-title">SYSTEM JOURNAL LOGS - SELECT AN ENTRY TO VIEW</div>
                 <div className="entries-list">
                   {entries.length > 0 ? entries.map(entry => (
-                    <MemoizedJournalEntry
+                    <div
                       key={entry.id}
-                      entry={entry}
                       className={`journal-entry-list-item ${selectedEntryId === entry.id ? 'selected' : ''}`}
                       onClick={() => handleEntrySelect(entry)}
-                      // Ensure MemoizedJournalEntry is simple, e.g.:
-                      // <div className={props.className} onClick={props.onClick}>
-                      //   <span>{props.entry.id}</span> - <span>{props.entry.title}</span>
-                      // </div>
-                    />
+                      role="button"
+                      tabIndex="0"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleEntrySelect(entry);
+                        }
+                      }}
+                    >
+                      <span>{entry.id}</span>
+                      <span>{new Date(entry.date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
+                      <span>{entry.title}</span>
+                    </div>
                   )) : <div className="terminal-line">NO JOURNAL ENTRIES FOUND.</div>}
                 </div>
               </div>

@@ -1,0 +1,65 @@
+/* === retro-jair design tokens === */
+/* Surface: base, raised, overlay */
+/* Border: subtle, default, emphasis */
+/* Foreground: primary, secondary, muted */
+/* Brand: identity + primary accent */
+/* Semantic: destructive, warning, success, info */
+
+:root {
+  /* Base surfaces */
+  --bg-base: #041e42;        /* deep navy */
+  --bg-raised: #0b2a52;
+  --bg-overlay: #0f3460;
+
+  /* Borders */
+  --border-subtle: #163055;
+  --border-default: #1e3f6e;
+  --border-emphasis: #2c5aa0;
+
+  /* Foreground */
+  --fg-primary: #e7f0ff;     /* off-white */
+  --fg-secondary: #9fb3cf;   /* muted blue-gray */
+  --fg-muted: #5c7399;       /* low emphasis */
+
+  /* Brand */
+  --brand: #00ff9d;          /* phosphor green */
+  --brand-dim: rgba(0,255,157,.12);
+
+  /* Semantic */
+  --semantic-destructive: #ff3860;
+  --semantic-warning: #ffdd57;
+  --semantic-success: #23d160;
+  --semantic-info: #1da5be;
+
+  /* Accent pulse */
+  --accent-2: #ff00ff;
+
+  /* Motion */
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --duration-micro: 150ms;
+  --duration-ui: 220ms;
+  --duration-enter: 320ms;
+
+  /* Type */
+  --font-display: 'VT323', 'Menlo', monospace;
+  --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Menlo', monospace;
+
+  /* Chromatic aberration / scanline treatment is opt-in via .theme-retro to avoid performance/readability tax globally */
+}
+
+html.fonts-pending [data-theme="retro"] body,
+html.fonts-pending [data-theme="retro"] .font-display {
+  opacity: 0;
+}
+
+html.fonts-ready [data-theme="retro"] body,
+html.fonts-ready [data-theme="retro"] .font-display {
+  opacity: 1;
+  transition: opacity var(--duration-ui) var(--ease-out);
+}
+
+/* Below the fold imagery */
+img, video, canvas {
+  content-visibility: auto;
+}

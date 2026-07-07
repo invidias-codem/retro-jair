@@ -25,6 +25,7 @@ import './components/bottle_V1.1/common/Header.css';
 // --- Lazy-Loaded Page Components ---
 const Home = React.lazy(() => import('./components/bottle_V1.1/Main/Home')); // <-- ADDED HOME LAZY LOAD
 const AboutMe = React.lazy(() => import('./components/bottle_V1.1/AboutMe/AboutMe'));
+const Autobiography = React.lazy(() => import('./components/bottle_V1.1/routes/Autobiography/Autobiography'));
 const Projects = React.lazy(() => import('./components/bottle_V1.1/Projects/Projects'));
 const Skills = React.lazy(() => import('./components/bottle_V1.1/Skills/Skills'));
 const Contact = React.lazy(() => import('./components/bottle_V1.1/ContactMe/Contact'));
@@ -68,6 +69,7 @@ function AnimatedRoutes() {
         <Routes location={item}>
           <Route path="/" element={<Home />} /> {/* <-- MAPPED ROOT TO HOME */}
           <Route path="/about" element={<AboutMe />} /> {/* <-- KEPT ABOUTME ON /ABOUT */}
+          <Route path="/autobiography" element={<Autobiography />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/contact" element={<Contact />} />
