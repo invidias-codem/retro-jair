@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect, memo, useRef } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser,
   faCode,
   faCogs,
   faEnvelope,
-  faTerminal,
   faRobot
 } from '@fortawesome/free-solid-svg-icons';
 import './Menu.css'; // Original Menu.css, styles will be overridden by App.css for sidebar context
@@ -53,20 +52,6 @@ const ChatButton = memo(({ onClick, isDesktopSidebarCollapsed }) => (
   >
     <FontAwesomeIcon icon={faRobot} className="menu-item-icon" fixedWidth />
     <span className="menu-item-text">Nexus</span>
-  </Link>
-));
-
-// Terminal Link, adapted for sidebar consistency
-const TerminalLink = memo(({ isUnlocked, onClick, isDesktopSidebarCollapsed }) => (
-  <Link
-    to="/terminal"
-    className={`menu-item terminal-link ${isUnlocked ? 'unlocked' : ''}`} // Use "menu-item"
-    aria-label="Open Terminal"
-    onClick={onClick}
-    title={isDesktopSidebarCollapsed ? "Terminal" : undefined}
-  >
-    <FontAwesomeIcon icon={faTerminal} className="menu-item-icon" fixedWidth />
-    <span className="menu-item-text">Terminal</span>
   </Link>
 ));
 
@@ -172,7 +157,6 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed, isMobile, isMenuOpen }) 
   const panelRef = useRef(null);
   const restoreScrollRef = useRef(null);
   const lastFocusRef = useRef(null);
-  const navigate = useNavigate();
   const { openChatModal, toggleTheme } = useChat();
 
   useEffect(() => {
@@ -243,12 +227,9 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed, isMobile, isMenuOpen }) 
 
             <nav className="menu-section" aria-label="Primary">
               <NavLink to="/" end className="menu-link" onClick={onItemClick}>Home</NavLink>
-              <NavLink to="/autobiography" className="menu-link" onClick={onItemClick}>Autobiography</NavLink>
               <NavLink to="/about" className="menu-link" onClick={onItemClick}>About</NavLink>
               <NavLink to="/projects" className="menu-link" onClick={onItemClick}>Projects</NavLink>
               <NavLink to="/skills" className="menu-link" onClick={onItemClick}>Skills</NavLink>
-              <NavLink to="/services" className="menu-link" onClick={onItemClick}>Services</NavLink>
-              <NavLink to="/terminal" className="menu-link" onClick={onItemClick}>Terminal</NavLink>
               <NavLink to="/contact" className="menu-link" onClick={onItemClick}>Contact</NavLink>
             </nav>
 
@@ -257,7 +238,6 @@ const Menu = ({ onItemClick, isDesktopSidebarCollapsed, isMobile, isMenuOpen }) 
             <nav className="menu-section" aria-label="Actions">
               <button className="menu-action" onClick={() => { openChatModal('tech-genie'); onItemClick?.(); }}>Chat</button>
               <button className="menu-action" onClick={() => { toggleTheme(); }}>Theme</button>
-              <button className="menu-action" onClick={() => { navigate('/settings'); onItemClick?.(); }}>Settings</button>
             </nav>
 
             <button className="menu-close" onClick={onItemClick}>Close</button>

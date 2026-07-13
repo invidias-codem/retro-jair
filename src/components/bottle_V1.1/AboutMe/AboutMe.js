@@ -75,7 +75,7 @@ const AboutMe = () => {
                 >
                   Read Vector's Daily Briefing
                 </Link>
-                <Link to="/services" className="hire-me-button secondary">
+                <Link to="/contact" className="hire-me-button secondary">
                   Book a Consultation
                 </Link>
               </div>
