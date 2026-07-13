@@ -1,30 +1,28 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faComment } from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import './Footer.css';
 
 function Footer() {
-    return (
-        <footer className="footer">
-          <h3>Connect with me</h3>
-          <div className="social-media-links">
-            <a href="https://www.instagram.com/invidious.voidrem/" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faInstagram} className="icon instagram" />
-            </a>
-            <a href="https://www.threads.net/@invidious.voidrem" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faComment} className="icon comment" />
-            </a>
-            <a href="https://github.com/invidias-codem" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faGithub} className="icon github" />
-            </a>
-            <a href="https://www.linkedin.com/in/joshua-mohammed14/" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faLinkedin} className="icon linkedin" />
-            </a>
-          </div>
-          <p>© 2024 Joshua-Jair Emmanuel Mohammed</p>
-        </footer>
-      );
+  return (
+    <footer className="footer jj-footer">
+      <div className="jj-footer-inner">
+        <div className="jj-footer-brand">
+          <span className="jj-footer-mark">JJ</span>
+          <span>Joshua-Jair “JJ” Mohammed</span>
+        </div>
+        <div className="social-media-links jj-social">
+          <a href="https://github.com/invidias-codem" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <FontAwesomeIcon icon={faGithub} className="icon github" />
+          </a>
+          <a href="https://www.linkedin.com/in/joshua-mohammed14/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <FontAwesomeIcon icon={faLinkedin} className="icon linkedin" />
+          </a>
+        </div>
+        <p className="jj-copy">© {new Date().getFullYear()} Joshua-Jair Mohammed · DevSecOps & AI Infrastructure</p>
+      </div>
+    </footer>
+  );
 }
 
 export default Footer;
