@@ -1,5 +1,5 @@
 // src/components/bottle_V1.1/Main/Home.js
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,6 +7,9 @@ import {
   faAddressCard, faEnvelope, faCogs, faUser
 } from '@fortawesome/free-solid-svg-icons';
 import './Home.css';
+
+// Lazy-load the agent so the home hero stays light until it's needed
+const ChatInterface = lazy(() => import('../AI_components/ChatInterface'));
 
 // Explore modules (secondary grid) — trimmed to live routes
 const BENTO_MODULES = [
@@ -58,27 +61,43 @@ function Home() {
 
   return (
     <div className="home-bento-container">
-      {/* HERO — hybrid: modern pro base + subtle CRT accent */}
+      {/* HERO — hybrid: modern pro base + subtle CRT accent + live agent */}
       <section className="jj-hero crt-hero" aria-label="Introduction">
         <div className="jj-container jj-hero-inner">
-          <p className="eyebrow">DevSecOps &amp; AI Infrastructure</p>
-          <h1 className="jj-hero-title">
-            I build sovereign, secure AI<br />infrastructure that ships.
-          </h1>
-          <p className="jj-hero-sub">
-            Joshua-Jair “JJ” Mohammed — Founder of <strong>Lattice OS</strong>. From Zero-Trust
-            architectures to agentic systems, I engineer the trustworthy layer for intelligent software.
-          </p>
-          <div className="jj-hero-actions">
-            <Link to="/chat" className="jj-btn jj-btn-primary">Try the Agent</Link>
-            <Link to="/projects" className="jj-btn jj-btn-ghost">View Work</Link>
+          <div className="jj-hero-copy">
+            <p className="eyebrow">DevSecOps &amp; AI Infrastructure</p>
+            <h1 className="jj-hero-title">
+              I build sovereign, secure AI<br />infrastructure that ships.
+            </h1>
+            <p className="jj-hero-sub">
+              Joshua-Jair “JJ” Mohammed — Founder of <strong>Lattice OS</strong>. From Zero-Trust
+              architectures to agentic systems, I engineer the trustworthy layer for intelligent software.
+            </p>
+            <div className="jj-hero-actions">
+              <a href="#agent" className="jj-btn jj-btn-primary">Try the Agent</a>
+              <Link to="/projects" className="jj-btn jj-btn-ghost">View Work</Link>
+            </div>
+            <ul className="jj-hero-tags" aria-label="Focus areas">
+              <li className="jj-pill">Zero-Trust Security</li>
+              <li className="jj-pill">Agentic AI Platforms</li>
+              <li className="jj-pill">CI/CD &amp; Cloud</li>
+              <li className="jj-pill">Full-Stack (Go · Rust · Next.js)</li>
+            </ul>
           </div>
-          <ul className="jj-hero-tags" aria-label="Focus areas">
-            <li className="jj-pill">Zero-Trust Security</li>
-            <li className="jj-pill">Agentic AI Platforms</li>
-            <li className="jj-pill">CI/CD &amp; Cloud</li>
-            <li className="jj-pill">Full-Stack (Go · Rust · Next.js)</li>
-          </ul>
+
+          {/* LIVE AGENT — embedded hero feature */}
+          <div className="jj-hero-chat" id="agent">
+            <div className="jj-hero-chat-label">
+              <span className="jj-hero-chat-dot" aria-hidden="true" />
+              Live · Lattice OS Agent
+            </div>
+            <div className="jj-hero-chat-frame">
+              <Suspense fallback={<div className="jj-hero-chat-loading">Loading agent…</div>}>
+                <ChatInterface agentId="tech-genie" />
+              </Suspense>
+            </div>
+            <Link to="/chat" className="jj-hero-chat-full">Open full chat →</Link>
+          </div>
         </div>
       </section>
 
