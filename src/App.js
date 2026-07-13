@@ -25,16 +25,12 @@ import './components/bottle_V1.1/common/Header.css';
 // --- Lazy-Loaded Page Components ---
 const Home = React.lazy(() => import('./components/bottle_V1.1/Main/Home')); // <-- ADDED HOME LAZY LOAD
 const AboutMe = React.lazy(() => import('./components/bottle_V1.1/AboutMe/AboutMe'));
-const Autobiography = React.lazy(() => import('./components/bottle_V1.1/routes/Autobiography/Autobiography'));
 const Projects = React.lazy(() => import('./components/bottle_V1.1/Projects/Projects'));
 const Skills = React.lazy(() => import('./components/bottle_V1.1/Skills/Skills'));
 const Contact = React.lazy(() => import('./components/bottle_V1.1/ContactMe/Contact'));
-const Terminal = React.lazy(() => import('./components/bottle_V1.1/routes/Terminal/Terminal'));
-const Services = React.lazy(() => import('./components/bottle_V1.1/Services/Service'));
 const ChatInterface = React.lazy(() => import('./components/bottle_V1.1/AI_components/ChatInterface'));
 const ChatModal = React.lazy(() => import('./components/bottle_V1.1/AI_components/ChatModal')); // Import ChatModal
 const ChatRoute = React.lazy(() => import('./components/bottle_V1.1/AI_components/ChatRoute'));
-const Settings = React.lazy(() => import('./components/bottle_V1.1/routes/Settings/Settings'));
 
 // --- Framework Providers ---
 const AgentSessionProvider = React.lazy(() =>
@@ -69,13 +65,9 @@ function AnimatedRoutes() {
         <Routes location={item}>
           <Route path="/" element={<Home />} /> {/* <-- MAPPED ROOT TO HOME */}
           <Route path="/about" element={<AboutMe />} /> {/* <-- KEPT ABOUTME ON /ABOUT */}
-          <Route path="/autobiography" element={<Autobiography />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/terminal" element={<Terminal />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/settings" element={<Settings />} />
           <Route
             path="/chat/:agentId"
             element={

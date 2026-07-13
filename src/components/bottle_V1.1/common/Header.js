@@ -2,18 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 /**
- * Header (Desktop/Tablet)
- * - Left: Brand (navigates to home)
- * - Center: Primary navigation
- * - Right: Actions (Chat, Theme, Settings) or Hamburger on mobile (handled by parent prop isMobile)
+ * Header (Phase 1 hybrid restyle)
+ * - Wordmark: "JJ · Mohammed"
+ * - Trimmed nav: Home, About, Projects, Skills, Contact
+ * - "Try the Agent" CTA → /chat (hero feature, not hidden)
+ * - Mobile: hamburger → same trimmed menu
  *
- * Props:
- * - onOpenChat: () => void
- * - onToggleTheme: () => void
- * - onOpenMenu: () => void (open mobile side panel)
- * - isMobile: boolean
+ * Props: onToggleTheme, onOpenMenu, isMobile
  */
-export default function Header({ onToggleTheme, onOpenMenu, isMobile }) {
+const NAV = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/about', label: 'About' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/skills', label: 'Skills' },
+  { to: '/contact', label: 'Contact' },
+];
+
+export default function Header({ onOpenMenu, isMobile }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
@@ -52,32 +57,38 @@ export default function Header({ onToggleTheme, onOpenMenu, isMobile }) {
     };
   }, [open]);
 
+  const go = (to) => { setOpen(false); navigate(to); };
+
   return (
-    <header className="app-header" role="banner">
+    <header className="app-header jj-header" role="banner">
       <div className="header-left">
-        <button className="brand-btn" onClick={() => navigate('/')} aria-label="Go to Home">
-          Retro Jair
+        <button className="brand-btn jj-brand" onClick={() => navigate('/')} aria-label="Go to Home">
+          <span className="jj-brand-mark">JJ</span>
+          <span className="jj-brand-name">Mohammed</span>
         </button>
       </div>
 
       {!isMobile && (
-        <nav className="header-nav" aria-label="Primary">
-          <NavLink to="/" end className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Home</NavLink>
-          <NavLink to="/about" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>About</NavLink>
-          <NavLink to="/projects" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Projects</NavLink>
-          <NavLink to="/skills" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Skills</NavLink>
-          <NavLink to="/services" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Services</NavLink>
-          <NavLink to="/terminal" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Terminal</NavLink>
-          <NavLink to="/contact" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>Contact</NavLink>
+        <nav className="header-nav jj-nav" aria-label="Primary">
+          {NAV.map((n) => (
+            <NavLink
+              key={n.to}
+              to={n.to}
+              end={n.end}
+              className={({ isActive }) => `nav-link jj-nav-link${isActive ? ' active' : ''}`}
+            >
+              {n.label}
+            </NavLink>
+          ))}
         </nav>
       )}
 
-      <nav className="header-actions" aria-label="Actions">
+      <nav className="header-actions jj-actions" aria-label="Actions">
         {isMobile ? (
           <div className="mobile-actions">
             <button
               ref={btnRef}
-              className="hamburger-btn"
+              className="hamburger-btn jj-hamburger"
               onClick={() => setOpen((v) => !v)}
               aria-label="Open Menu"
               aria-haspopup="menu"
@@ -87,31 +98,29 @@ export default function Header({ onToggleTheme, onOpenMenu, isMobile }) {
               ☰
             </button>
             {open && (
-              <div id="mobileMenu" className="mobile-menu" role="menu" ref={menuRef}>
+              <div id="mobileMenu" className="mobile-menu jj-mobile-menu" role="menu" ref={menuRef}>
                 <h2 id="mobileMenuTitle" className="sr-only">Navigation</h2>
                 <div className="menu-group" aria-label="Primary">
-                  <button className="menu-btn btn-primary" role="menuitem" onClick={() => { setOpen(false); navigate('/'); }}>Home</button>
-                  <button className="menu-btn btn-primary" role="menuitem" onClick={() => { setOpen(false); navigate('/about'); }}>About</button>
-                  <button className="menu-btn btn-primary" role="menuitem" onClick={() => { setOpen(false); navigate('/projects'); }}>Projects</button>
-                  <button className="menu-btn btn-primary" role="menuitem" onClick={() => { setOpen(false); navigate('/skills'); }}>Skills</button>
-                  <button className="menu-btn btn-primary" role="menuitem" onClick={() => { setOpen(false); navigate('/services'); }}>Services</button>
-                  <button className="menu-btn btn-primary" role="menuitem" onClick={() => { setOpen(false); navigate('/terminal'); }}>Terminal</button>
-                  <button className="menu-btn btn-primary" role="menuitem" onClick={() => { setOpen(false); navigate('/contact'); }}>Contact</button>
+                  {NAV.map((n) => (
+                    <button key={n.to} className="menu-btn jj-menu-btn" role="menuitem" onClick={() => go(n.to)}>
+                      {n.label}
+                    </button>
+                  ))}
                 </div>
-                <hr className="menu-sep" />
+                <hr className="menu-sep jj-menu-sep" />
                 <div className="menu-group" aria-label="Actions">
-                  <button className="menu-btn btn-cta pulse" role="menuitem" onClick={() => { setOpen(false); navigate('/chat'); }}>Chat</button>
-                  <button className="menu-btn btn-secondary glow" role="menuitem" onClick={() => { onToggleTheme?.(); }}>Theme</button>
-                  <button className="menu-btn btn-secondary slide" role="menuitem" onClick={() => { setOpen(false); navigate('/settings'); }}>Settings</button>
+                  <button className="menu-btn jj-menu-btn jj-menu-cta" role="menuitem" onClick={() => go('/chat')}>
+                    Try the Agent
+                  </button>
                 </div>
               </div>
             )}
           </div>
         ) : (
           <>
-            <button className="action-btn" onClick={() => navigate('/chat')} aria-label="Open Chat">Chat</button>
-            <button className="action-btn" onClick={onToggleTheme} aria-label="Toggle Theme">Theme</button>
-            <button className="action-btn" onClick={() => navigate('/settings')} aria-label="Open Settings">Settings</button>
+            <button className="action-btn jj-action jj-action-ghost" onClick={() => navigate('/chat')} aria-label="Try the Agent">
+              Try the Agent
+            </button>
           </>
         )}
       </nav>

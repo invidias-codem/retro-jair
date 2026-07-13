@@ -165,4 +165,39 @@
     z-index: 2;
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
-  }
+}
+
+/* =====================================================================
+   PHASE 3 HYBRID OVERRIDES — Projects
+   ===================================================================== */
+.projects.jj-container {
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  border: none;
+  box-shadow: none;
+  padding: 72px 24px 88px;
+  overflow: visible;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+.projects .jj-section-head { margin-bottom: 32px; }
+.projects-grid { gap: 18px; }
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+}
+.project-tag { align-self: flex-start; margin-bottom: 2px; }
+.project-title { margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--text-primary); }
+.project-desc { margin: 0; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
+.project-toggle { align-self: flex-start; margin-top: 4px; }
+.project-details { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 14px; display: flex; flex-direction: column; gap: 8px; color: var(--text-secondary); font-size: 0.92rem; }
+.project-details p { margin: 0; }
+.detail-label { color: var(--text-muted); font-weight: 600; margin-right: 6px; }
+.project-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+
+@media (max-width: 600px) {
+  .projects.jj-container { padding: 56px 18px 64px; }
+}

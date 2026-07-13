@@ -1,0 +1,128 @@
+/* =====================================================================
+   JJ Portfolio — Section & Component Primitives (Phase 1 foundation)
+   Shared building blocks for Home/About/Projects/Skills/Contact.
+   Modern professional base; retro accent only via .crt-hero / .eyebrow.
+   ===================================================================== */
+
+.jj-container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.jj-section {
+  padding: 88px 0;
+}
+.jj-section-tight { padding: 56px 0; }
+
+.jj-section-head {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+.jj-section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin: 10px 0 12px;
+  letter-spacing: -0.01em;
+}
+.jj-section-sub {
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Card */
+.jj-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+.jj-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow);
+}
+
+/* Buttons */
+.jj-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 11px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+.jj-btn-primary {
+  background: var(--accent);
+  color: var(--bg-base);
+}
+.jj-btn-primary:hover {
+  background: var(--accent-hover);
+  color: var(--bg-base);
+  box-shadow: 0 6px 18px rgba(245,166,35,0.3);
+}
+.jj-btn-ghost {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+.jj-btn-ghost:hover {
+  background: var(--accent);
+  color: var(--bg-base);
+}
+.jj-btn-quiet {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+.jj-btn-quiet:hover { color: var(--text-primary); border-color: var(--border-strong); }
+
+/* Grids */
+.jj-grid {
+  display: grid;
+  gap: 20px;
+}
+.jj-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.jj-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.jj-grid-auto { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+
+@media (max-width: 860px) {
+  .jj-grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .jj-section { padding: 64px 0; }
+  .jj-grid-2, .jj-grid-3 { grid-template-columns: 1fr; }
+  .jj-container { padding: 0 18px; }
+}
+
+/* Tag/pill */
+.jj-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jj-card, .jj-btn { transition: none; }
+  .jj-card:hover { transform: none; }
+}

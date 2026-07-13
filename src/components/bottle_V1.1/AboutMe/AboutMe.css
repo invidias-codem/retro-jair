@@ -320,4 +320,36 @@
     font-size: 1.2rem;
     width: 100%;
   }
+
+/* =====================================================================
+   PHASE 3 HYBRID OVERRIDES — About
+   ===================================================================== */
+.about-me-container.jj-container {
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 72px 24px 88px;
+  overflow: visible;
+}
+.about-head { margin-bottom: 28px; }
+.about-bio { padding: 28px; display: flex; flex-direction: column; gap: 14px; line-height: 1.7; color: var(--text-secondary); }
+.about-bio strong { color: var(--text-primary); }
+.about-social { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.about-timeline { margin-top: 56px; }
+.about-timeline-title { margin-bottom: 20px; }
+.timeline-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+.timeline-item { padding: 20px 22px; }
+.timeline-role { font-weight: 600; color: var(--text-primary); font-size: 1.05rem; }
+.timeline-org { color: var(--accent); font-weight: 500; margin: 2px 0 8px; }
+.timeline-period { margin-bottom: 10px; }
+.timeline-note { color: var(--text-secondary); line-height: 1.6; margin: 0; font-size: 0.95rem; }
+
+@media (max-width: 600px) {
+  .about-me-container.jj-container { padding: 56px 18px 64px; }
+}
 }

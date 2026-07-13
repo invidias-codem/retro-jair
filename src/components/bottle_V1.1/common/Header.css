@@ -150,3 +150,124 @@
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+/* =====================================================================
+   PHASE 1 HYBRID OVERRIDES — modern pro header
+   (uses tokens from theme.css; retro lives only in .crt-hero)
+   ===================================================================== */
+.jj-header {
+  height: 64px;
+  padding: 0 24px;
+  background: rgba(11, 15, 23, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Wordmark */
+.jj-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+}
+.jj-brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+.jj-brand-name { color: var(--text-primary); }
+
+/* Nav */
+.jj-nav { gap: 4px; }
+.jj-nav-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.94rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: color var(--transition), background var(--transition);
+}
+.jj-nav-link:hover, .jj-nav-link:focus {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.04);
+  outline: none;
+}
+.jj-nav-link.active {
+  color: var(--bg-base);
+  background: var(--accent);
+  box-shadow: 0 2px 10px rgba(245,166,35,0.25);
+}
+
+/* Actions */
+.jj-action {
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 9px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.jj-action-ghost {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent-line);
+}
+.jj-action-ghost:hover {
+  background: var(--accent);
+  color: var(--bg-base);
+  filter: none;
+}
+
+/* Mobile menu */
+.jj-mobile-menu {
+  width: calc(min(86vw, 320px));
+  padding: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+.jj-menu-btn {
+  height: 50px;
+  padding: 0 18px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.jj-menu-btn:hover, .jj-menu-btn:focus { background: var(--bg-elevated); outline: none; }
+.jj-menu-cta {
+  background: var(--accent);
+  color: var(--bg-base);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.jj-menu-sep { border-top: 1px solid var(--border); opacity: 1; margin: 10px 0; }
+
+@media (max-width: 768px) {
+  .jj-header { height: 58px; padding: 0 16px; }
+  .jj-brand { font-size: 1.05rem; }
+  .jj-brand-mark { width: 30px; height: 30px; }
+  .jj-hamburger {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent-line);
+    border-radius: 10px;
+    font-size: 18px;
+    min-width: 42px; min-height: 38px;
+  }
+}
+
