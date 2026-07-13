@@ -1,131 +1,53 @@
-# Cruise-Thru Portfolio
-A retro-themed portfolio website built with React, featuring interactive UI elements, dynamic content, and a unique skill showcase game.
+# JJ Mohammed — Portfolio
 
-## 🌟 Features
-- **Retro Design**: Unique aesthetics with CRT screen effects and retro animations
-- **Interactive Menu**: Dynamic navigation with animated FontAwesome icons
-- **Project Showcase**: Expandable project cards with detailed information
-- **Skill Game**: Interactive game interface showcasing technical skills
-- **Responsive Design**: Mobile-first approach with touch-friendly interactions
-- **Scrolling Banner**: Dynamic message display with retro TV effects
+A modern professional portfolio for **Joshua-Jair “JJ” Mohammed** — DevSecOps & AI Infrastructure Engineer and founder of **Lattice OS**.
 
-## 🚀 Technologies
-- React
-- React Router DOM
-- FontAwesome Icons
-- CSS3 Animations
-- Tailwind CSS
-- React Spring (for animations)
+Built as a React single-page app (Create React App) with a hybrid visual language: a clean, professional base with a subtle retro accent, and a live AI-agent demo embedded on the home page.
 
-## 📋 Prerequisites
-- Node.js 18 or higher
-- npm
-- Git
+## ✨ Highlights
 
-## ⚙️ Installation
-1. Clone the repository:
-```bash
-git clone https://github.com/invidias-codem/retro-jair.git
-cd retro-jair
-```
+- **Hero with a live agent** — the Lattice OS agent (`tech-genie`) is embedded directly on the home page so visitors can talk to it immediately.
+- **Professional narrative** — About, Projects, Skills, and Contact rewritten around real work: sovereign AI infrastructure, Zero-Trust security, and full-stack product engineering.
+- **Trimmed, focused structure** — Home, About, Projects, Skills, Contact, plus the Chat agent.
+- **Form-only contact** — a Firebase-backed contact form; no personal email/phone/address published on the site. Direct links to LinkedIn and GitHub.
+- **Responsive** — mobile-first layouts across every section.
 
-2. Install dependencies:
+## 🧱 Tech
+
+- React 18 + React Router
+- Tailwind CSS (chat UI) + custom design tokens (`src/theme.css`, `src/sections.css`)
+- Firebase Hosting, Cloud Functions (`functions/`), Cloud Firestore
+- FontAwesome + lucide-react icons
+
+## 🚀 Local development
+
 ```bash
 npm install
+npm start          # dev server at http://localhost:3000
 ```
 
-3. Start the development server:
+## 📦 Build & deploy (Firebase Hosting)
+
 ```bash
-npm start
+npm run build                 # outputs to /build
+firebase deploy --only hosting
 ```
 
-## 📁 Project Structure
-```
-retro-jair/
-├── src/
-│   ├── components/
-│   │   ├── AboutMe/
-│   │   ├── ContactMe/
-│   │   ├── Main/
-│   │   │   ├── Menu.js
-│   │   │   └── Speaker.js
-│   │   ├── Projects/
-│   │   └── Skills/
-│   ├── App.js
-│   └── index.js
-├── public/
-└── package.json
-```
+`firebase.json` is already configured: `hosting.public = "build"`, SPA rewrite to `index.html`, site `retro-jair`.
 
-## 🎯 Features Explanation
+## 🔒 Notes
 
-### Interactive Menu
-- Animated FontAwesome icons
-- Responsive navigation
-- Mobile-friendly dropdown menu
-- Smooth page transitions
+- `src/_archive/` holds the original retro “skills game” UI, kept for reference but no longer wired into the app.
+- Contact form submissions are handled by a Firebase Cloud Function (`submitContactForm`). Local development of the form requires Firebase config in `src/firebase.js`.
+- No PII (address, phone, personal email) is rendered on the public site.
 
-### Skills Game
-- Interactive skill collection game
-- Real-time scoring system
-- Mobile touch controls
-- Retro gaming aesthetics
-- Skill vs. Anti-skill mechanics
+## 👤 Author
 
-### Project Showcase
-- Expandable project cards
-- GitHub repository links
-- Timeline and technology details
-- Animated transitions
-- Resume download option
-
-### About Me Section
-- Retro CRT screen effect
-- Animated borders
-- Icon integration
-- Professional background information
-
-### Scrolling Banner
-- Auto-scrolling announcements
-- Retro TV screen effect
-- Flicker animation
-- Custom messaging system
-
-## 📱 Responsive Design
-- Mobile-first approach
-- Touch-friendly interactions
-- Responsive navigation menu
-- Adaptive layouts
-- Breakpoint-specific styling
-
-## 🎨 Styling Features
-- Custom CSS variables for consistent theming
-- Retro-inspired color scheme
-- CRT screen effects
-- Animated borders
-- Flicker animations
-- Grid-based layouts
-- Responsive typography
-
-## ✍️ Author
-**Joshua Mohammed**
+**Joshua-Jair “JJ” Mohammed**
 - GitHub: [@invidias-codem](https://github.com/invidias-codem)
 - LinkedIn: [joshua-mohammed14](https://www.linkedin.com/in/joshua-mohammed14/)
-- Instagram: [@invidious.voidrem](https://www.instagram.com/invidious.voidrem/)
-
-## 🙏 Acknowledgments
-- Inspiration from retro gaming and vintage computer interfaces
-- React community and contributors
-- FontAwesome for icons
-- All open-source libraries used in this project
+- Founder: [Lattice OS](https://gen1e.xyz)
 
 ## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🐛 Known Issues & Future Improvements
-- Contact form implementation pending
-- Additional project details to be added
-- Performance optimizations for animations
-- Enhanced mobile touch controls for skill game
-
-Please report any bugs or issues in the GitHub Issues section.
+MIT — see [LICENSE](LICENSE).
