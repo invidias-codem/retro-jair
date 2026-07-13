@@ -321,3 +321,39 @@
 .pause-menu-container .settings-option:hover {
   color: #00FFFF;
 }
+
+/* =====================================================================
+   PHASE 3 HYBRID OVERRIDES — Skills (professional matrix)
+   ===================================================================== */
+.skills.jj-container {
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 72px 24px 88px;
+}
+.skills .jj-section-head { margin-bottom: 32px; }
+.skills-grid { gap: 18px; }
+.skill-pillar { padding: 24px; }
+.skill-pillar-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.skill-pillar-icon {
+  display: inline-grid; place-items: center;
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  color: var(--accent); font-size: 1.1rem;
+}
+.skill-pillar-title { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
+.skill-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.skill-item {
+  position: relative; padding-left: 18px; color: var(--text-secondary); font-size: 0.95rem;
+}
+.skill-item::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 7px; height: 7px; border-radius: 2px; background: var(--accent);
+}
+.skills-cta { margin-top: 36px; }
+
+@media (max-width: 600px) {
+  .skills.jj-container { padding: 56px 18px 64px; }
+}

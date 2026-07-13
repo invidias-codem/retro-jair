@@ -1,140 +1,122 @@
 import React, { useState } from 'react';
-import './Projects.css'; 
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import './Projects.css';
 
 function Projects() {
-  const [expandedProject, setExpandedProject] = useState(null);
+  const [expanded, setExpanded] = useState(null);
 
   const projects = [
     {
-      title: "Learning Platform with Gemini Pro",
-      description: "Developed a learning platform using React and Java, enabling personalized interactions for STEM students.",
-      timeline: "Sept 2023 - Feb 2024",
-      technologies: "React, Java, Gemini Pro (LLM)",
-      review: "Invaluable experience in software development, collaboration, and leadership.",
+      title: 'Lattice OS',
+      tag: 'Founder · Flagship',
+      description:
+        'A sovereign AI platform — web SaaS and native desktop — with Zero-Trust identity, edge telemetry, and agentic workflows built in from the ground up.',
+      timeline: '2025 — Present',
+      technologies: 'Next.js · Go · Rust · Electron/Tauri · Firebase · Vercel',
+      review:
+        'Led the full-stack transition to a native desktop app, shipped an enterprise CI/CD pipeline, and built real-time agentic streaming infrastructure.',
+      github: 'https://github.com/invidias-codem/ai-saas',
+      demo: 'https://gen1e.xyz',
     },
     {
-      title: "AI SaaS Platform",
-      description: "Developed a scalable AI-powered SaaS platform for web developers who want to prototype generated AI content.",
-      timeline: "Mar 2024 - Present",
-      technologies: "Next.js, Node.js, Replicate AI, Gemini Pro, Tailwind CSS, OpenAI",
-      review: "Challenging project involving complex AI model integration and cloud deployment.",
-      github: "https://github.com/invidias-codem/ai-saas",
-      demo: "https://ai-saas-sigma-lilac.vercel.app/"
+      title: 'AI SaaS Platform',
+      tag: 'Full-Stack',
+      description:
+        'An end-to-end generative AI platform producing images, code, video, and conversation from prompts, with secure multi-feature access control.',
+      timeline: '2024 — Present',
+      technologies: 'Next.js · TypeScript · Firebase · Clerk Auth · Leading LLM & media APIs',
+      review: 'Deployed end-to-end with CI/CD for high availability and secure authentication.',
+      github: 'https://github.com/invidias-codem/ai-saas',
+      demo: 'https://gen1e.xyz',
     },
     {
-      title: "Journey Financial",
-      description: "A modern FinTech banking platform demo. Future goals include implementing AI-driven financial insights, automated budgeting, and full transaction processing.",
-      timeline: "Ongoing",
-      technologies: "Sentry, Next.js, Tailwind CSS, Plaid, Appwrite",
-      review: "A project demonstrating modern FinTech UI/UX and secure authentication & transfer flows.",
-      demo: "https://baroque-banking.vercel.app/sign-in"
+      title: 'TradeFlow',
+      tag: 'Product',
+      description:
+        'A field-operations tool for trades businesses: jobs, invoices, estimates, and inventory — with AI-assisted estimating.',
+      timeline: '2024 — Present',
+      technologies: 'React · Node.js · REST APIs',
+      review: 'Built to cut administrative overhead for small service businesses.',
+      demo: 'https://tradeflow-2m4t.onrender.com',
     },
     {
-      title: "Network Security at Bally's Casino",
-      description: "Implemented and maintained network systems while ensuring robust security controls.",
-      timeline: "Jan 2023 - Sept 2023",
-      technologies: "AS400, Network Security",
-      review: "Required a proactive approach to cybersecurity to protect sensitive data.",
+      title: 'Legend Biotech — Scheduling Automation',
+      tag: 'Integration',
+      description:
+        'An API-driven scheduling system using Microsoft Power Apps and AI automation to eliminate administrative bottlenecks.',
+      timeline: '2024',
+      technologies: 'Microsoft Power Apps · API Automation',
+      review: 'Improved scheduling efficiency across cross-functional lab teams.',
     },
     {
-      title: "Helpdesk Support at DDOE",
-      description: "Provided technical support and improved processes like inventory management.",
-      timeline: "July 2020 - July 2021",
-      technologies: "PowerShell, MS Excel, Inventory Management Systems",
-      review: "Developed critical thinking, adaptability, and problem-solving skills.",
+      title: 'FinTech Demo',
+      tag: 'Demo',
+      description:
+        'A modern banking-platform demo showcasing secure authentication and transfer flows, with plans for AI-driven financial insights.',
+      timeline: 'Ongoing',
+      technologies: 'Next.js · Tailwind CSS · Plaid · Appwrite',
+      review: 'Demonstrates modern FinTech UI/UX and secure auth patterns.',
+      demo: 'https://baroque-banking.vercel.app/sign-in',
     },
     {
-      title: "Subnet Calculator",
-      description: "Created a user-friendly subnet calculator with binary/decimal conversion capabilities.",
-      timeline: "2023",
-      technologies: "HTML, CSS, JavaScript",
-      review: "Practical tool demonstrating strong understanding of networking concepts.",
-      github: "https://github.com/invidias-codem/subnet-calc"
+      title: 'Halal King Soap — E-commerce',
+      tag: 'Freelance',
+      description:
+        'A storefront engagement: UX, payments, and mobile responsiveness to improve brand visibility and conversion.',
+      timeline: '2023',
+      technologies: 'Web · UI/UX',
+      review: 'Collaborated directly with the founder to refine branding and digital presence.',
     },
-    {
-      title: "Personal Portfolio Website",
-      description: "Designed and built my personal portfolio website to showcase my skills and projects.",
-      timeline: "Ongoing",
-      technologies: "React, Rest API, Tailwind CSS",
-      review: "Creative project allowing me to experiment with modern web development techniques.",
-      github: "https://github.com/invidias-codem/"
-    }
   ];
 
-  const toggleProject = (index) => {
-    setExpandedProject(expandedProject === index ? null : index);
-  };
+  const toggle = (i) => setExpanded(expanded === i ? null : i);
 
   return (
-    <section className="projects">
-      <div className="projects__title">
-        <h2>Recent Projects</h2>
-      </div>
-      <div className="projects__container">
-        {projects.map((project, index) => (
-          <div key={index} className={`project-card ${expandedProject === index ? 'expanded' : ''}`}>
-            <div className="project-card__content">
-              <h3 className="project-card__title">{project.title}</h3>
-              <p className="project-card__description">{project.description}</p>
-              <button
-                className="project-card__read-more-button"
-                onClick={() => toggleProject(index)}
-                aria-expanded={expandedProject === index}
-              >
-                {expandedProject === index ? 'Read Less' : 'Read More'}
-              </button>
-            </div>
-            {expandedProject === index && (
+    <section className="projects jj-container">
+      <header className="jj-section-head">
+        <p className="eyebrow">Selected Work</p>
+        <h1 className="jj-section-title">Projects</h1>
+        <p className="jj-section-sub">
+          A range of builds — from a sovereign AI platform to field-ops tooling and client work.
+        </p>
+      </header>
+
+      <div className="jj-grid jj-grid-2 projects-grid">
+        {projects.map((p, i) => (
+          <article key={p.title} className={`jj-card project-card ${expanded === i ? 'expanded' : ''}`}>
+            {p.tag && <span className="jj-pill project-tag">{p.tag}</span>}
+            <h3 className="project-title">{p.title}</h3>
+            <p className="project-desc">{p.description}</p>
+            <button
+              className="jj-btn jj-btn-quiet project-toggle"
+              onClick={() => toggle(i)}
+              aria-expanded={expanded === i}
+            >
+              {expanded === i ? 'Read Less' : 'Read More'}
+            </button>
+
+            {expanded === i && (
               <div className="project-details">
-                <p><span className="detail-label">Timeline:</span> <span className="detail-content">{project.timeline}</span></p>
-                <p><span className="detail-label">Technologies:</span> <span className="detail-content">{project.technologies}</span></p>
-                <p><span className="detail-label">Review:</span> <span className="detail-content">{project.review}</span></p>
-                {project.github && (
-                  <a href={project.github} target="_blank" rel="noopener noreferrer" className="project-details__github-link-button">
-                    View on GitHub
-                  </a>
-                )}
-                {/* --- ADDED THIS BLOCK to show the demo link --- */}
-                {project.demo && (
-                  <a 
-                    href={project.demo} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="project-details__github-link-button"
-                    style={{ marginLeft: project.github ? '10px' : '0' }} // Adds space if GitHub button is also present
-                  >
-                    View Demo
-                  </a>
-                )}
+                <p><span className="detail-label">Timeline:</span> <span className="detail-content">{p.timeline}</span></p>
+                <p><span className="detail-label">Stack:</span> <span className="detail-content">{p.technologies}</span></p>
+                <p><span className="detail-label">Notes:</span> <span className="detail-content">{p.review}</span></p>
+                <div className="project-links">
+                  {p.github && (
+                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="jj-btn jj-btn-ghost">
+                      <FaGithub /> GitHub
+                    </a>
+                  )}
+                  {p.demo && (
+                    <a href={p.demo} target="_blank" rel="noopener noreferrer" className="jj-btn jj-btn-quiet">
+                      <FaExternalLinkAlt /> Live
+                    </a>
+                  )}
+                </div>
               </div>
             )}
-          </div>
+          </article>
         ))}
       </div>
-      <div className="text-center mt-5">
-  {/* PDF Preview */}
-  <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto', height: '600px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
-    <embed
-      src="Jair's_Resume(2025).pdf"
-      type="application/pdf"
-      width="100%"
-      height="100%"
-      title="Resume Preview"
-    />
-    {/* This comment helps with PDF rendering issues in some browsers */}
-  </div>
-
-  {/* Download Button */}
-  <a
-    href="Jair's_Resume(2025).pdf"
-    download="Jair's_Resume(2025).pdf"
-    className="download-resume-button"
-    style={{ display: 'inline-block', marginTop: '20px' }}
-  >
-    Download Resume (PDF)
-  </a>
-</div>
-
     </section>
   );
 }
